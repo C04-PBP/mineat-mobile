@@ -77,8 +77,8 @@ Mineat menggunakan dataset publik dari [Wikipedia](https://en.wikipedia.org/), y
 
 ## Alur Pengintegrasian dengan Aplikasi Web
 Berikut adalah langkah-langkah yang dilakukan untuk mengintegrasikan aplikasi Django dengan Flutter. 
-1. Menambahkan library `http` pada proyek Flutter untuk memungkinkan komunikasi antara aplikasi Flutter dan server Django melalui HTTP request
+1. Menambahkan library `http` pada proyek Flutter untuk memungkinkan komunikasi antara aplikasi Flutter dan server Django melalui HTTP request.
 2. Membuat model data di Flutter yang sesuai dengan struktur data JSON yang dikirim dari server Django. Kami memanfaatkan situs web [Quicktype](http://app.quicktype.io/) untuk mengubah JSON menjadi objek Dart. 
 3. Mengirim HTTP request ke server Django menggunakan library `http`. Kami menggunakan endpoint yang sesuai dengan API yang telah dibuat pada server. 
-4. Mengonversi data yang diterima dari server (dalam format JSON) menjadi objek Dart menggunakan model yang te;ah dibuat pada langkah kedua. 
+4. Mengonversi data yang diterima dari server (dalam format JSON) menjadi objek Dart menggunakan model yang telah dibuat pada langkah kedua. 
 5. Menampilkan data yang telah dikonversi di dalam aplikasi, menggunakan widget `FutureBuilder` agar data dapat dilihat langsung oleh pengguna secara dinamis. 
