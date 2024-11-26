@@ -61,7 +61,7 @@ Pada fitur ini, pengguna dapat melakukan tanya-jawab dengan pengguna lainnya sep
 
 Pada fitur ini, pengguna dapat melihat lokasi favorit pengguna di Kota Padang
 
-Mineat dirancang untuk memiliki fitur yang memungkinkan setiap pengguna untuk menambahkan, menghapus, dan mengedit informasi tentang berbagai makanan dan restoran. Harapannya, situs ini menjadi lebih inklusif, di mana siapa pun dapat berkontribusi untuk memperkaya konten dan menjadikan pengalaman menjelajahi kuliner lebih beragam dan informatif.
+Mineat dirancang untuk memiliki fitur yang memungkinkan setiap pengguna untuk menambahkan, menghapus, dan mengedit informasi tentang berbagai makanan dan restoran. Harapannya, aplikasi ini menjadi lebih inklusif, di mana siapa pun dapat berkontribusi untuk memperkaya konten dan menjadikan pengalaman menjelajahi kuliner lebih beragam dan informatif.
 ## Sumber Initial Dataset
 
 Mineat menggunakan dataset publik dari [Wikipedia](https://en.wikipedia.org/), yaitu: [Padang cuisine](https://en.wikipedia.org/wiki/Padang_cuisine). Dataset ini dipilih karena mencakup informasi yang mendetail tentang berbagai hidangan tradisional Minangkabau, serta menyajikan konteks budaya yang kaya. 
