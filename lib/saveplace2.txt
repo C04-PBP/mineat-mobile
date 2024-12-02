@@ -1,0 +1,7 @@
+boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 4,
+                                        color: Colors.grey.shade300,
+                                        offset: const Offset(6, 6),
+                                      ),
+                                    ],

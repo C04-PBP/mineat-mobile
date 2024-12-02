@@ -81,4 +81,11 @@ Berikut adalah langkah-langkah yang dilakukan untuk mengintegrasikan aplikasi Dj
 2. Membuat model data di Flutter yang sesuai dengan struktur data JSON yang dikirim dari server Django. Kami memanfaatkan situs web [Quicktype](http://app.quicktype.io/) untuk mengubah JSON menjadi objek Dart. 
 3. Mengirim HTTP request ke server Django menggunakan library `http`. Kami menggunakan endpoint yang sesuai dengan API yang telah dibuat pada server. 
 4. Mengonversi data yang diterima dari server (dalam format JSON) menjadi objek Dart menggunakan model yang telah dibuat pada langkah kedua. 
+<<<<<<< HEAD
 5. Menampilkan data yang telah dikonversi di dalam aplikasi, menggunakan widget `FutureBuilder` agar data dapat dilihat langsung oleh pengguna secara dinamis. 
+=======
+5. Menampilkan data yang telah dikonversi di dalam aplikasi, menggunakan widget `FutureBuilder` agar data dapat dilihat langsung oleh pengguna secara dinamis. 
+
+## Tautan Desain Aplikasi
+Berikut adalah tautan menuju desain 'kasar' aplikasi Mineat Mobile: https://1drv.ms/o/c/f56ab63818998fd7/EhfXDni4t11DuTPDhHIIXm8BYuTPw19leYWgiBPoTOwAzw?e=W9Tkc1
+>>>>>>> main
