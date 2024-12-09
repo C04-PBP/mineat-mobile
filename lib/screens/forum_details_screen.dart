@@ -16,6 +16,10 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
   late ScrollController _scrollController;
   bool _showAppBarTitle = false;
 
+  final List<Map<String, String>> replies = []; // Replies list
+  final _replyController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -36,38 +40,55 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _replyController.dispose();
     super.dispose();
   }
 
+  
+  void _addReply(String text) {
+    final newReply = {
+      "user": "Anonymous", // Bisa diganti dengan username pengguna yang login
+      "text": text,
+      "time_created": DateTime.now().toString().split(' ')[0], // Format tanggal
+    };
+
+    setState(() {
+      replies.insert(0, newReply); // Tambahkan komentar di posisi teratas
+    });
+
+    _replyController.clear(); // Bersihkan field input
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> dummyReplies = [
-      {
-        "user": "Ava",
-        "text": "I totally agree with you!",
-        "time_created": "2024, 10, 10"
-      },
-      {
-        "user": "John",
-        "text": "I had a different experience, but that's valid.",
-        "time_created": "2024, 10, 11"
-      },
-      {
-        "user": "Maria",
-        "text": "Thanks for sharing your thoughts!",
-        "time_created": "2024, 10, 12"
-      },
-      {
-        "user": "Leo",
-        "text": "I want to try this dish now!",
-        "time_created": "2024, 10, 13"
-      },
-      {
-        "user": "Emily",
-        "text": "The topic is interesting, thank you!",
-        "time_created": "2024, 10, 14"
-      },
-    ];
+    // final List<Map<String, String>> dummyReplies = [
+    //   {
+    //     "user": "Ava",
+    //     "text": "I totally agree with you!",
+    //     "time_created": "2024, 10, 10"
+    //   },
+    //   {
+    //     "user": "John",
+    //     "text": "I had a different experience, but that's valid.",
+    //     "time_created": "2024, 10, 11"
+    //   },
+    //   {
+    //     "user": "Maria",
+    //     "text": "Thanks for sharing your thoughts!",
+    //     "time_created": "2024, 10, 12"
+    //   },
+    //   {
+    //     "user": "Leo",
+    //     "text": "I want to try this dish now!",
+    //     "time_created": "2024, 10, 13"
+    //   },
+    //   {
+    //     "user": "Emily",
+    //     "text": "The topic is interesting, thank you!",
+    //     "time_created": "2024, 10, 14"
+    //   },
+    // ];
 
     return Hero(
       tag: widget.forum['title'],
@@ -213,9 +234,9 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: dummyReplies.length,
+                  itemCount: replies.length,
                   itemBuilder: (context, index) {
-                    final reply = dummyReplies[index];
+                    final reply = replies[index];
                     return Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       padding: const EdgeInsets.all(12.0),
@@ -269,6 +290,50 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                       ),
                     );
                   },
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Add a comment',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _replyController,
+                          decoration: const InputDecoration(
+                            hintText: 'Write your comment...',
+                            border: OutlineInputBorder(),
+                          ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a comment';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _addReply(_replyController.text);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: const Text('Submit Comment'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ]),
             ),

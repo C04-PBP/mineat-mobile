@@ -11,39 +11,44 @@ class ForumScreen extends StatefulWidget {
 
 class _ForumScreenState extends State<ForumScreen> {
   List<Map<String, dynamic>> filteredForums = [];
+  List<Map<String, dynamic>> allForum = []; // Tempat menyimpan forum yang dinamis
 
-  final List<Map<String, dynamic>> allForum = [
-    {
-      "user": "Zac",
-      "title": "Rendang enak",
-      "time_created": "2024, 10, 10",
-      "text": "Lumayan enak sih, tapi agak mahal",
-    },
-    {
-      "user": "Gege",
-      "title": "Spesial",
-      "time_created": "2024, 10, 11",
-      "text": "Sate ayamnya empuk dan lezat!",
-    },
-    {
-      "user": "Khansa",
-      "title": "Kepiting Saus Padang",
-      "time_created": "2024, 10, 12",
-      "text": "Nasi goreng dengan topping melimpah.",
-    },
-    {
-      "user": "Ragnall",
-      "title": "Martabak Gak Enak",
-      "time_created": "2024, 10, 13",
-      "text": "Pedasnya mantap, cocok buat yang suka pedas.",
-    },
-    {
-      "user": "Radhi",
-      "title": "India Nasi Briyani",
-      "time_created": "2024, 10, 14",
-      "text": "Baksonya besar dan ada isian bakso kecil di dalamnya!",
-    },
-  ];
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _textController = TextEditingController();
+
+  // final List<Map<String, dynamic>> allForum = [
+  //   {
+  //     "user": "Zac",
+  //     "title": "Rendang enak",
+  //     "time_created": "2024, 10, 10",
+  //     "text": "Lumayan enak sih, tapi agak mahal",
+  //   },
+  //   {
+  //     "user": "Gege",
+  //     "title": "Spesial",
+  //     "time_created": "2024, 10, 11",
+  //     "text": "Sate ayamnya empuk dan lezat!",
+  //   },
+  //   {
+  //     "user": "Khansa",
+  //     "title": "Kepiting Saus Padang",
+  //     "time_created": "2024, 10, 12",
+  //     "text": "Nasi goreng dengan topping melimpah.",
+  //   },
+  //   {
+  //     "user": "Ragnall",
+  //     "title": "Martabak Gak Enak",
+  //     "time_created": "2024, 10, 13",
+  //     "text": "Pedasnya mantap, cocok buat yang suka pedas.",
+  //   },
+  //   {
+  //     "user": "Radhi",
+  //     "title": "India Nasi Briyani",
+  //     "time_created": "2024, 10, 14",
+  //     "text": "Baksonya besar dan ada isian bakso kecil di dalamnya!",
+  //   },
+  // ];
 
   @override
   void initState() {
@@ -65,6 +70,25 @@ class _ForumScreenState extends State<ForumScreen> {
       });
     }
   }
+
+  void _addForum(String title, String text) {
+    final newForum = {
+      "user": "Anonymous", // User bisa disesuaikan jika ada fitur login
+      "title": title,
+      "time_created": DateTime.now().toString().split(' ')[0],
+      "text": text,
+    };
+
+    setState(() {
+      allForum.insert(0, newForum); // Tambahkan forum baru di posisi awal
+      filteredForums = allForum;
+    });
+
+    // Kosongkan form setelah submit
+    _titleController.clear();
+    _textController.clear();
+  }
+
 
   String? _getMatchingImage(String forumTitle) {
     for (var food in widget.allFood) {
@@ -92,6 +116,65 @@ class _ForumScreenState extends State<ForumScreen> {
         ),
         body: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Add a new forum",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _titleController,
+                      decoration: const InputDecoration(
+                        labelText: "Discussion Name",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a discussion name";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _textController,
+                      decoration: const InputDecoration(
+                        labelText: "Comment",
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 3,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a comment";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _addForum(_titleController.text, _textController.text);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text("Submit"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: SizedBox(
