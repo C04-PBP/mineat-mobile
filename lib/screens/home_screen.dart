@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mineat/screens/cook_it_yourself_details_screen.dart';
+import 'package:mineat/screens/gege/cook_it_yourself_details_screen.dart';
 import 'package:mineat/screens/food_all_screen.dart';
 import 'package:mineat/screens/food_details_screen.dart';
-import 'package:mineat/screens/ingredient_all_screen.dart';
+import 'package:mineat/screens/gege/ingredient_all_screen.dart';
 import 'package:mineat/screens/login_screen.dart';
 import 'package:mineat/widgets/top_picks_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
