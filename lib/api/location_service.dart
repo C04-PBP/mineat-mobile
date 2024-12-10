@@ -45,6 +45,8 @@ class LocationService {
 
 // List<Map<String, dynamic>> allLocation = [];
 
+// bool isLoading = true;
+
 // @override
 //   void initState() {
 //     super.initState();
@@ -57,11 +59,18 @@ class LocationService {
 
 //     final locations = LocationService.getLocationData();
 
-//     if (locations != null) {
+//     if (locations!.isNotEmpty) {
 //       setState(() {
 //         allLocation = locations;
+//         isLoading = false;
 //       });
 //     } else {
 //       print('Error: Location data is null or not found');
 //     }
 //   }
+
+// Masukkan ke bagian manggil data
+
+// if (isLoading) {
+      //   return const Center(child: CircularProgressIndicator());
+      // }

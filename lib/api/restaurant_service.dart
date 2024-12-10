@@ -48,6 +48,8 @@ class RestaurantService {
 
 // List<Map<String, dynamic>> allRestaurant = [];
 
+// bool isLoading = true;
+
 // @override
 //   void initState() {
 //     super.initState();
@@ -60,11 +62,18 @@ class RestaurantService {
 
 //     final restaurants = RestaurantService.getRestaurantData();
 
-//     if (restaurants != null) {
+//     if (restaurants!.isNotEmpty) {
 //       setState(() {
 //         allRestaurant = restaurants;
+//         isLoading = false;
 //       });
 //     } else {
 //       print('Error: Restaurant data is null or not found');
 //     }
 //   }
+
+// Masukkan ke bagian manggil data
+
+// if (isLoading) {
+      //   return const Center(child: CircularProgressIndicator());
+      // }

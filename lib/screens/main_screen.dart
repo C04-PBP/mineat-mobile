@@ -56,6 +56,7 @@ class _MainScreenState extends State<MainScreen> {
 
   late List<String> allTitles;
   late List<String> allImageUrls;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -69,19 +70,17 @@ class _MainScreenState extends State<MainScreen> {
 
     final foods = FoodService.getFoodData();
 
-    if (foods != null) {
+    if (foods!.isNotEmpty) {
       setState(() {
         allFood = foods;
 
         allTitles = allFood.map((food) => food['title'].toString()).toList();
-        allImageUrls =
-            allFood.map((food) => food['imageUrl'].toString()).toList();
+        allImageUrls = allFood.map((food) => food['imageUrl'].toString()).toList();
+        isLoading = false;
+            
       });
-      for (var food in allFood) {
-        print(food['imageUrl'].toString());
-      }
     } else {
-      print('Error: Food data is null or not found');
+      isLoading = false;
     }
   }
 
@@ -92,7 +91,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _getScreen(int index) {
-    if (index == 0) {
+    if (isLoading) {
+        return const Center(child: CircularProgressIndicator());
+      }
+    else if (index == 0) {
       return HomeScreen(
         allFood: allFood,
         allRestaurant: allRestaurant,

@@ -46,6 +46,8 @@ class forumUmumService {
 
 // List<Map<String, dynamic>> allForumUmum = [];
 
+// bool isLoading = true;
+
 // @override
 //   void initState() {
 //     super.initState();
@@ -58,11 +60,18 @@ class forumUmumService {
 
 //     final forumUmums = ForumUmumService.getForumUmumData();
 
-//     if (forumUmums != null) {
+//     if (forumUmums!.isNotEmpty) {
 //       setState(() {
 //         allForumUmum = forumUmums;
+//         isLoading = false;
 //       });
 //     } else {
 //       print('Error: ForumUmum data is null or not found');
 //     }
 //   }
+
+// Masukkan ke bagian manggil data
+
+// if (isLoading) {
+      //   return const Center(child: CircularProgressIndicator());
+      // }

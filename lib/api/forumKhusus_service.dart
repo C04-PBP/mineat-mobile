@@ -46,6 +46,8 @@ class forumKhususService {
 
 // List<Map<String, dynamic>> allForumKhusus = [];
 
+// bool isLoading = true;
+
 // @override
 //   void initState() {
 //     super.initState();
@@ -58,11 +60,18 @@ class forumKhususService {
 
 //     final forumKhususs = ForumKhususService.getForumKhususData();
 
-//     if (forumKhususs != null) {
+//     if (forumKhususs!.isNotEmpty) {
 //       setState(() {
 //         allForumKhusus = forumKhususs;
+//         isLoading = false;
 //       });
 //     } else {
 //       print('Error: ForumKhusus data is null or not found');
 //     }
 //   }
+
+// Masukkan ke bagian manggil data
+
+// if (isLoading) {
+      //   return const Center(child: CircularProgressIndicator());
+      // }

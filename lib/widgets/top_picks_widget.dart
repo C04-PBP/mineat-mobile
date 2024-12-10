@@ -82,6 +82,16 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.error)
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ),
                         // Gradient overlay
