@@ -61,14 +61,11 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
-
     fetchData();
   }
 
   Future<void> fetchData() async {
-
     await FoodService.fetchFoodData();
-
 
     final foods = FoodService.getFoodData();
 
@@ -76,11 +73,13 @@ class _MainScreenState extends State<MainScreen> {
       setState(() {
         allFood = foods;
 
-
         allTitles = allFood.map((food) => food['title'].toString()).toList();
         allImageUrls =
             allFood.map((food) => food['imageUrl'].toString()).toList();
       });
+      for (var food in allFood) {
+        print(food['imageUrl'].toString());
+      }
     } else {
       print('Error: Food data is null or not found');
     }
