@@ -20,12 +20,16 @@ class FoodService {
 
 
         _foodData = responseData.map((item) {
+          String imageUrl = item['imageUrl'];
+          String decodedImageUrl = Uri.decodeComponent(imageUrl);
+          imageUrl = decodedImageUrl.replaceFirst("/https:", "https:/");
+          
           return {
             'title': item['title'],
             'price': item['price'],
             'description': item['description'],
             'ingredients': item['ingredients'],  
-            'imageUrl': item['imageUrl'],
+            'imageUrl': imageUrl,
           };
         }).toList();
       } else {
