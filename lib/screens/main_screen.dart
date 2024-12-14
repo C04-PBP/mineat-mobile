@@ -70,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
 
     final foods = FoodService.getFoodData();
 
-    if (foods!.isNotEmpty) {
+    if (foods!= null) {
       setState(() {
         allFood = foods;
 

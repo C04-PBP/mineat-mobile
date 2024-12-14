@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mineat/mineat.dart';
 import 'package:mineat/screens/register_screen.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
+    final TextEditingController username = TextEditingController();
+    final TextEditingController password = TextEditingController();
+    
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -43,6 +51,7 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 32),
               TextFormField(
+                controller: username,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(
@@ -54,6 +63,7 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               TextFormField(
+                controller: password,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(
@@ -66,8 +76,48 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
-                  // Handle login action
+                onPressed: () async {
+                  var loginData = {
+                                    "username": username,
+                                    "password": password,
+                                  };
+                  final response = await request.login("http://127.0.0.1:8000/fnb/flutter/login/",loginData);
+                  if (request.loggedIn) {
+                        String message = response['message'];
+                        String uname = response['username'];
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Mineat()),
+                          );
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                  content:
+                                      Text("$message Selamat datang, $uname.")),
+                            );
+                        }
+                      } else {
+                        if (context.mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Login Gagal'),
+                              content: Text(response['message']),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,

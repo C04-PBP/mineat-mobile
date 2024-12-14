@@ -7,7 +7,7 @@ class forumKhususService {
   static Future<void> fetchforumKhususData(int id) async {
     if (_forumKhususData != null) return;
 
-    final url = 'http://127.0.0.1:8000/forum/$id/json/';
+    final url = 'http://10.0.2.2:8000/forum/$id/json/';
 
     try {
       final response = await http.get(Uri.parse(url));

@@ -7,7 +7,7 @@ class LocationService {
   static Future<void> fetchLocationData() async {
     if (_locationData != null) return;
 
-    final url = 'http://127.0.0.1:8000/location/json/';
+    final url = 'http://10.0.2.2:8000/location/json/';
 
     try {
       final response = await http.get(Uri.parse(url));
