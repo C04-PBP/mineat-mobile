@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mineat/app_view.dart';
 import 'package:mineat/mineat.dart';
+import 'package:mineat/screens/main_screen.dart';
 import 'package:mineat/screens/register_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -89,7 +91,7 @@ class LoginScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Mineat()),
+                                builder: (context) => MainScreen()),
                           );
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
