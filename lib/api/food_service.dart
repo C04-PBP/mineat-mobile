@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class FoodService {
@@ -7,7 +8,13 @@ class FoodService {
   static Future<void> fetchFoodData() async {
     if (_foodData != null) return;
 
-    final url = 'http://10.0.2.2:8000/fnb/json/';
+    String url = "";
+
+    if (kIsWeb) {
+      url = 'http://localhost:8000/fnb/json/';
+    } else {
+      url = 'http://10.0.2.2:8000/fnb/json/';
+    }
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -36,7 +43,6 @@ class FoodService {
       print('Error fetching food data: $error');
     }
   }
-
 
   static List<Map<String, dynamic>>? getFoodData() {
     return _foodData;
