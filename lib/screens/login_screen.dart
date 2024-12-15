@@ -78,10 +78,10 @@ class LoginScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   var loginData = {
-                                    "username": username,
-                                    "password": password,
+                                    "username": username.text,
+                                    "password": password.text,
                                   };
-                  final response = await request.login("http://127.0.0.1:8000/fnb/flutter/login/",loginData);
+                  final response = await request.login("http://10.0.2.2:8000/fnb/flutter/login/",loginData);
                   if (request.loggedIn) {
                         String message = response['message'];
                         String uname = response['username'];
