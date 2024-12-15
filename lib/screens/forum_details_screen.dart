@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mineat/api/forumKhusus_service.dart';
 
 class ForumDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> forum;
@@ -16,9 +17,11 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
   late ScrollController _scrollController;
   bool _showAppBarTitle = false;
 
-  final List<Map<String, String>> replies = []; // Replies list
+  List<Map<String, dynamic>> replies = [];
   final _replyController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -35,6 +38,22 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
         });
       }
     });
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    // await ForumKhususService.fetchForumKhususData();
+
+    final forumKhususs = ForumKhususService.getForumKhususData();
+
+    if (forumKhususs!.isNotEmpty) {
+      setState(() {
+        replies = forumKhususs;
+        isLoading = false;
+      });
+    } else {
+      print('Error: ForumKhusus data is null or not found');
+    }
   }
 
   @override
