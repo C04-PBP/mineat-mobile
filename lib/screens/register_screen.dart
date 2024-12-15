@@ -1,8 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mineat/api/device.dart';
+import 'package:mineat/screens/login_screen.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final TextEditingController username = TextEditingController();
+    final TextEditingController password = TextEditingController();
+    final TextEditingController passwordConfirm = TextEditingController();
+
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -40,6 +52,7 @@ class RegisterScreen extends StatelessWidget {
               ),
               SizedBox(height: 32),
               TextFormField(
+                controller: username,
                 decoration: InputDecoration(
                   labelText: 'Name',
                   border: OutlineInputBorder(
@@ -51,8 +64,9 @@ class RegisterScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               TextFormField(
+                controller: password,
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Password',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -62,8 +76,9 @@ class RegisterScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               TextFormField(
+                controller: passwordConfirm,
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Password Confirmation',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -74,7 +89,34 @@ class RegisterScreen extends StatelessWidget {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  final response = await request.postJson(
+                      "$device/flutter/register/",
+                      jsonEncode({
+                        "username": username.text,
+                        "password1": password.text,
+                        "password2": passwordConfirm.text,
+                      }));
+                  if (context.mounted) {
+                    if (response['status'] == 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Successfully registered!'),
+                        ),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Failed to register!'),
+                        ),
+                      );
+                    }
+                  }
                   // Handle registration action
                 },
                 style: ElevatedButton.styleFrom(
