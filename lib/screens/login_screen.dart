@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mineat/api/device.dart';
 import 'package:mineat/app_view.dart';
 import 'package:mineat/mineat.dart';
 import 'package:mineat/screens/main_screen.dart';
@@ -83,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                                     "username": username.text,
                                     "password": password.text,
                                   };
-                  final response = await request.login("http://10.0.2.2:8000/flutter/login/",loginData);
+                  final response = await request.login("$device/flutter/login/",loginData);
                   if (request.loggedIn) {
                         String message = response['message'];
                         String uname = response['username'];
