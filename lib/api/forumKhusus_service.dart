@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class forumKhususService {
+class ForumKhususService {
   static List<Map<String, dynamic>>? _forumKhususData;
 
-  static Future<void> fetchforumKhususData(int id) async {
+  static Future<void> fetchForumKhususData(int id) async {
     if (_forumKhususData != null) return;
 
     final url = 'http://10.0.2.2:8000/forum/$id/json/';
@@ -30,11 +30,11 @@ class forumKhususService {
     }
   }
 
-  static List<Map<String, dynamic>>? getforumKhususData() {
+  static List<Map<String, dynamic>>? getForumKhususData() {
     return _forumKhususData;
   }
 
-  static void clearforumKhususData() {
+  static void clearForumKhususData() {
     _forumKhususData = null;
   }
 }
