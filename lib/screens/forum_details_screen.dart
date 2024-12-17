@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mineat/api/device.dart';
+import 'package:mineat/api/forum.dart';
 import 'package:mineat/api/forumKhusus_service.dart';
+import 'package:mineat/api/forum_replies.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ForumDetailsScreen extends StatefulWidget {
-  final Map<String, dynamic> forum;
+  final Forum forum;
   final String backgroundImage;
 
   const ForumDetailsScreen(
@@ -17,9 +24,11 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
   late ScrollController _scrollController;
   bool _showAppBarTitle = false;
 
-  List<Map<String, dynamic>> replies = [];
-  final _replyController = TextEditingController();
+  List<ForumReplies> allReplies = [];
+  // final _replyController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _textController = TextEditingController();
+  String _text = "";
 
   bool isLoading = true;
 
@@ -39,16 +48,37 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
       }
     });
     fetchData();
+    print("masuk bos");
+  }
+
+  Future<List<ForumReplies>> fetchReply(CookieRequest request) async {
+    final response = await request.get('$device/forum/${widget.forum.id}/json/');
+    // print('Forum ID is: ${widget.forum.id}');
+    // if(widget.forum.id == null) {
+    //   throw Exception('Forum ID is null');
+    // }
+
+    var data = response;
+    
+    List<ForumReplies> listReplies = [];
+    for (int i = 1; i < data.length; i++) {
+      var d = data[i];
+      if (d != null) {
+        listReplies.add(ForumReplies.fromJson(d));
+      }
+    }
+    return listReplies;
   }
 
   Future<void> fetchData() async {
     // await ForumKhususService.fetchForumKhususData();
+    // final forumKhususs = ForumKhususService.getForumKhususData();
+    final request = CookieRequest();
+    final replies = await fetchReply(request);
 
-    final forumKhususs = ForumKhususService.getForumKhususData();
-
-    if (forumKhususs!.isNotEmpty) {
+    if (replies.isNotEmpty) {
       setState(() {
-        replies = forumKhususs;
+        allReplies = replies;
         isLoading = false;
       });
     } else {
@@ -59,58 +89,31 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
-    _replyController.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
   
-  void _addReply(String text) {
-    final newReply = {
-      "user": "Anonymous", // Bisa diganti dengan username pengguna yang login
-      "text": text,
-      "time_created": DateTime.now().toString().split(' ')[0], // Format tanggal
-    };
+  // void _addReply(String text) {
+  //   final newReply = {
+  //     "user": "Anonymous", // Bisa diganti dengan username pengguna yang login
+  //     "text": text,
+  //     "time_created": DateTime.now().toString().split(' ')[0], // Format tanggal
+  //   };
 
-    setState(() {
-      replies.insert(0, newReply); // Tambahkan komentar di posisi teratas
-    });
+  //   setState(() {
+  //     replies.insert(0, newReply); // Tambahkan komentar di posisi teratas
+  //   });
 
-    _replyController.clear(); // Bersihkan field input
-  }
+  //   _textController.clear(); // Bersihkan field input
+  // }
 
 
   @override
   Widget build(BuildContext context) {
-    // final List<Map<String, String>> dummyReplies = [
-    //   {
-    //     "user": "Ava",
-    //     "text": "I totally agree with you!",
-    //     "time_created": "2024, 10, 10"
-    //   },
-    //   {
-    //     "user": "John",
-    //     "text": "I had a different experience, but that's valid.",
-    //     "time_created": "2024, 10, 11"
-    //   },
-    //   {
-    //     "user": "Maria",
-    //     "text": "Thanks for sharing your thoughts!",
-    //     "time_created": "2024, 10, 12"
-    //   },
-    //   {
-    //     "user": "Leo",
-    //     "text": "I want to try this dish now!",
-    //     "time_created": "2024, 10, 13"
-    //   },
-    //   {
-    //     "user": "Emily",
-    //     "text": "The topic is interesting, thank you!",
-    //     "time_created": "2024, 10, 14"
-    //   },
-    // ];
-
+    final request = context.watch<CookieRequest>();
     return Hero(
-      tag: widget.forum['title'],
+      tag: widget.forum.title,
       child: Scaffold(
         body: CustomScrollView(
           controller: _scrollController,
@@ -132,7 +135,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
               floating: false,
               title: _showAppBarTitle
                   ? Text(
-                      widget.forum['title'],
+                      widget.forum.title,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -168,7 +171,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                       left: 0,
                       right: 0,
                       child: Text(
-                        widget.forum['title'],
+                        widget.forum.title,
                         style: const TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
@@ -215,7 +218,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                         Row(
                           children: [
                             Text(
-                              widget.forum['user']!,
+                              widget.forum.user,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -223,7 +226,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                             ),
                             Spacer(),
                             Text(
-                              "${widget.forum['time_created']}",
+                              widget.forum.timeCreated,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade600,
@@ -233,7 +236,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          widget.forum['text']!,
+                          widget.forum.text,
                           style: const TextStyle(fontSize: 14),
                         ),
                         const SizedBox(height: 8),
@@ -253,9 +256,9 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: replies.length,
+                  itemCount: allReplies.length,
                   itemBuilder: (context, index) {
-                    final reply = replies[index];
+                    final reply = allReplies[index];
                     return Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       padding: const EdgeInsets.all(12.0),
@@ -283,7 +286,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                           Row(
                             children: [
                               Text(
-                                reply['user']!,
+                                reply.user,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -291,7 +294,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                               ),
                               Spacer(),
                               Text(
-                                "${reply['time_created']}",
+                                reply.timeCreated,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey.shade600,
@@ -301,7 +304,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            reply['text']!,
+                            reply.text,
                             style: const TextStyle(fontSize: 14),
                           ),
                           const SizedBox(height: 8),
@@ -325,7 +328,7 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                     child: Column(
                       children: [
                         TextFormField(
-                          controller: _replyController,
+                          controller: _textController,
                           decoration: const InputDecoration(
                             hintText: 'Write your comment...',
                             border: OutlineInputBorder(),
@@ -340,9 +343,33 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async{
                             if (_formKey.currentState!.validate()) {
-                              _addReply(_replyController.text);
+                              // _addReply(_replyController.text);
+                              final response = await request.postJson(
+                                "$device/${widget.forum.id}/create-flutter/",
+                                jsonEncode(<String, String>{
+                                    'text': _textController.text,
+                                }),
+                              );
+                              if (context.mounted) {
+                                  if (response['status'] == 'success') {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                      content: Text("Forum baru berhasil disimpan!"),
+                                      ));
+                                      // Navigator.pushReplacement(
+                                      //     context,
+                                      //     MaterialPageRoute(builder: (context) => ForumScreen(allFood: [],)),
+                                      // );
+                                  } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content:
+                                              Text("Terdapat kesalahan, silakan coba lagi."),
+                                      ));
+                                  }
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(

@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mineat/api/device.dart';
 import 'package:mineat/screens/forum_details_screen.dart';
 import 'package:mineat/api/forumUmum_service.dart';
+import 'package:mineat/api/forum.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class ForumScreen extends StatefulWidget {
   final String username;
@@ -18,42 +25,70 @@ class ForumScreen extends StatefulWidget {
 }
 
 class _ForumScreenState extends State<ForumScreen> {
-  List<Map<String, dynamic>> filteredForums = [];
-  List<Map<String, dynamic>> allForum =
-      []; // Tempat menyimpan forum yang dinamis
+  List<Forum> filteredForums = [];
+  List<Forum> allForum = []; // Tempat menyimpan forum yang dinamis
   bool isLoading = true;
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _textController = TextEditingController();
+  String _title = "";
+  String _text = "";
 
   @override
   void initState() {
     super.initState();
     filteredForums = allForum;
     fetchData();
+    // fetchMood(request);
     print('ok masuk pak');
   }
 
+  Future<List<Forum>> fetchForum(CookieRequest request) async {
+    final response = await request.get('$device/forum/json/');
+    
+    var data = response;
+    
+    List<Forum> listForum = [];
+    for (var d in data) {
+      if (d != null) {
+        listForum.add(Forum.fromJson(d));
+      }
+    }
+    return listForum;
+  }
+
   Future<void> fetchData() async {
-    await ForumUmumService.fetchForumUmumData();
+    // await ForumUmumService.fetchForumUmumData();
 
-    final forumUmums = ForumUmumService.getForumUmumData();
+    // final forumUmums = ForumUmumService.getForumUmumData();
 
-    if (forumUmums!.isNotEmpty) {
+    final request = CookieRequest();
+    final forums = await fetchForum(request);
+
+    if (forums.isNotEmpty) {
       setState(() {
-        allForum = forumUmums;
+        allForum = forums;//.cast<Map<String, dynamic>>();
         isLoading = false;
       });
     } else {
       print('Error: ForumUmum data is null or not found');
     }
+    // setState(() {
+    //   isLoading = true;
+    // });
+
+    // final request = CookieRequest();
+    // final forums = await fetchForum(request);
+
+    // setState(() {
+    //   allForum = forums.cast<Map<String, dynamic>>();
+    //   filteredForums = allForum;
+    //   isLoading = false;
+    // });
   }
 
   void _filterSearchResults(String query) {
-    // if (isLoading) {
-    //   return const Center(child: CircularProgressIndicator());
-    // }
     if (query.isEmpty) {
       setState(() {
         filteredForums = allForum;
@@ -62,28 +97,10 @@ class _ForumScreenState extends State<ForumScreen> {
       setState(() {
         filteredForums = allForum
             .where((item) =>
-                item['title']!.toLowerCase().contains(query.toLowerCase()))
+                item.title.toLowerCase().contains(query.toLowerCase()))
             .toList();
       });
     }
-  }
-
-  void _addForum(String title, String text) {
-    final newForum = {
-      "user": "Anonymous", // User bisa disesuaikan jika ada fitur login
-      "title": title,
-      "time_created": DateTime.now().toString().split(' ')[0],
-      "text": text,
-    };
-
-    setState(() {
-      allForum.insert(0, newForum); // Tambahkan forum baru di posisi awal
-      filteredForums = allForum;
-    });
-
-    // Kosongkan form setelah submit
-    _titleController.clear();
-    _textController.clear();
   }
 
   String? _getMatchingImage(String forumTitle) {
@@ -97,6 +114,7 @@ class _ForumScreenState extends State<ForumScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context)
@@ -157,10 +175,34 @@ class _ForumScreenState extends State<ForumScreen> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          _addForum(
-                              _titleController.text, _textController.text);
+                          // _addForum(_titleController.text, _textController.text);
+                          final response = await request.postJson(
+                            "$device/create-flutter/",
+                            jsonEncode(<String, String>{
+                                'title': _titleController.text,
+                                'text': _textController.text,
+                            }),
+                          );
+                          if (context.mounted) {
+                              if (response['status'] == 'success') {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                  content: Text("Forum baru berhasil disimpan!"),
+                                  ));
+                                  // Navigator.pushReplacement(
+                                  //     context,
+                                  //     MaterialPageRoute(builder: (context) => ForumScreen(allFood: [],)),
+                                  // );
+                              } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                      content:
+                                          Text("Terdapat kesalahan, silakan coba lagi."),
+                                  ));
+                              }
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -195,189 +237,191 @@ class _ForumScreenState extends State<ForumScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1, // Number of columns
-                    crossAxisSpacing: 0, // Space between columns
-                    mainAxisSpacing: 20, // Space between rows
-                    childAspectRatio: 3.5 /
-                        1, // Aspect ratio for each grid item to match your design
-                  ),
-                  itemCount: filteredForums.length,
-                  itemBuilder: (context, index) {
-                    final item = filteredForums[index];
-                    final backgroundImage = _getMatchingImage(item['title']);
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    ForumDetailsScreen(
-                              forum: item,
-                              backgroundImage: backgroundImage,
-                            ),
-                            transitionDuration: const Duration(
-                                milliseconds: 300), // Optional for smoothness
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              return FadeTransition(
-                                  opacity: animation, child: child);
+                child: FutureBuilder<List<Forum>>(
+                  future: fetchForum(request), // Pastikan ini memanggil fungsi fetch yang benar
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text("Error: ${snapshot.error}");
+                    } else if (snapshot.hasData) {
+                      // Jika data ada, gunakan dalam GridView
+                      filteredForums = snapshot.data!;//.cast<Map<String, dynamic>>();
+                      return GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 20,
+                          childAspectRatio: 3.5 / 1,
+                        ),
+                        itemCount: filteredForums.length,
+                        itemBuilder: (context, index) {
+                          final item = filteredForums[index];
+                          final backgroundImage = _getMatchingImage(item.title); // Fungsi ini harus didefinisikan di tempat lain
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) => ForumDetailsScreen(
+                                    forum: item,
+                                    backgroundImage: backgroundImage,
+                                  ),
+                                  transitionDuration: const Duration(milliseconds: 300),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
                             },
-                          ),
-                        );
-                      },
-                      child: Hero(
-                        tag: item['title'],
-                        child: Material(
-                          type: MaterialType.transparency,
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 4,
-                                  color: Theme.of(context).shadowColor,
-                                  offset: const Offset(6, 6),
-                                ),
-                              ],
-                            ),
-                            child: Stack(
-                              children: [
-                                // Background image with gradient for the left 2/5 part
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          const BorderRadius.horizontal(
-                                              right: Radius.circular(12)),
-                                      image: DecorationImage(
-                                        image: backgroundImage!.startsWith(
-                                                'http') // Check if URL
-                                            ? NetworkImage(backgroundImage)
-                                            : AssetImage(backgroundImage)
-                                                as ImageProvider,
-                                        fit: BoxFit.cover,
+                            child: Hero(
+                              tag: item.title,
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 4,
+                                        color: Theme.of(context).shadowColor,
+                                        offset: const Offset(6, 6),
                                       ),
-                                      gradient: const LinearGradient(
-                                        colors: [
-                                          Colors.white,
-                                          Colors.transparent,
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                      ),
-                                    ),
+                                    ],
                                   ),
-                                ),
-                                Positioned.fill(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          const BorderRadius.horizontal(
-                                              left: Radius.circular(12),
-                                              right: Radius.circular(12)),
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.white,
-                                          Colors.white,
-                                          Colors.white.withOpacity(0.4),
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                // Content of the card
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  child: Stack(
                                     children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.width * 0.5,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.horizontal(right: Radius.circular(12)),
+                                            image: DecorationImage(
+                                              image: backgroundImage!.startsWith('http')
+                                                  ? NetworkImage(backgroundImage)
+                                                  : AssetImage(backgroundImage) as ImageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Colors.white,
+                                                Colors.transparent,
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.horizontal(
+                                              left: Radius.circular(12),
+                                              right: Radius.circular(12),
+                                            ),
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.white,
+                                                Colors.white,
+                                                Colors.white.withOpacity(0.4),
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              item['title']!,
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    item.title,
+                                                    style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    "first reply: ${item.text}",
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              "first reply: ${item['text']}",
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                              maxLines: 2, // Limit to 2 lines
-                                              overflow: TextOverflow
-                                                  .ellipsis, // Add ellipsis if text overflows
+                                            const SizedBox(width: 30),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  item.timeCreated,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    shadows: [
+                                                      Shadow(
+                                                        offset: Offset(2, 2),
+                                                        blurRadius: 8,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Text(
+                                                  "by: ${item.user}",
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    shadows: [
+                                                      Shadow(
+                                                        offset: Offset(2, 2),
+                                                        blurRadius: 8,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(width: 30),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            item['time_created'],
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              shadows: [
-                                                Shadow(
-                                                  offset: Offset(2, 2),
-                                                  blurRadius: 8,
-                                                  color: Colors.grey,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "by: ${item['user']}",
-                                            style: const TextStyle(
-                                              fontStyle: FontStyle.italic,
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              shadows: [
-                                                Shadow(
-                                                  offset: Offset(2, 2),
-                                                  blurRadius: 8,
-                                                  color: Colors.grey,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                     ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                    );
+                          );
+                        },
+                      );
+                    } else {
+                      // Tampilkan pesan ini jika tidak ada data yang diterima
+                      return Center(child: Text("No forums available"));
+                    }
                   },
                 ),
               ),
             ),
+
           ],
         ),
       ),
