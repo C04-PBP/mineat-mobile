@@ -347,8 +347,9 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                             if (_formKey.currentState!.validate()) {
                               // _addReply(_replyController.text);
                               final response = await request.postJson(
-                                "$device/${widget.forum.id}/create-flutter/",
+                                "$device/forum/${widget.forum.id}/create-replies-flutter/",
                                 jsonEncode(<String, String>{
+                                    'forum_id': widget.forum.id.toString(),
                                     'text': _textController.text,
                                 }),
                               );

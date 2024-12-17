@@ -63,29 +63,22 @@ class _ForumScreenState extends State<ForumScreen> {
 
     // final forumUmums = ForumUmumService.getForumUmumData();
 
+    setState(() {
+      isLoading = true;
+    });
+
     final request = CookieRequest();
     final forums = await fetchForum(request);
 
     if (forums.isNotEmpty) {
       setState(() {
-        allForum = forums;//.cast<Map<String, dynamic>>();
+        allForum = forums;
+        filteredForums = allForum;
         isLoading = false;
       });
     } else {
       print('Error: ForumUmum data is null or not found');
     }
-    // setState(() {
-    //   isLoading = true;
-    // });
-
-    // final request = CookieRequest();
-    // final forums = await fetchForum(request);
-
-    // setState(() {
-    //   allForum = forums.cast<Map<String, dynamic>>();
-    //   filteredForums = allForum;
-    //   isLoading = false;
-    // });
   }
 
   void _filterSearchResults(String query) {
@@ -179,8 +172,9 @@ class _ForumScreenState extends State<ForumScreen> {
                         if (_formKey.currentState!.validate()) {
                           // _addForum(_titleController.text, _textController.text);
                           final response = await request.postJson(
-                            "$device/create-flutter/",
+                            "$device/forum/create-flutter/",
                             jsonEncode(<String, String>{
+                                // 'user': widget.username,
                                 'title': _titleController.text,
                                 'text': _textController.text,
                             }),
