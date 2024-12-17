@@ -8,7 +8,8 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  final String username;
+  const LoginScreen({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class LoginScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MainScreen()),
+                                builder: (context) => MainScreen(username: uname, isLoggedIn: true, isAdmin: false,)),
                           );
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()

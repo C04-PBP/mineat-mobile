@@ -8,11 +8,15 @@ import 'package:mineat/widgets/top_picks_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class RestaurantScreen extends StatefulWidget {
+  final String username;
+  final bool isLoggedIn;
   final List<Map<String, dynamic>> allRestaurant;
   final List<Map<String, dynamic>> allFood;
   const RestaurantScreen({
+    required this.username,
     required this.allRestaurant,
     required this.allFood,
+    required this.isLoggedIn,
     super.key,
   });
 

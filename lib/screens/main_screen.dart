@@ -7,7 +7,10 @@ import 'package:mineat/screens/home_screen.dart';
 import 'package:mineat/screens/restaurant_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final bool isLoggedIn;
+  final bool isAdmin;
+  final String username;
+  const MainScreen({super.key, required this.username, this.isLoggedIn = false, this.isAdmin = false});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -70,14 +73,14 @@ class _MainScreenState extends State<MainScreen> {
 
     final foods = FoodService.getFoodData();
 
-    if (foods!= null) {
+    if (foods != null) {
       setState(() {
         allFood = foods;
 
         allTitles = allFood.map((food) => food['title'].toString()).toList();
-        allImageUrls = allFood.map((food) => food['imageUrl'].toString()).toList();
+        allImageUrls =
+            allFood.map((food) => food['imageUrl'].toString()).toList();
         isLoading = false;
-            
       });
     } else {
       isLoading = false;
@@ -92,20 +95,27 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _getScreen(int index) {
     if (isLoading) {
-        return const Center(child: CircularProgressIndicator());
-      }
-    else if (index == 0) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (index == 0) {
       return HomeScreen(
+        isLoggedIn: widget.isLoggedIn,
+        username: widget.username,
         allFood: allFood,
         allRestaurant: allRestaurant,
       );
     } else if (index == 1) {
       return RestaurantScreen(
+        isLoggedIn: widget.isLoggedIn,
+        username: widget.username,
         allRestaurant: allRestaurant,
         allFood: allFood,
       );
     } else if (index == 2) {
-      return ForumScreen(allFood: allFood);
+      return ForumScreen(
+        isLoggedIn: widget.isLoggedIn,
+        username: widget.username,
+        allFood: allFood,
+      );
     } else {
       return const Center(child: Text('Unknown screen'));
     }

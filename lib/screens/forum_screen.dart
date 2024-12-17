@@ -3,8 +3,15 @@ import 'package:mineat/screens/forum_details_screen.dart';
 import 'package:mineat/api/forumUmum_service.dart';
 
 class ForumScreen extends StatefulWidget {
+  final String username;
+  final bool isLoggedIn;
   final List<Map<String, dynamic>> allFood;
-  const ForumScreen({super.key, required this.allFood});
+  const ForumScreen({
+    super.key,
+    required this.allFood,
+    required this.username,
+    required this.isLoggedIn,
+  });
 
   @override
   State<ForumScreen> createState() => _ForumScreenState();
@@ -12,7 +19,8 @@ class ForumScreen extends StatefulWidget {
 
 class _ForumScreenState extends State<ForumScreen> {
   List<Map<String, dynamic>> filteredForums = [];
-  List<Map<String, dynamic>> allForum = []; // Tempat menyimpan forum yang dinamis
+  List<Map<String, dynamic>> allForum =
+      []; // Tempat menyimpan forum yang dinamis
   bool isLoading = true;
 
   final _formKey = GlobalKey<FormState>();
@@ -77,7 +85,6 @@ class _ForumScreenState extends State<ForumScreen> {
     _titleController.clear();
     _textController.clear();
   }
-
 
   String? _getMatchingImage(String forumTitle) {
     for (var food in widget.allFood) {
@@ -152,7 +159,8 @@ class _ForumScreenState extends State<ForumScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          _addForum(_titleController.text, _textController.text);
+                          _addForum(
+                              _titleController.text, _textController.text);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -242,13 +250,15 @@ class _ForumScreenState extends State<ForumScreen> {
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
                                     decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.horizontal(
-                                          right: Radius.circular(12)),
+                                      borderRadius:
+                                          const BorderRadius.horizontal(
+                                              right: Radius.circular(12)),
                                       image: DecorationImage(
-                                        image: backgroundImage!
-                                                .startsWith('http') // Check if URL
+                                        image: backgroundImage!.startsWith(
+                                                'http') // Check if URL
                                             ? NetworkImage(backgroundImage)
                                             : AssetImage(backgroundImage)
                                                 as ImageProvider,
@@ -268,9 +278,10 @@ class _ForumScreenState extends State<ForumScreen> {
                                 Positioned.fill(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.horizontal(
-                                          left: Radius.circular(12),
-                                          right: Radius.circular(12)),
+                                      borderRadius:
+                                          const BorderRadius.horizontal(
+                                              left: Radius.circular(12),
+                                              right: Radius.circular(12)),
                                       gradient: LinearGradient(
                                         colors: [
                                           Colors.white,
@@ -287,7 +298,8 @@ class _ForumScreenState extends State<ForumScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
@@ -319,7 +331,8 @@ class _ForumScreenState extends State<ForumScreen> {
                                       ),
                                       const SizedBox(width: 30),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Text(
                                             item['time_created'],
