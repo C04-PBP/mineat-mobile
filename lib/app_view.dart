@@ -34,7 +34,7 @@ class AppView extends StatelessWidget {
           shadowColor: Colors.black,
           bottomAppBarTheme: const BottomAppBarTheme(color: Colors.black),
         ),
-        home: MainScreen(),
+        home: MainScreen(username: "None",),
       ),
     );
   }

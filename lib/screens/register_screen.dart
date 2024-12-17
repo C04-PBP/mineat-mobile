@@ -107,7 +107,7 @@ class RegisterScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
+                            builder: (context) => const LoginScreen(username: "None")),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
