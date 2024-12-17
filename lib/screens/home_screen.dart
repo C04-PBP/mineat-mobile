@@ -8,9 +8,17 @@ import 'package:mineat/widgets/top_picks_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String username;
+  final bool isLoggedIn;
   final List<Map<String, dynamic>> allFood;
   final List<Map<String, dynamic>> allRestaurant;
-  const HomeScreen({super.key, required this.allFood, required this.allRestaurant,});
+  const HomeScreen({
+    super.key,
+    required this.allFood,
+    required this.allRestaurant,
+    required this.username,
+    required this.isLoggedIn,
+  });
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -78,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen>
     },
   ];
 
-final List<Map<String, dynamic>> restaurantItems = [
+  final List<Map<String, dynamic>> restaurantItems = [
     {
       "title": "Taman Surya",
       "address": "Jl. Tamansiswa No. 15",
@@ -315,7 +323,7 @@ final List<Map<String, dynamic>> restaurantItems = [
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
                                       FoodDetailsScreen(
-                                        foodsInTheRestaurant: widget.allFood.sublist(4),
+                                foodsInTheRestaurant: widget.allFood.sublist(4),
                                 heroOrNot: false,
                                 item: item,
                                 restaurantAvailable: restaurantItems,
@@ -460,7 +468,9 @@ final List<Map<String, dynamic>> restaurantItems = [
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
+                                builder: (context) => LoginScreen(
+                                      username: widget.username,
+                                    )),
                           );
                         },
                       ),

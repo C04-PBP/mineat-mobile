@@ -10,8 +10,15 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class ForumScreen extends StatefulWidget {
+  final String username;
+  final bool isLoggedIn;
   final List<Map<String, dynamic>> allFood;
-  const ForumScreen({super.key, required this.allFood});
+  const ForumScreen({
+    super.key,
+    required this.allFood,
+    required this.username,
+    required this.isLoggedIn,
+  });
 
   @override
   State<ForumScreen> createState() => _ForumScreenState();
