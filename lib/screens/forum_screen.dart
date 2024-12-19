@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mineat/api/device.dart';
 import 'package:mineat/screens/forum_details_screen.dart';
@@ -8,6 +9,7 @@ import 'package:mineat/api/forum.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:mineat/screens/login_screen.dart';
 
 class ForumScreen extends StatefulWidget {
   final String username;
@@ -123,7 +125,7 @@ class _ForumScreenState extends State<ForumScreen> {
         ),
         body: Column(
           children: [
-            Padding(
+            widget.isLoggedIn ? Padding(
               padding: const EdgeInsets.all(20),
               child: Form(
                 key: _formKey,
@@ -207,6 +209,31 @@ class _ForumScreenState extends State<ForumScreen> {
                   ],
                 ),
               ),
+            )  : Padding(
+              padding: const EdgeInsets.all(20),
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(fontSize: 16, color: Colors.black), // Default text style for the whole text
+                  children: <TextSpan>[
+                    TextSpan(text: 'Please '), // Normal text
+                    TextSpan(
+                      text: 'log in', // Clickable text
+                      style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Navigate to the login page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(username: '',), // Assuming LoginScreen is your login page widget
+                            ),
+                          );
+                        },
+                    ),
+                    TextSpan(text: ' to add a new forum.'), // Normal text
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -260,6 +287,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                   pageBuilder: (context, animation, secondaryAnimation) => ForumDetailsScreen(
                                     forum: item,
                                     backgroundImage: backgroundImage,
+                                    isLoggedIn: widget.isLoggedIn,
                                   ),
                                   transitionDuration: const Duration(milliseconds: 300),
                                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
