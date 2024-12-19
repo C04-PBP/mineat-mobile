@@ -1,19 +1,22 @@
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mineat/api/device.dart';
 import 'package:mineat/api/forum.dart';
 import 'package:mineat/api/forumKhusus_service.dart';
 import 'package:mineat/api/forum_replies.dart';
+import 'package:mineat/screens/login_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 class ForumDetailsScreen extends StatefulWidget {
   final Forum forum;
   final String backgroundImage;
+  final bool isLoggedIn;
 
   const ForumDetailsScreen(
-      {Key? key, required this.forum, required this.backgroundImage})
+      {Key? key, required this.forum, required this.backgroundImage, required this.isLoggedIn})
       : super(key: key);
 
   @override
@@ -313,77 +316,100 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                     );
                   },
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Add a comment',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _textController,
-                          decoration: const InputDecoration(
-                            hintText: 'Write your comment...',
-                            border: OutlineInputBorder(),
-                          ),
-                          maxLines: 3,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a comment';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () async{
-                            if (_formKey.currentState!.validate()) {
-                              // _addReply(_replyController.text);
-                              final response = await request.postJson(
-                                "$device/forum/${widget.forum.id}/create-replies-flutter/",
-                                jsonEncode(<String, String>{
-                                    'forum_id': widget.forum.id.toString(),
-                                    'text': _textController.text,
-                                }),
-                              );
-                              if (context.mounted) {
-                                  if (response['status'] == 'success') {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                      content: Text("Forum baru berhasil disimpan!"),
-                                      ));
-                                      // Navigator.pushReplacement(
-                                      //     context,
-                                      //     MaterialPageRoute(builder: (context) => ForumScreen(allFood: [],)),
-                                      // );
-                                  } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                          content:
-                                              Text("Terdapat kesalahan, silakan coba lagi."),
-                                      ));
-                                  }
-                              }
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          child: const Text('Submit Comment'),
-                        ),
-                      ],
+                if (widget.isLoggedIn) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Add a comment',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _textController,
+                            decoration: const InputDecoration(
+                              hintText: 'Write your comment...',
+                              border: OutlineInputBorder(),
+                            ),
+                            maxLines: 3,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a comment';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                final response = await request.postJson(
+                                  "$device/forum/${widget.forum.id}/create-replies-flutter/",
+                                  jsonEncode(<String, String>{
+                                    'forum_id': widget.forum.id.toString(),
+                                    'text': _textController.text,
+                                  }),
+                                );
+                                if (context.mounted) {
+                                  if (response['status'] == 'success') {
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                      content: Text("Comment successfully added!"),
+                                    ));
+                                    fetchData(); // Reload replies to show the new comment
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                      content: Text("An error occurred, please try again."),
+                                    ));
+                                  }
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: const Text('Submit Comment'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ] else ...[
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black), // Default text style for the whole text
+                        children: <TextSpan>[
+                          TextSpan(text: 'Please '), // Normal text
+                          TextSpan(
+                            text: 'log in', // Clickable text
+                            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Navigate to the login page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginScreen(username: '',), // Assuming LoginScreen is your login page widget
+                                  ),
+                                );
+                              },
+                          ),
+                          TextSpan(text: ' to add a new reply.'), // Normal text
+                        ],
+                      ),
+                    ),
+                  )
+                ]
               ]),
             ),
+
           ],
         ),
       ),
