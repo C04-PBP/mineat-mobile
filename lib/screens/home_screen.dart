@@ -4,6 +4,7 @@ import 'package:mineat/screens/food_all_screen.dart';
 import 'package:mineat/screens/food_details_screen.dart';
 import 'package:mineat/screens/gege/ingredient_all_screen.dart';
 import 'package:mineat/screens/login_screen.dart';
+import 'package:mineat/screens/profile_screen.dart';
 import 'package:mineat/widgets/top_picks_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -465,13 +466,24 @@ class _HomeScreenState extends State<HomeScreen>
                           size: 30,
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen(
-                                      username: widget.username,
-                                    )),
-                          );
+                          if (widget.isLoggedIn) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileScreen(
+                                        username: widget.username,
+                                      )),
+                            );
+                          } else {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen(
+                                        username: widget.username,
+                                        isLoggedIn: widget.isLoggedIn,
+                                      )),
+                            );
+                          }
                         },
                       ),
                     ),

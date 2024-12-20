@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mineat/screens/district_all_screen.dart';
 import 'package:mineat/screens/district_details_screen.dart';
 import 'package:mineat/screens/food_details_screen.dart';
+import 'package:mineat/screens/login_screen.dart';
+import 'package:mineat/screens/profile_screen.dart';
 import 'package:mineat/screens/restaurant_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
 import 'package:mineat/widgets/top_picks_widget.dart';
@@ -256,8 +258,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   RestaurantDetailsScreen(
-                                    restaurantAvailable: widget.allRestaurant.sublist(0),
-                            foodsInTheRestaurant: widget.allFood.sublist(widget.allFood.length - 10),
+                            restaurantAvailable:
+                                widget.allRestaurant.sublist(0),
+                            foodsInTheRestaurant: widget.allFood
+                                .sublist(widget.allFood.length - 10),
                             item: item,
                             heroOrNot: false,
                           ),
@@ -398,8 +402,24 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       size: 30,
                     ),
                     onPressed: () {
-                      // Add navigation or functionality for the profile button here
-                      print("Profile icon tapped");
+                      if (widget.isLoggedIn) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfileScreen(
+                                    username: widget.username,
+                                  )),
+                        );
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen(
+                                    username: widget.username,
+                                    isLoggedIn: widget.isLoggedIn,
+                                  )),
+                        );
+                      }
                     },
                   ),
                 ),
@@ -598,8 +618,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
                                       DistrictDetailsScreen(
-                                restaurantsInTheDistrict:
-                                    widget.allRestaurant,
+                                restaurantsInTheDistrict: widget.allRestaurant,
                                 title: item['title']!,
                                 imageUrl: item['imageUrl']!,
                               ),

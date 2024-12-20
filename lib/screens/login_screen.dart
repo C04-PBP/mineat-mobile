@@ -3,13 +3,19 @@ import 'package:mineat/api/device.dart';
 import 'package:mineat/app_view.dart';
 import 'package:mineat/mineat.dart';
 import 'package:mineat/screens/main_screen.dart';
+import 'package:mineat/screens/profile_screen.dart';
 import 'package:mineat/screens/register_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   final String username;
-  const LoginScreen({super.key, required this.username});
+  final bool isLoggedIn;
+  const LoginScreen({
+    super.key,
+    required this.username,
+    required this.isLoggedIn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +23,7 @@ class LoginScreen extends StatelessWidget {
 
     final TextEditingController username = TextEditingController();
     final TextEditingController password = TextEditingController();
-    
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -82,46 +88,65 @@ class LoginScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   var loginData = {
-                                    "username": username.text,
-                                    "password": password.text,
-                                  };
-                  final response = await request.login("$device/flutter/login/",loginData);
+                    "username": username.text,
+                    "password": password.text,
+                  };
+                  final response =
+                      await request.login("$device/flutter/login/", loginData);
                   if (request.loggedIn) {
-                        String message = response['message'];
-                        String uname = response['username'];
-                        if (context.mounted) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainScreen(username: uname, isLoggedIn: true, isAdmin: false,)),
-                          );
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(
-                              SnackBar(
-                                  content:
-                                      Text("$message Selamat datang, $uname.")),
-                            );
-                        }
-                      } else {
-                        if (context.mounted) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Login Gagal'),
-                              content: Text(response['message']),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
+                    String message = response['message'];
+                    String uname = response['username'];
+                    if (context.mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileScreen(
+                                  username: uname,
+                                )),
+                      );
+                      // ScaffoldMessenger.of(context)
+                      //   ..hideCurrentSnackBar()
+                      //   ..showSnackBar(
+                      //     SnackBar(
+                      //         content:
+                      //             Text("$message Selamat datang, $uname.")),
+                      //   );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => MainScreen(
+                      //             username: uname,
+                      //             isLoggedIn: true,
+                      //             isAdmin: false,
+                      //           )),
+                      // );
+                      // ScaffoldMessenger.of(context)
+                      //   ..hideCurrentSnackBar()
+                      //   ..showSnackBar(
+                      //     SnackBar(
+                      //         content:
+                      //             Text("$message Selamat datang, $uname.")),
+                      //   );
+                    }
+                  } else {
+                    if (context.mounted) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Login Gagal'),
+                          content: Text(response['message']),
+                          actions: [
+                            TextButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                             ),
-                          );
-                        }
-                      }
+                          ],
+                        ),
+                      );
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,

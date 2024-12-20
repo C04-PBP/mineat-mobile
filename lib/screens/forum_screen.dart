@@ -52,9 +52,9 @@ class _ForumScreenState extends State<ForumScreen> {
 
   Future<List<Forum>> fetchForum(CookieRequest request) async {
     final response = await request.get('$device/forum/json/');
-    
+
     var data = response;
-    
+
     List<Forum> listForum = [];
     for (var d in data) {
       if (d != null) {
@@ -94,13 +94,13 @@ class _ForumScreenState extends State<ForumScreen> {
             .where((item) =>
                 item.title.toLowerCase().contains(query.toLowerCase()))
             .toList();
-            
+
         if (searchFilteredForums.isEmpty) {
           filteredForums = [];
           return;
         }
       }
-    _combineFilters();
+      _combineFilters();
     });
   }
 
@@ -109,9 +109,8 @@ class _ForumScreenState extends State<ForumScreen> {
       if (!showUnansweredOnly) {
         checkboxFilteredForums = allForum;
       } else {
-        checkboxFilteredForums = allForum
-            .where((forum) => forum.replyCount == 1)
-            .toList();
+        checkboxFilteredForums =
+            allForum.where((forum) => forum.replyCount == 1).toList();
       }
       _combineFilters();
     });
@@ -121,11 +120,9 @@ class _ForumScreenState extends State<ForumScreen> {
     setState(() {
       if (searchFilteredForums.isEmpty) {
         filteredForums = checkboxFilteredForums;
-      }
-      else if (checkboxFilteredForums.isEmpty) {
+      } else if (checkboxFilteredForums.isEmpty) {
         filteredForums = searchFilteredForums;
-      }
-      else {
+      } else {
         filteredForums = searchFilteredForums
             .where((forum) => checkboxFilteredForums.contains(forum))
             .toList();
@@ -160,116 +157,128 @@ class _ForumScreenState extends State<ForumScreen> {
         ),
         body: Column(
           children: [
-            widget.isLoggedIn ? Padding(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Add a new forum",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(
-                        labelText: "Discussion Name",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a discussion name";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: _textController,
-                      decoration: const InputDecoration(
-                        labelText: "Comment",
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 3,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a comment";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          // _addForum(_titleController.text, _textController.text);
-                          final response = await request.postJson(
-                            "$device/forum/create-flutter/",
-                            jsonEncode(<String, String>{
-                                // 'user': widget.username,
-                                'title': _titleController.text,
-                                'text': _textController.text,
-                            }),
-                          );
-                          if (context.mounted) {
-                              if (response['status'] == 'success') {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                  content: Text("Forum baru berhasil disimpan!"),
-                                  ));
-                                  // Navigator.pushReplacement(
-                                  //     context,
-                                  //     MaterialPageRoute(builder: (context) => ForumScreen(allFood: [],)),
-                                  // );
-                              } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                      content:
-                                          Text("Terdapat kesalahan, silakan coba lagi."),
-                                  ));
-                              }
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      child: const Text("Submit"),
-                    ),
-                  ],
-                ),
-              ),
-            )  : Padding(
-              padding: const EdgeInsets.all(20),
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(fontSize: 16, color: Colors.black), // Default text style for the whole text
-                  children: <TextSpan>[
-                    TextSpan(text: 'Please '), // Normal text
-                    TextSpan(
-                      text: 'log in', // Clickable text
-                      style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Navigate to the login page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(username: '',), // Assuming LoginScreen is your login page widget
+            widget.isLoggedIn
+                ? Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Add a new forum",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _titleController,
+                            decoration: const InputDecoration(
+                              labelText: "Discussion Name",
+                              border: OutlineInputBorder(),
                             ),
-                          );
-                        },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter a discussion name";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _textController,
+                            decoration: const InputDecoration(
+                              labelText: "Comment",
+                              border: OutlineInputBorder(),
+                            ),
+                            maxLines: 3,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter a comment";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                // _addForum(_titleController.text, _textController.text);
+                                final response = await request.postJson(
+                                  "$device/forum/create-flutter/",
+                                  jsonEncode(<String, String>{
+                                    // 'user': widget.username,
+                                    'title': _titleController.text,
+                                    'text': _textController.text,
+                                  }),
+                                );
+                                if (context.mounted) {
+                                  if (response['status'] == 'success') {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content:
+                                          Text("Forum baru berhasil disimpan!"),
+                                    ));
+                                    // Navigator.pushReplacement(
+                                    //     context,
+                                    //     MaterialPageRoute(builder: (context) => ForumScreen(allFood: [],)),
+                                    // );
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          "Terdapat kesalahan, silakan coba lagi."),
+                                    ));
+                                  }
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: const Text("Submit"),
+                          ),
+                        ],
+                      ),
                     ),
-                    TextSpan(text: ' to add a new forum.'), // Normal text
-                  ],
-                ),
-              ),
-            ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors
+                                .black), // Default text style for the whole text
+                        children: <TextSpan>[
+                          TextSpan(text: 'Please '), // Normal text
+                          TextSpan(
+                            text: 'log in', // Clickable text
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Navigate to the login page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginScreen(
+                                      username: widget.username,
+                                      isLoggedIn: widget.isLoggedIn,
+                                    ), // Assuming LoginScreen is your login page widget
+                                  ),
+                                );
+                              },
+                          ),
+                          TextSpan(text: ' to add a new forum.'), // Normal text
+                        ],
+                      ),
+                    ),
+                  ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: SizedBox(
@@ -311,7 +320,8 @@ class _ForumScreenState extends State<ForumScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: FutureBuilder<List<Forum>>(
-                  future: fetchForum(request), // Pastikan ini memanggil fungsi fetch yang benar
+                  future: fetchForum(
+                      request), // Pastikan ini memanggil fungsi fetch yang benar
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -355,7 +365,8 @@ class _ForumScreenState extends State<ForumScreen> {
                         filteredForums = allForum;
                       }
                       return GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1,
                           crossAxisSpacing: 0,
                           mainAxisSpacing: 20,
@@ -364,19 +375,25 @@ class _ForumScreenState extends State<ForumScreen> {
                         itemCount: filteredForums.length,
                         itemBuilder: (context, index) {
                           final item = filteredForums[index];
-                          final backgroundImage = _getMatchingImage(item.title); // Fungsi ini harus didefinisikan di tempat lain
+                          final backgroundImage = _getMatchingImage(item
+                              .title); // Fungsi ini harus didefinisikan di tempat lain
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) => ForumDetailsScreen(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      ForumDetailsScreen(
                                     forum: item,
                                     backgroundImage: backgroundImage,
                                     isLoggedIn: widget.isLoggedIn,
+                                    username: widget.username,
                                   ),
-                                  transitionDuration: const Duration(milliseconds: 300),
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  transitionDuration:
+                                      const Duration(milliseconds: 300),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
                                     return FadeTransition(
                                       opacity: animation,
                                       child: child,
@@ -406,13 +423,21 @@ class _ForumScreenState extends State<ForumScreen> {
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: Container(
-                                          width: MediaQuery.of(context).size.width * 0.5,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.5,
                                           decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.horizontal(right: Radius.circular(12)),
+                                            borderRadius:
+                                                const BorderRadius.horizontal(
+                                                    right: Radius.circular(12)),
                                             image: DecorationImage(
-                                              image: backgroundImage!.startsWith('http')
-                                                  ? NetworkImage(backgroundImage)
-                                                  : AssetImage(backgroundImage) as ImageProvider,
+                                              image: backgroundImage!
+                                                      .startsWith('http')
+                                                  ? NetworkImage(
+                                                      backgroundImage)
+                                                  : AssetImage(backgroundImage)
+                                                      as ImageProvider,
                                               fit: BoxFit.cover,
                                             ),
                                             gradient: const LinearGradient(
@@ -429,7 +454,8 @@ class _ForumScreenState extends State<ForumScreen> {
                                       Positioned.fill(
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.horizontal(
+                                            borderRadius:
+                                                const BorderRadius.horizontal(
                                               left: Radius.circular(12),
                                               right: Radius.circular(12),
                                             ),
@@ -448,18 +474,22 @@ class _ForumScreenState extends State<ForumScreen> {
                                       Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Expanded(
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     item.title,
                                                     style: const TextStyle(
                                                       fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                   const SizedBox(height: 5),
@@ -470,14 +500,16 @@ class _ForumScreenState extends State<ForumScreen> {
                                                       color: Colors.grey,
                                                     ),
                                                     maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             const SizedBox(width: 30),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
                                               children: [
                                                 Text(
                                                   item.timeCreated,
@@ -529,7 +561,6 @@ class _ForumScreenState extends State<ForumScreen> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
