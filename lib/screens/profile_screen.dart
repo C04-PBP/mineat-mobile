@@ -34,6 +34,13 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 4,
+                      color: Theme.of(context).shadowColor,
+                      offset: const Offset(6, 6),
+                    ),
+                  ],
                   image: DecorationImage(
                     image: AssetImage('assets/images/ingredients2.png'),
                     fit: BoxFit
