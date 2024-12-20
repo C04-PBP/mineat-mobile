@@ -317,6 +317,34 @@ class _ForumScreenState extends State<ForumScreen> {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text("Error: ${snapshot.error}");
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.forum,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              "No forums available",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Start a new discussion by creating a forum",
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     } else if (snapshot.hasData) {
                       // Jika data ada, gunakan dalam GridView
                       // filteredForums = snapshot.data!;//.cast<Map<String, dynamic>>();
