@@ -255,6 +255,23 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
+                if (allReplies.isEmpty) 
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'No comments yet. Be the first to comment!',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                      ],
+                    ),
+                  ),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
