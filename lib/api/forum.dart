@@ -14,6 +14,7 @@ class Forum {
     String title;
     String timeCreated;
     String text;
+    final int replyCount;
 
     Forum({
         required this.id,
@@ -21,6 +22,7 @@ class Forum {
         required this.title,
         required this.timeCreated,
         required this.text,
+        required this.replyCount,
     });
 
     factory Forum.fromJson(Map<String, dynamic> json) => Forum(
@@ -29,6 +31,7 @@ class Forum {
         title: json["title"],
         timeCreated: json["time_created"],
         text: json["text"],
+        replyCount: json["reply_count"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -37,5 +40,6 @@ class Forum {
         "title": title,
         "time_created": timeCreated,
         "text": text,
+        "reply_count": replyCount
     };
 }
