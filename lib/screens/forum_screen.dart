@@ -27,9 +27,12 @@ class ForumScreen extends StatefulWidget {
 }
 
 class _ForumScreenState extends State<ForumScreen> {
+  List<Forum> allForum = [];
+  List<Forum> searchFilteredForums = [];
+  List<Forum> checkboxFilteredForums = [];
   List<Forum> filteredForums = [];
-  List<Forum> allForum = []; // Tempat menyimpan forum yang dinamis
   bool isLoading = true;
+  bool showUnansweredOnly = false;
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -40,9 +43,10 @@ class _ForumScreenState extends State<ForumScreen> {
   @override
   void initState() {
     super.initState();
+    searchFilteredForums = allForum;
+    checkboxFilteredForums = allForum;
     filteredForums = allForum;
     fetchData();
-    // fetchMood(request);
     print('ok masuk pak');
   }
 
@@ -61,10 +65,6 @@ class _ForumScreenState extends State<ForumScreen> {
   }
 
   Future<void> fetchData() async {
-    // await ForumUmumService.fetchForumUmumData();
-
-    // final forumUmums = ForumUmumService.getForumUmumData();
-
     setState(() {
       isLoading = true;
     });
@@ -75,6 +75,8 @@ class _ForumScreenState extends State<ForumScreen> {
     if (forums.isNotEmpty) {
       setState(() {
         allForum = forums;
+        searchFilteredForums = allForum;
+        checkboxFilteredForums = allForum;
         filteredForums = allForum;
         isLoading = false;
       });
@@ -84,18 +86,51 @@ class _ForumScreenState extends State<ForumScreen> {
   }
 
   void _filterSearchResults(String query) {
-    if (query.isEmpty) {
-      setState(() {
-        filteredForums = allForum;
-      });
-    } else {
-      setState(() {
-        filteredForums = allForum
+    setState(() {
+      if (query.isEmpty) {
+        searchFilteredForums = allForum;
+      } else {
+        searchFilteredForums = allForum
             .where((item) =>
                 item.title.toLowerCase().contains(query.toLowerCase()))
             .toList();
-      });
-    }
+            
+        if (searchFilteredForums.isEmpty) {
+          filteredForums = [];
+          return;
+        }
+      }
+    _combineFilters();
+    });
+  }
+
+  void _applyFilters() {
+    setState(() {
+      if (!showUnansweredOnly) {
+        checkboxFilteredForums = allForum;
+      } else {
+        checkboxFilteredForums = allForum
+            .where((forum) => forum.replyCount == 1)
+            .toList();
+      }
+      _combineFilters();
+    });
+  }
+
+  void _combineFilters() {
+    setState(() {
+      if (searchFilteredForums.isEmpty) {
+        filteredForums = checkboxFilteredForums;
+      }
+      else if (checkboxFilteredForums.isEmpty) {
+        filteredForums = searchFilteredForums;
+      }
+      else {
+        filteredForums = searchFilteredForums
+            .where((forum) => checkboxFilteredForums.contains(forum))
+            .toList();
+      }
+    });
   }
 
   String? _getMatchingImage(String forumTitle) {
@@ -255,6 +290,23 @@ class _ForumScreenState extends State<ForumScreen> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: showUnansweredOnly,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        showUnansweredOnly = value ?? false;
+                        _applyFilters();
+                      });
+                    },
+                  ),
+                  const Text('Show Unanswered Discussions Only'),
+                ],
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20),
@@ -267,7 +319,13 @@ class _ForumScreenState extends State<ForumScreen> {
                       return Text("Error: ${snapshot.error}");
                     } else if (snapshot.hasData) {
                       // Jika data ada, gunakan dalam GridView
-                      filteredForums = snapshot.data!;//.cast<Map<String, dynamic>>();
+                      // filteredForums = snapshot.data!;//.cast<Map<String, dynamic>>();
+                      if (allForum.isEmpty) {
+                        allForum = snapshot.data!;
+                        searchFilteredForums = allForum;
+                        checkboxFilteredForums = allForum;
+                        filteredForums = allForum;
+                      }
                       return GridView.builder(
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1,
@@ -437,7 +495,7 @@ class _ForumScreenState extends State<ForumScreen> {
                       );
                     } else {
                       // Tampilkan pesan ini jika tidak ada data yang diterima
-                      return Center(child: Text("No forums available"));
+                      return const Center(child: Text("No forums available"));
                     }
                   },
                 ),

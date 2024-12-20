@@ -115,9 +115,9 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    return Hero(
-      tag: widget.forum.title,
-      child: Scaffold(
+    return Scaffold(
+      // tag: 'forum_details_${widget.forum.id}_${widget.forum.title}',
+      // child: Scaffold(
         body: CustomScrollView(
           controller: _scrollController,
           slivers: [
@@ -409,10 +409,9 @@ class _ForumDetailsScreenState extends State<ForumDetailsScreen> {
                 ]
               ]),
             ),
-
           ],
         ),
-      ),
+      // ),
     );
   }
 }
