@@ -11,8 +11,6 @@ class FoodService {
 
     final url = '$device/fnb/json/';
 
-  
-
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -41,11 +39,56 @@ class FoodService {
     }
   }
 
+  static Future<List<Map<String, dynamic>>> fetchFoodData2() async {
+    final url = '$device/fnb/json/';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        // Decode the JSON response
+        final List<dynamic> responseData = json.decode(response.body);
+
+        // Transform the JSON data into a list of maps
+        final foodData = responseData.map<Map<String, dynamic>>((item) {
+          String imageUrl = item['imageUrl'];
+          String decodedImageUrl = Uri.decodeComponent(imageUrl);
+          imageUrl = decodedImageUrl.replaceFirst("/https:", "https:/");
+
+          return {
+            'title': item['title'],
+            'price': item['price'],
+            'description': item['description'],
+            'ingredients': item['ingredients'],
+            'imageUrl': imageUrl,
+          };
+        }).toList();
+
+        return foodData;
+      } else {
+        throw Exception('Failed to load food data');
+      }
+    } catch (error) {
+      print('Error fetching food data: $error');
+      throw Exception('Error fetching food data');
+    }
+  }
+
   static List<Map<String, dynamic>>? getFoodData() {
     return _foodData;
   }
 
   static void clearFoodData() {
     _foodData = null;
+  }
+
+  static Future<bool> deleteFoodData(String id) async {
+    try {
+      final response = await http
+          .delete(Uri.parse("$device/fnb/delete_flutter_by_title/$id/"));
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
   }
 }
