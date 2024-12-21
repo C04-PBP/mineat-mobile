@@ -73,6 +73,7 @@ class RegisterScreen extends StatelessWidget {
                   filled: true,
                   fillColor: Colors.white,
                 ),
+                obscureText: true,
               ),
               SizedBox(height: 16),
               TextFormField(

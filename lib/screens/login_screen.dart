@@ -19,8 +19,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const bool isAdmin = false;
     final request = context.watch<CookieRequest>();
-
     final TextEditingController username = TextEditingController();
     final TextEditingController password = TextEditingController();
 
