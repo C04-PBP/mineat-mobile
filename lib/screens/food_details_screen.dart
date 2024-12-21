@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mineat/api/review_service.dart';
 import 'package:mineat/screens/ratings_and_reviews_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
 
@@ -37,7 +38,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   int _currentPageIndex = 0;
 
   // Hardcoded data for each page
-  final List<Map<String, dynamic>> reviewsData = [
+  bool isLoading = true;
+  List<Map<String, dynamic>> reviewsData = [
     {
       'title': 'Amazing Food',
       'rating': 5,
@@ -202,6 +204,22 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     _pageController.dispose();
     super.dispose();
   }
+
+  Future<void> fetchData() async {
+    await ReviewService.fetchReviewData(widget.item["id"]);  //butuh id makanannya
+
+    final reviews = ReviewService.getReviewData();
+
+    if (reviews!.isNotEmpty) {
+      setState(() {
+        reviewsData = reviews;
+        isLoading = false;
+      });
+    } else {
+      print('Error: Review data is null or not found');
+    }
+  }
+
 
   void _handleRatingTap(int rating) {
     setState(() {

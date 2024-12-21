@@ -93,8 +93,8 @@ class FoodService {
     } catch (e) {
       return false;
     }
-   
-   static List<Map<String, dynamic>>? parseFoodData(food) {
+  }
+  static List<Map<String, dynamic>>? parseFoodData(food) {
     _foodData = food.map((item) {
       String imageUrl = item['imageUrl'];
       String decodedImageUrl = Uri.decodeComponent(imageUrl);

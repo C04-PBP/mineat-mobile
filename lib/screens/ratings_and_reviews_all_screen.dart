@@ -205,14 +205,14 @@ class _RatingsAndReviewsAllScreenState
                       children: [
                         Row(
                           children: [
-                            Text(
-                              review['title'],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Spacer(),
+                            // Text(
+                            //   review['title'],
+                            //   style: const TextStyle(
+                            //     fontSize: 16,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
+                            // const Spacer(),
                             Text(
                               "${review['timeAgo']} • ${review['reviewer']}",
                               style: const TextStyle(
@@ -241,21 +241,21 @@ class _RatingsAndReviewsAllScreenState
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Chef Response",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          review['response'],
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                        ),
+                        // const SizedBox(height: 10),
+                        // const Text(
+                        //   "Chef Response",
+                        //   style: TextStyle(
+                        //     fontSize: 14,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        // Text(
+                        //   review['response'],
+                        //   style: const TextStyle(
+                        //     fontSize: 14,
+                        //     color: Colors.black,
+                        //   ),
+                        // ),
                       ],
                     ),
                   );
