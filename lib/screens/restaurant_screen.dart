@@ -8,6 +8,8 @@ import 'package:mineat/screens/restaurant_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
 import 'package:mineat/widgets/top_picks_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:mineat/api/restaurant_service.dart';
+import 'package:mineat/api/location_service.dart';
 
 class RestaurantScreen extends StatefulWidget {
   final String username;
@@ -93,76 +95,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     },
   ];
 
-  final List<Map<String, String>> allDistrict = [
-    {
-      "title": "Padang Utara",
-      "imageUrl":
-          "https://lh5.googleusercontent.com/p/AF1QipOjtH1F3dIPa_q_CFqrBKr0u03o0CCRSWdyr5kb=w426-h240-k-no"
-    },
-    {
-      "title": "Pauh",
-      "imageUrl":
-          "https://lh5.googleusercontent.com/p/AF1QipNpQE2jm9yWKsEmqpcPCTYy-HvIWfIPvOJsWTuP=w408-h271-k-no"
-    },
-    {
-      "title": "Bungus Teluk Kabung",
-      "imageUrl":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Lubuak_hitam.jpg/375px-Lubuak_hitam.jpg"
-    },
-    {
-      "title": "Koto Tangah",
-      "imageUrl":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Stasiun_Tabing.jpg/390px-Stasiun_Tabing.jpg"
-    },
-    {
-      "title": "Kuranji",
-      "imageUrl":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Wali_Kota_Padang_dan_ribuan_warga_jalan_santai.jpg/375px-Wali_Kota_Padang_dan_ribuan_warga_jalan_santai.jpg"
-    },
-    {
-      "title": "Lubuk Begalung",
-      "imageUrl":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Kantor_Camat_Lubuk_Begalung.jpg/1200px-Kantor_Camat_Lubuk_Begalung.jpg"
-    },
-  ];
+  bool isLoading = true;
 
-  final List<Map<String, dynamic>> allRestaurant = [
-    {
-      "title": "Taman Surya",
-      "address": "Jl. Tamansiswa No. 15",
-      "district": "Padang Utara",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMucy2GYqlxcQZpn6g9OzG8CXFFHCZYpduAxKE2=s1360-w1360-h1020"
-    },
-    {
-      "title": "Kubang Hayuda",
-      "address": "Jl. Prof. M. Yamin SH No. 138B, Padang",
-      "district": "Padang Barat",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipPE1fJpyuCWE2eMPbYKPL5zD-eTKPbvM_MJ6bmD=s680-w680-h510"
-    },
-    {
-      "title": "VII Koto Talago",
-      "address": "Jl. Jhoni Anwar No.Kelurahan No.17, Padang",
-      "district": "Padang Utara",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMfCv5oU_RRNSg_BgK9lA9FLaMSABN1CUDTAO0S=s680-w680-h510"
-    },
-    {
-      "title": "Pagi Sore",
-      "address": "Jl. Pondok No. 143, Padang",
-      "district": "Padang Barat",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipPnRTwAUA2u2RmeR8LBzhCnJypZgAmLF7tC2v3g=s1360-w1360-h1020"
-    },
-    {
-      "title": "Sing A Song",
-      "address": "Jl. Perintis Kemerdekaan No. 4C, Padang",
-      "district": "Padang Timur",
-      "imageUrl":
-          "https://lh5.googleusercontent.com/p/AF1QipMyIWWaWJjrU-Kzv0PSXfHT59mmGQlZ5kwmRtKT=w408-h544-k-no"
-    },
-  ];
+  List<Map<String, dynamic>> allDistrict = [];
+
+  List<Map<String, dynamic>> allRestaurant = [];
 
   late PageController _pageControllerStack;
   late PageController _pageController;
@@ -176,6 +113,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   @override
   void initState() {
     super.initState();
+
+    fetchRestaurantData();
+    fetchLocationData();
     _pageControllerStack = PageController();
 
     // Duplicate items to create a looped effect for Foods
@@ -206,6 +146,36 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         });
       }
     });
+  }
+
+  Future<void> fetchRestaurantData() async {
+    await RestaurantService.fetchRestaurantData();
+
+    final restaurants = RestaurantService.getRestaurantData();
+
+    if (restaurants!.isNotEmpty) {
+      setState(() {
+        allRestaurant = restaurants;
+        isLoading = false;
+      });
+    } else {
+      print('Error: Restaurant data is null or not found');
+    }
+  }
+
+  Future<void> fetchLocationData() async {
+    await LocationService.fetchLocationData();
+
+    final locations = LocationService.getLocationData();
+
+    if (locations!.isNotEmpty) {
+      setState(() {
+        allDistrict = locations;
+        isLoading = false;
+      });
+    } else {
+      print('Error: Location data is null or not found');
+    }
   }
 
   @override
