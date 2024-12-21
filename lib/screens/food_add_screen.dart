@@ -1,4 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mineat/app_view.dart';
+import 'package:mineat/screens/home_screen.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:mineat/api/device.dart';
+import 'package:uuid/uuid.dart';
 
 class FoodAddScreen extends StatefulWidget {
   const FoodAddScreen({Key? key}) : super(key: key);
@@ -8,10 +16,12 @@ class FoodAddScreen extends StatefulWidget {
 }
 
 class _FoodAddScreenState extends State<FoodAddScreen> {
+  final Uuid uuid = Uuid();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _imageUrlController = TextEditingController();
 
   final List<String> _ingredients = [
     "Tomato",
@@ -51,6 +61,7 @@ class _FoodAddScreenState extends State<FoodAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add New Food"),
@@ -115,6 +126,23 @@ class _FoodAddScreenState extends State<FoodAddScreen> {
                 },
               ),
               const SizedBox(height: 16),
+              TextFormField(
+                controller: _imageUrlController,
+                decoration: const InputDecoration(
+                  labelText: "Image URL",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter the url";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 16,
+              ),
               const Text(
                 "Select Ingredients:",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -133,7 +161,42 @@ class _FoodAddScreenState extends State<FoodAddScreen> {
               const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: _submitForm,
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final String generatedId = uuid.v4();
+                      // Kirim ke Django dan tunggu respons
+                      // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                      final response = await request.postJson(
+                        "$device/fnb/create_flutter/",
+                        jsonEncode(<String, String>{
+                          'id': generatedId,
+                          'title': _nameController.text,
+                          'description': _descriptionController.text,
+                          'price': _priceController.text,
+                          'imageUrl': _imageUrlController.text,
+                        }),
+                      );
+                      if (context.mounted) {
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Mood baru berhasil disimpan!"),
+                          ));
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => HomeScreen()),
+                          // );
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text("Terdapat kesalahan, silakan coba lagi."),
+                          ));
+                        }
+                      }
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         vertical: 12, horizontal: 24),
