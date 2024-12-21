@@ -12,10 +12,10 @@ class ReviewService {
         final List<dynamic> responseData = json.decode(response.body);
         _reviewData = responseData.map((item) {
           return {
-            'user': item['user'],
+            'reviewer': item['user'],
             'rating': item['rating'],
-            'text': item['text'],
-            'time_created': item['time_created'],
+            'content': item['text'],
+            'timeAgo': item['time_created'],
           };
         }).toList();
       } else {
