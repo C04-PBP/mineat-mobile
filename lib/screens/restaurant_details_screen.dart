@@ -46,7 +46,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final int itemsToShow =
-        _showAll ? widget.foodsInTheRestaurant.length : 1 * 2;
+        _showAll ? widget.item['foodsInTheRestaurant'].length : 1 * 2;
     return Hero(
       tag: widget.heroOrNot ? widget.item['title'] : "None",
       child: Scaffold(
@@ -285,11 +285,17 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                     mainAxisSpacing: 20,
                                     childAspectRatio: 3 / 2,
                                   ),
-                                  itemCount: itemsToShow.clamp(
-                                      0, widget.foodsInTheRestaurant.length),
+                                  itemCount: itemsToShow
+                                      .clamp(
+                                        0,
+                                        (widget.item['foodsInTheRestaurant']
+                                                as List)
+                                            .length,
+                                      )
+                                      .toInt(),
                                   itemBuilder: (context, index) {
                                     final item =
-                                        widget.foodsInTheRestaurant[index];
+                                        widget.item['foodsInTheRestaurant'];
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -297,8 +303,10 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 FoodDetailsScreen(
-                                                  foodsInTheRestaurant: widget.foodsInTheRestaurant,
-                                              restaurantAvailable: widget.restaurantAvailable,
+                                              foodsInTheRestaurant:
+                                                  widget.foodsInTheRestaurant,
+                                              restaurantAvailable:
+                                                  widget.restaurantAvailable,
                                               heroOrNot: true,
                                               item: item,
                                             ),
@@ -353,7 +361,8 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              if (widget.foodsInTheRestaurant.length >
+                              if ((widget.item['foodsInTheRestaurant'] as List)
+                                      .length >
                                   4) // Only show button if needed
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment
