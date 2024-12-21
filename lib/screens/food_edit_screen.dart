@@ -58,7 +58,7 @@ class _FoodEditScreenState extends State<FoodEditScreen> {
                         : const Icon(Icons.fastfood),
                     title: Text(food['title'] ?? 'Unnamed Food'),
                     subtitle: Text(food['description'] ?? 'No description'),
-                    trailing: Text('Price: \$${food['price'] ?? '0'}'),
+                    trailing: Text('Price: Rp${food['price'] ?? '0'}'),
                   ),
                 );
               }).toList(),

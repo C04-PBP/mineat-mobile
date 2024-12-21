@@ -96,6 +96,36 @@ class AdminScreen extends StatelessWidget {
                 }
               },
             ),
+            buildRow(
+              context: context,
+              title: "Ingredient",
+              actions: ["Add", "Edit", "Delete"],
+              onTap: (action) {
+                if (action == 'Add') {
+                } else if (action == 'Edit') {
+                } else {}
+              },
+            ),
+            buildRow(
+              context: context,
+              title: "Restaurant",
+              actions: ["Add", "Edit", "Delete"],
+              onTap: (action) {
+                if (action == 'Add') {
+                } else if (action == 'Edit') {
+                } else {}
+              },
+            ),
+            buildRow(
+              context: context,
+              title: "District",
+              actions: ["Add", "Edit", "Delete"],
+              onTap: (action) {
+                if (action == 'Add') {
+                } else if (action == 'Edit') {
+                } else {}
+              },
+            ),
           ],
         ),
       ),
