@@ -76,12 +76,26 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: const Offset(-7, -7),
+                      blurRadius: 8,
+                      spreadRadius: -5,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: const Offset(7, 7),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
                 ),
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: GestureDetector(
