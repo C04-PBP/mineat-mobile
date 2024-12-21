@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mineat/api/food_service.dart';
 
 class RestaurantService {
   static List<Map<String, dynamic>>? _restaurantData;
@@ -17,13 +18,17 @@ class RestaurantService {
         final List<dynamic> responseData = json.decode(response.body);
 
         _restaurantData = responseData.map((item) {
+          List<Map<String, dynamic>>? foodsInTheRestaurant =
+              FoodService.parseFoodData(item['foodsInTheRestaurant']);
           return {
             'title': item['title'],
             "address": item['address'],
             "district": item['district'],
-            "imageUrl": item['imageUrl']
+            "imageUrl": item['imageUrl'],
+            "foodsInTheRestaurant": foodsInTheRestaurant
           };
         }).toList();
+        print(_restaurantData);
       } else {
         throw Exception('Failed to load restaurant data');
       }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mineat/api/device.dart';
@@ -92,5 +93,21 @@ class FoodService {
     } catch (e) {
       return false;
     }
+   
+   static List<Map<String, dynamic>>? parseFoodData(food) {
+    _foodData = food.map((item) {
+      String imageUrl = item['imageUrl'];
+      String decodedImageUrl = Uri.decodeComponent(imageUrl);
+      imageUrl = decodedImageUrl.replaceFirst("/https:", "https:/");
+
+      return {
+        'title': item['title'],
+        'price': item['price'],
+        'description': item['description'],
+        'ingredients': item['ingredients'],
+        'imageUrl': imageUrl,
+      };
+    }).toList();
+    return _foodData;
   }
 }
