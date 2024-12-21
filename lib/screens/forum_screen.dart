@@ -86,7 +86,8 @@ class _ForumScreenState extends State<ForumScreen> {
   }
 
   void _filterSearchResults(String query) {
-    setState(() {
+    setState(() async {
+      await fetchData(); 
       if (query.isEmpty) {
         searchFilteredForums = allForum;
       } else {
@@ -225,6 +226,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                     //     context,
                                     //     MaterialPageRoute(builder: (context) => ForumScreen(allFood: [],)),
                                     // );
+                                    fetchData(); 
                                   } else {
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(const SnackBar(
