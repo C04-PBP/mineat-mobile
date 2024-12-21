@@ -172,6 +172,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 1, viewportFraction: 0.75);
+    fetchData();
     _scrollController.addListener(() {
       if (_scrollController.offset > 500 && !_showAppBarTitle) {
         setState(() {
@@ -206,6 +207,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   }
 
   Future<void> fetchData() async {
+    print('masuk');
     await ReviewService.fetchReviewData(widget.item["id"]);  //butuh id makanannya
 
     final reviews = ReviewService.getReviewData();

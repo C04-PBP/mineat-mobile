@@ -94,13 +94,15 @@ class FoodService {
       return false;
     }
   }
-  static List<Map<String, dynamic>>? parseFoodData(food) {
-    _foodData = food.map((item) {
+   
+  static List<Map<String, dynamic>> parseFoodData(List<dynamic> food) {
+    List<Map<String, dynamic>> restaurantFood = food.map((item) {
       String imageUrl = item['imageUrl'];
       String decodedImageUrl = Uri.decodeComponent(imageUrl);
       imageUrl = decodedImageUrl.replaceFirst("/https:", "https:/");
 
       return {
+        'id': item['id'],
         'title': item['title'],
         'price': item['price'],
         'description': item['description'],
@@ -108,6 +110,6 @@ class FoodService {
         'imageUrl': imageUrl,
       };
     }).toList();
-    return _foodData;
+    return restaurantFood;
   }
 }
