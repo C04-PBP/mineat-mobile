@@ -10,6 +10,8 @@ class FoodEditScreen extends StatefulWidget {
 
 class _FoodEditScreenState extends State<FoodEditScreen> {
   List<Map<String, dynamic>> allFood = [];
+  List<String> allTitles = [];
+  List<String> allImageUrls = [];
   bool isLoading = true;
 
   @override
@@ -23,8 +25,15 @@ class _FoodEditScreenState extends State<FoodEditScreen> {
     final foods = FoodService.getFoodData();
 
     if (foods != null) {
+      // Prepare data before updating the state
+      final titles = foods.map((food) => food['title'].toString()).toList();
+      final imageUrls = foods.map((food) => food['imageUrl'].toString()).toList();
+
+      // Update state with prepared data
       setState(() {
         allFood = foods;
+        allTitles = titles;
+        allImageUrls = imageUrls;
         isLoading = false;
       });
     } else {
@@ -43,25 +52,47 @@ class _FoodEditScreenState extends State<FoodEditScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView(
+          : ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              children: allFood.map((food) {
+              itemCount: allFood.length,
+              itemBuilder: (context, index) {
+                final food = allFood[index];
+                final title = allTitles[index];
+                final imageUrl = allImageUrls[index];
+
                 return Card(
                   child: ListTile(
-                    leading: food['imageUrl'] != null
-                        ? Image.network(
-                            food['imageUrl'],
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          )
-                        : const Icon(Icons.fastfood),
-                    title: Text(food['title'] ?? 'Unnamed Food'),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(12), // Set the radius to 12
+                      child: imageUrl.isNotEmpty
+                          ? Image.network(
+                              imageUrl,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                // Display local asset image when network image fails
+                                return Image.asset(
+                                  'assets/images/ingredients2.png',
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              'assets/images/ingredients2.png',
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                    title: Text(title),
                     subtitle: Text(food['description'] ?? 'No description'),
                     trailing: Text('Price: Rp${food['price'] ?? '0'}'),
                   ),
                 );
-              }).toList(),
+              },
             ),
     );
   }
