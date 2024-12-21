@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mineat/screens/food_add_screen.dart';
+import 'package:mineat/screens/food_delete_screen.dart';
 import 'package:mineat/screens/food_edit_screen.dart'; // Import the new FoodEditScreen
 
 class AdminScreen extends StatelessWidget {
@@ -90,8 +91,10 @@ class AdminScreen extends StatelessWidget {
                         builder: (context) => const FoodEditScreen()),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('$action tapped')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FoodDeleteScreen()),
                   );
                 }
               },
