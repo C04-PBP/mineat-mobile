@@ -105,6 +105,7 @@ class _FoodDeleteScreenState extends State<FoodDeleteScreen> {
                         subtitle: Text(food['description'] ?? 'No description'),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
+                          // onPressed: () => print(allFood[1]['id']),
                           onPressed: () => deleteFood(food['id']),
                         ),
                       ),

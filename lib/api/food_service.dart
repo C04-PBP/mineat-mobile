@@ -24,6 +24,7 @@ class FoodService {
           imageUrl = decodedImageUrl.replaceFirst("/https:", "https:/");
 
           return {
+            'id': item['id'],
             'title': item['title'],
             'price': item['price'],
             'description': item['description'],
@@ -56,6 +57,7 @@ class FoodService {
           imageUrl = decodedImageUrl.replaceFirst("/https:", "https:/");
 
           return {
+            'id': item['id'],
             'title': item['title'],
             'price': item['price'],
             'description': item['description'],
@@ -85,7 +87,7 @@ class FoodService {
   static Future<bool> deleteFoodData(String id) async {
     try {
       final response = await http
-          .delete(Uri.parse("$device/fnb/delete_flutter_by_title/$id/"));
+          .delete(Uri.parse("$device/fnb/delete_flutter/$id/"));
       return response.statusCode == 200;
     } catch (e) {
       return false;
