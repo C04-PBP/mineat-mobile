@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mineat/screens/food_add_screen.dart';
+import 'package:mineat/screens/food_edit_screen.dart'; // Import the new FoodEditScreen
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({Key? key}) : super(key: key);
 
-  Widget buildRow(
-      {required BuildContext context,
-      required String title,
-      required List<String> actions,
-      required Function(String) onTap}) {
+  Widget buildRow({
+    required BuildContext context,
+    required String title,
+    required List<String> actions,
+    required Function(String) onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -15,9 +18,9 @@ class AdminScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: actions.map((action) {
@@ -42,7 +45,7 @@ class AdminScreen extends StatelessWidget {
                     child: Center(
                       child: Text(
                         action,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -74,43 +77,23 @@ class AdminScreen extends StatelessWidget {
               title: "Food",
               actions: ["Add", "Edit", "Delete"],
               onTap: (action) {
-                // Handle actions for food
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('$action tapped')),
-                );
-              },
-            ),
-            buildRow(
-              context: context,
-              title: "Ingredient",
-              actions: ["Add", "Edit", "Delete"],
-              onTap: (action) {
-                // Handle actions for ingredient
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('$action tapped')),
-                );
-              },
-            ),
-            buildRow(
-              context: context,
-              title: "Restaurant",
-              actions: ["Add", "Edit", "Delete"],
-              onTap: (action) {
-                // Handle actions for restaurant
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('$action tapped')),
-                );
-              },
-            ),
-            buildRow(
-              context: context,
-              title: "Location",
-              actions: ["Add", "Edit", "Delete"],
-              onTap: (action) {
-                // Handle actions for location
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('$action tapped')),
-                );
+                if (action == 'Add') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FoodAddScreen()),
+                  );
+                } else if (action == 'Edit') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FoodEditScreen()),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('$action tapped')),
+                  );
+                }
               },
             ),
           ],
