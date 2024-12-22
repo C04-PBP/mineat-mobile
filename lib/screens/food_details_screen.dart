@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mineat/api/review_service.dart';
 import 'package:mineat/screens/ratings_and_reviews_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class FoodDetailsScreen extends StatefulWidget {
+  
   final Map<String, dynamic> item;
   final List<Map<String, dynamic>> restaurantAvailable;
   final List<Map<String, dynamic>> foodsInTheRestaurant;
@@ -233,6 +236,25 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     });
   }
 
+Future<void> _handleSubmitReviewDjango() async {
+  print('masuk');
+  String reviewContent = _reviewTextController.text.trim();
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
+        },
+        body: jsonEncode(<String, dynamic>{
+          'id': widget.item['id'],
+          'rating': _myRating,
+          'content': reviewContent,
+        }
+        ), );
+        return;}
+
+
+
   void _handleSubmitReview() {
     String title = _reviewTitleController.text.trim();
     String reviewContent = _reviewTextController.text.trim();
@@ -249,6 +271,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
     if ((title.isNotEmpty || reviewContent.isNotEmpty) && _myRating != 0) {
       setState(() {
+        _handleSubmitReviewDjango();
         _isReviewSubmitted = true;
         _countRateError = -1;
         // Determine the response based on the rating
@@ -280,6 +303,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final int itemsToShow =
         _showAll ? widget.restaurantAvailable.length : 1 * 2;
     double averageRating = reviewsData.isNotEmpty
@@ -1061,6 +1085,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                                           children: [
                                                             IconButton(
                                                               onPressed: () {
+                                                                
                                                                 setState(() {
                                                                   // Reset the star rating
                                                                   _myRating = 0;
