@@ -183,6 +183,7 @@ class _IngredientAllScreenState extends State<IngredientAllScreen> {
                           appBarTitle: "Food Choices",
                           foodItems: _showFilteredFoodItems(),
                           username: widget.username,
+                          allFood: widget.foodItems,
                         ),
                       ),
                     );

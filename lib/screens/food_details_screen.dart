@@ -6,18 +6,19 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class FoodDetailsScreen extends StatefulWidget {
-  
   final Map<String, dynamic> item;
   final List<Map<String, dynamic>> restaurantAvailable;
   final List<Map<String, dynamic>> foodsInTheRestaurant;
   final bool heroOrNot;
   final String username;
+  final List<Map<String, dynamic>> allFood;
   const FoodDetailsScreen(
       {required this.item,
       required this.restaurantAvailable,
       required this.heroOrNot,
       required this.foodsInTheRestaurant,
       required this.username,
+      required this.allFood,
       super.key});
 
   @override
@@ -138,7 +139,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
   Future<void> fetchData() async {
     print('masuk');
-    await ReviewService.fetchReviewData(widget.item["id"]);  //butuh id makanannya
+    await ReviewService.fetchReviewData(
+        widget.item["id"]); //butuh id makanannya
 
     final reviews = ReviewService.getReviewData();
 
@@ -151,7 +153,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
       print('Error: Review data is null or not found');
     }
   }
-
 
   void _handleRatingTap(int rating) {
     setState(() {
@@ -229,7 +230,6 @@ Future<void> _handleSubmitReviewDjango() async {
 
   @override
   Widget build(BuildContext context) {
-    
     final int itemsToShow =
         _showAll ? widget.restaurantAvailable.length : 1 * 2;
     double averageRating = reviewsData.isNotEmpty
@@ -1011,7 +1011,6 @@ Future<void> _handleSubmitReviewDjango() async {
                                                           children: [
                                                             IconButton(
                                                               onPressed: () {
-                                                                
                                                                 setState(() {
                                                                   // Reset the star rating
                                                                   _myRating = 0;
@@ -1190,6 +1189,7 @@ Future<void> _handleSubmitReviewDjango() async {
                                             heroOrNot: true,
                                             item: item,
                                             username: widget.username,
+                                            allFood: widget.allFood,
                                           ),
                                         ),
                                       );

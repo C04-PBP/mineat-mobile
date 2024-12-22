@@ -51,46 +51,103 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 32),
-              TextFormField(
-                controller: username,
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: const Offset(-7, -7),
+                      blurRadius: 8,
+                      spreadRadius: -5,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: const Offset(7, 7),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: username,
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      border: InputBorder.none,
+                    ),
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
                 ),
               ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: password,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
+              SizedBox(height: 25),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: const Offset(-7, -7),
+                      blurRadius: 8,
+                      spreadRadius: -5,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: const Offset(7, 7),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
                 ),
-                obscureText: true,
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: passwordConfirm,
-                decoration: InputDecoration(
-                  labelText: 'Password Confirmation',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: password,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: InputBorder.none,
+                    ),
+                    obscureText: true,
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
                 ),
-                obscureText: true,
               ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () async {
+              SizedBox(height: 25),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: const Offset(-7, -7),
+                      blurRadius: 8,
+                      spreadRadius: -5,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: const Offset(7, 7),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: passwordConfirm,
+                    decoration: InputDecoration(
+                      labelText: 'Password Confirmation',
+                      border: InputBorder.none,
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+              ),
+              SizedBox(height: 40),
+              GestureDetector(
+                onTap: () async {
                   final response = await request.postJson(
                       "$device/flutter/register/",
                       jsonEncode({
@@ -123,19 +180,34 @@ class RegisterScreen extends StatelessWidget {
                   }
                   // Handle registration action
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade500,
+                        offset: const Offset(7, 7),
+                        blurRadius: 8,
+                        spreadRadius: -5,
+                      ),
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(-7, -7),
+                        blurRadius: 8,
+                        spreadRadius: 0,
+                      ),
+                    ],
                   ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Register',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: Text(
+                      'Register',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ),

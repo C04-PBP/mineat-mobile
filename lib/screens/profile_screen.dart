@@ -42,36 +42,36 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Theme.of(context).shadowColor,
-                      offset: const Offset(6, 6),
-                    ),
-                  ],
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/ingredients2.png'),
-                    fit: BoxFit
-                        .cover, // Adjusts the image to cover the container
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScreen(
-                          username: username,
-                          isLoggedIn: true,
-                          isAdmin: false,
-                        ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainScreen(
+                        username: username,
+                        isLoggedIn: true,
+                        isAdmin: false,
                       ),
-                    );
-                  },
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 4,
+                        color: Theme.of(context).shadowColor,
+                        offset: const Offset(6, 6),
+                      ),
+                    ],
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/ingredients2.png'),
+                      fit: BoxFit
+                          .cover, // Adjusts the image to cover the container
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16),
                   child: Center(
                     child: Text(
                       'Explore',
@@ -89,33 +89,31 @@ class ProfileScreen extends StatelessWidget {
                 height: (username == 'admin') ? 30 : 20,
               ),
               if (username == "admin")
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade500,
-                        offset: const Offset(7, 7),
-                        blurRadius: 8,
-                        spreadRadius: -5,
-                      ),
-                      BoxShadow(
-                        color: Colors.white,
-                        offset: const Offset(-7, -7),
-                        blurRadius: 8,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AdminScreen()));
-                    },
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AdminScreen()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade500,
+                          offset: const Offset(7, 7),
+                          blurRadius: 8,
+                          spreadRadius: -5,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: const Offset(-7, -7),
+                          blurRadius: 8,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 16),
                     child: Center(
                       child: Text(
                         'Admin Page',
@@ -131,55 +129,55 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade500,
-                      offset: const Offset(-7, -7),
-                      blurRadius: 8,
-                      spreadRadius: -5,
-                    ),
-                    BoxShadow(
-                      color: Colors.white,
-                      offset: const Offset(7, 7),
-                      blurRadius: 8,
-                      spreadRadius: 0,
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: GestureDetector(
-                  onTap: () async {
-                    final response = await request.logout(
-                        // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                        "$device/flutter/logout/");
-                    String message = response["message"];
-                    if (context.mounted) {
-                      if (response['status']) {
-                        String uname = response["username"];
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("$message Sampai jumpa, $uname."),
-                        ));
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainScreen(
-                                    username: "",
-                                    isLoggedIn: false,
-                                  )),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(message),
-                          ),
-                        );
-                      }
+              GestureDetector(
+                onTap: () async {
+                  final response = await request.logout(
+                      // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                      "$device/flutter/logout/");
+                  String message = response["message"];
+                  if (context.mounted) {
+                    if (response['status']) {
+                      String uname = response["username"];
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("$message Sampai jumpa, $uname."),
+                      ));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainScreen(
+                                  username: "",
+                                  isLoggedIn: false,
+                                )),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(message),
+                        ),
+                      );
                     }
-                  },
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade500,
+                        offset: const Offset(-7, -7),
+                        blurRadius: 8,
+                        spreadRadius: -5,
+                      ),
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(7, 7),
+                        blurRadius: 8,
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16),
                   child: Center(
                     child: Text(
                       'Log Out',
