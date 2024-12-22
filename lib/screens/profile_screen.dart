@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mineat/screens/admin_screen.dart';
+import 'package:mineat/screens/login_screen.dart';
 import 'package:mineat/screens/main_screen.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:mineat/api/device.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String username;
-  const ProfileScreen({super.key, required this.username});
+  const ProfileScreen({
+    super.key,
+    required this.username,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -143,7 +152,34 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    final response = await request.logout(
+                        // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                        "$device/flutter/logout/");
+                    String message = response["message"];
+                    if (context.mounted) {
+                      if (response['status']) {
+                        String uname = response["username"];
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("$message Sampai jumpa, $uname."),
+                        ));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen(
+                                    username: "",
+                                    isLoggedIn: false,
+                                  )),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(message),
+                          ),
+                        );
+                      }
+                    }
+                  },
                   child: Center(
                     child: Text(
                       'Log Out',

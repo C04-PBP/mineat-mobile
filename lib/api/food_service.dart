@@ -112,4 +112,41 @@ class FoodService {
     }).toList();
     return restaurantFood;
   }
+
+  static Future<Map<String, dynamic>?> updateFoodData({
+    required String id,
+    required String name,
+    required String description,
+    required String price,
+    required String imageUrl,
+    String? ingredients, // Optional field for ingredients
+  }) async {
+    final url = Uri.parse('$device/fnb/update_flutter/$id/'); // Update the endpoint as needed
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'title': name,
+          'description': description,
+          'price': price,
+          'imageUrl': imageUrl,
+          'ingredients': ingredients ?? '', // Send an empty string if null
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        print('Failed to update food data. Status code: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error updating food data: $e');
+      return null;
+    }
+  }
 }
