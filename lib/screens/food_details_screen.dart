@@ -5,6 +5,8 @@ import 'package:mineat/screens/ratings_and_reviews_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mineat/api/device.dart';
+
 
 class FoodDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> item;
@@ -138,9 +140,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   }
 
   Future<void> fetchData() async {
-    print('masuk');
-    await ReviewService.fetchReviewData(
-        widget.item["id"]); //butuh id makanannya
+    print(widget.item["id"]);
+    await ReviewService.fetchReviewData(widget.item["id"]); //butuh id makanannya
 
     final reviews = ReviewService.getReviewData();
 
@@ -166,7 +167,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     print(widget.username.runtimeType);
     String reviewContent = _reviewTextController.text.trim();
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
+      Uri.parse('$device/review/create-flutter/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
