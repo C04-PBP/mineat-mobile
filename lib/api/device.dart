@@ -13,4 +13,4 @@ String getDevice() {
 }
 
 
-final device = 'https://ragnall-muhammad-mineat.pbp.cs.ui.ac.id/';
+final device = 'https://ragnall-muhammad-mineat.pbp.cs.ui.ac.id';
