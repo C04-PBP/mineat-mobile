@@ -26,36 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  final List<Map<String, dynamic>> stackData = [
-    {
-      "title": "Gulai Ayam",
-      "price": 39000,
-      "ingredients":
-          "Chicken, coconut milk, turmeric, garlic, shallots, lemongrass, kaffir lime leaves, salt,",
-      "description":
-          "Curry dish with main ingredients chicken and unripe jackfruit",
-      "imageUrl":
-          "https://asset.kompas.com/crops/4Pge4o-1NYVqjBcfiXvB2nAJcnM=/0x0:1000x667/750x500/data/photo/2021/05/11/609a26028d3c9.jpg"
-    },
-    {
-      "title": "Rendang",
-      "price": 55000,
-      "ingredients":
-          "Beef, coconut milk, turmeric, garlic, shallots, chilies, lemongrass, kaffir lime leaves,",
-      "description":
-          "chunks of beef stewed in spicy coconut milk and chili gravy, cooked well until dried Other than beef, rendang ayam (chicken rendang), rendang itiak (duck rendang), rendang lokan (mussel rendang), and number of other varieties can be found",
-      "imageUrl":
-          "https://img.okezone.com/content/2023/11/08/298/2916908/resep-rendang-asli-padang-enaknya-bikin-nagih-fXMyM16D9A.jpg"
-    },
-    {
-      "title": "Ayam Goreng",
-      "price": 38000,
-      "ingredients": "Chicken, garlic, turmeric, coriander, salt, water, oil,",
-      "description": "fried chicken with spicy granules",
-      "imageUrl":
-          "https://www.astronauts.id/blog/wp-content/uploads/2023/04/Resep-Ayam-Goreng-Serundeng-ala-Rumahan-yang-Nggak-Kalah-Enak-dari-Restoran-1200x900.jpg"
-    },
-  ];
+  final List<Map<String, dynamic>> stackData = [];
 
   final List<Map<String, dynamic>> cardData = [
     {
@@ -142,6 +113,15 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _pageControllerStack = PageController(initialPage: 0);
+
+    stackData.addAll(
+      widget.allFood.where((item) {
+        final title = item['title']?.toLowerCase() ?? '';
+        return title.contains('rendang') ||
+            title.contains('gulai ayam') ||
+            title.contains('ayam goreng');
+      }).toList(),
+    );
 
     // Duplicate items to create a looped effect for Foods
     filteredChickens = widget.allFood
