@@ -6,18 +6,19 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class FoodDetailsScreen extends StatefulWidget {
-  
   final Map<String, dynamic> item;
   final List<Map<String, dynamic>> restaurantAvailable;
   final List<Map<String, dynamic>> foodsInTheRestaurant;
   final bool heroOrNot;
   final String username;
+  final List<Map<String, dynamic>> allFood;
   const FoodDetailsScreen(
       {required this.item,
       required this.restaurantAvailable,
       required this.heroOrNot,
       required this.foodsInTheRestaurant,
       required this.username,
+      required this.allFood,
       super.key});
 
   @override
@@ -122,55 +123,70 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     },
   ];
 
-  final List<Map<String, dynamic>> foodsYouMightLikeData = [
-    {
-      "title": "Gulai tambusu",
-      "price": 38000,
-      "ingredients":
-          "Cow intestines, eggs, tofu, coconut milk, turmeric, garlic, chilies, lemongrass, kaffir lime leaves,",
-      "description":
-          "gulai of cow intestines usually filled with eggs and tofu",
-      "imageUrl":
-          "https://asset.kompas.com/crops/bcpcDBgw82mDYr495vYWQBLff4A=/0x352:667x797/750x500/data/photo/2022/08/12/62f5e26894a4f.jpg"
-    },
-    {
-      "title": "Kalio Ayam",
-      "price": 35000,
-      "ingredients":
-          "Chicken, Coconut milk, Cooking oil, Garlic (minced), Shallots (sliced), Turmeric, Ginger (sliced), Lemongrass, Red chilies (sliced), Salt, Sugar, Water",
-      "description":
-          "similar to rendang; while rendang is rather dry, kalio is watery and light-colored",
-      "imageUrl":
-          "https://asset.kompas.com/crops/mCb4rnN344JdAyqQs9i1IJWktRU=/0x379:667x823/750x500/data/photo/2021/05/11/609a2c750cdc5.jpg"
-    },
-    {
-      "title": "Kepiting Saus Padang",
-      "price": 75000,
-      "ingredients":
-          "Crab, chilies, shallots, garlic, lemongrass, turmeric, lime leaves, salt, oil,",
-      "description":
-          "seafood dish of crab served in hot and spicy Padang sauce",
-      "imageUrl":
-          "https://www.tokomesin.com/wp-content/uploads/2015/10/kepiting-saos-padang-tokomesin.jpg"
-    },
-    {
-      "title": "Dendeng balado",
-      "price": 52000,
-      "ingredients":
-          "Thin beef slices, red chilies, shallots, garlic, tomatoes, lime leaves, salt, oil,",
-      "description": "Thin crispy beef with chili",
-      "imageUrl":
-          "https://www.sasa.co.id/medias/page_medias/resep_dendeng_balado.jpg"
-    },
-    {
-      "title": "Ayam lado ijo",
-      "price": 42000,
-      "ingredients":
-          "Chicken, green chilies, shallots, garlic, lime leaves, salt, oil,",
-      "description": "chicken in green chili",
-      "imageUrl":
-          "https://static.promediateknologi.id/crop/6x262:1075x1659/750x500/webp/photo/p1/1005/2024/01/28/Screenshot_20240128_195516_Instagram-3462551055.jpg"
-    },
+  late List<Map<String, dynamic>> foodsYouMightLikeData = [
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('gulai tambusu')),
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('kalio ayam')),
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('kepiting saus padang')),
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('dendeng balado')),
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('ayam lado ijo')),
+    // {
+    //   "title": "",
+    //   "price": 38000,
+    //   "ingredients":
+    //       "Cow intestines, eggs, tofu, coconut milk, turmeric, garlic, chilies, lemongrass, kaffir lime leaves,",
+    //   "description":
+    //       "gulai of cow intestines usually filled with eggs and tofu",
+    //   "imageUrl":
+    //       "https://asset.kompas.com/crops/bcpcDBgw82mDYr495vYWQBLff4A=/0x352:667x797/750x500/data/photo/2022/08/12/62f5e26894a4f.jpg"
+    // },
+    // {
+    //   "title": "",
+    //   "price": 35000,
+    //   "ingredients":
+    //       "Chicken, Coconut milk, Cooking oil, Garlic (minced), Shallots (sliced), Turmeric, Ginger (sliced), Lemongrass, Red chilies (sliced), Salt, Sugar, Water",
+    //   "description":
+    //       "similar to rendang; while rendang is rather dry, kalio is watery and light-colored",
+    //   "imageUrl":
+    //       "https://asset.kompas.com/crops/mCb4rnN344JdAyqQs9i1IJWktRU=/0x379:667x823/750x500/data/photo/2021/05/11/609a2c750cdc5.jpg"
+    // },
+    // {
+    //   "title": "Kepiting Saus Padang",
+    //   "price": 75000,
+    //   "ingredients":
+    //       "Crab, chilies, shallots, garlic, lemongrass, turmeric, lime leaves, salt, oil,",
+    //   "description":
+    //       "seafood dish of crab served in hot and spicy Padang sauce",
+    //   "imageUrl":
+    //       "https://www.tokomesin.com/wp-content/uploads/2015/10/kepiting-saos-padang-tokomesin.jpg"
+    // },
+    // {
+    //   "title": "Dendeng balado",
+    //   "price": 52000,
+    //   "ingredients":
+    //       "Thin beef slices, red chilies, shallots, garlic, tomatoes, lime leaves, salt, oil,",
+    //   "description": "Thin crispy beef with chili",
+    //   "imageUrl":
+    //       "https://www.sasa.co.id/medias/page_medias/resep_dendeng_balado.jpg"
+    // },
+    // {
+    //   "title": "Ayam lado ijo",
+    //   "price": 42000,
+    //   "ingredients":
+    //       "Chicken, green chilies, shallots, garlic, lime leaves, salt, oil,",
+    //   "description": "chicken in green chili",
+    //   "imageUrl":
+    //       "https://static.promediateknologi.id/crop/6x262:1075x1659/750x500/webp/photo/p1/1005/2024/01/28/Screenshot_20240128_195516_Instagram-3462551055.jpg"
+    // },
   ];
 
   @override
@@ -213,7 +229,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
   Future<void> fetchData() async {
     print('masuk');
-    await ReviewService.fetchReviewData(widget.item["id"]);  //butuh id makanannya
+    await ReviewService.fetchReviewData(
+        widget.item["id"]); //butuh id makanannya
 
     final reviews = ReviewService.getReviewData();
 
@@ -227,7 +244,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     }
   }
 
-
   void _handleRatingTap(int rating) {
     setState(() {
       _myRating = rating;
@@ -236,24 +252,23 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     });
   }
 
-Future<void> _handleSubmitReviewDjango() async {
-  print('masuk');
-  String reviewContent = _reviewTextController.text.trim();
-      final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
-        },
-        body: jsonEncode(<String, dynamic>{
-          'id': widget.item['id'],
-          'rating': _myRating,
-          'content': reviewContent,
-        }
-        ), );
-        return;}
-
-
+  Future<void> _handleSubmitReviewDjango() async {
+    print('masuk');
+    String reviewContent = _reviewTextController.text.trim();
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id': widget.item['id'],
+        'rating': _myRating,
+        'content': reviewContent,
+      }),
+    );
+    return;
+  }
 
   void _handleSubmitReview() {
     String title = _reviewTitleController.text.trim();
@@ -303,7 +318,6 @@ Future<void> _handleSubmitReviewDjango() async {
 
   @override
   Widget build(BuildContext context) {
-    
     final int itemsToShow =
         _showAll ? widget.restaurantAvailable.length : 1 * 2;
     double averageRating = reviewsData.isNotEmpty
@@ -1085,7 +1099,6 @@ Future<void> _handleSubmitReviewDjango() async {
                                                           children: [
                                                             IconButton(
                                                               onPressed: () {
-                                                                
                                                                 setState(() {
                                                                   // Reset the star rating
                                                                   _myRating = 0;
@@ -1264,6 +1277,7 @@ Future<void> _handleSubmitReviewDjango() async {
                                             heroOrNot: true,
                                             item: item,
                                             username: widget.username,
+                                            allFood: widget.allFood,
                                           ),
                                         ),
                                       );

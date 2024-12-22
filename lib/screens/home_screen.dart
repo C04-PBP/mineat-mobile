@@ -26,37 +26,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  final List<Map<String, dynamic>> stackData = [];
-
-  final List<Map<String, dynamic>> cardData = [
-    {
-      "title": "Rendang",
-      "price": 55000,
-      "ingredients":
-          "Beef, coconut milk, turmeric, garlic, shallots, chilies, lemongrass, kaffir lime leaves,",
-      "description":
-          "chunks of beef stewed in spicy coconut milk and chili gravy, cooked well until dried Other than beef, rendang ayam (chicken rendang), rendang itiak (duck rendang), rendang lokan (mussel rendang), and number of other varieties can be found",
-      "imageUrl":
-          "https://img.okezone.com/content/2023/11/08/298/2916908/resep-rendang-asli-padang-enaknya-bikin-nagih-fXMyM16D9A.jpg"
-    },
-    {
-      "title": "Ayam Balado",
-      "price": 42000,
-      "ingredients":
-          "Chicken, red chilies, shallots, garlic, tomatoes, lime leaves, salt, sugar, oil,",
-      "description": "fried chicken smothered with chili",
-      "imageUrl":
-          "https://asset.kompas.com/crops/puSCmWekgKRyE5cRP8IWHhIgTsU=/0x0:1000x667/750x500/data/photo/2023/02/22/63f567b4ab9d0.jpeg"
-    },
-    {
-      "title": "Ayam Goreng",
-      "price": 38000,
-      "ingredients": "Chicken, garlic, turmeric, coriander, salt, water, oil,",
-      "description": "fried chicken with spicy granules",
-      "imageUrl":
-          "https://www.astronauts.id/blog/wp-content/uploads/2023/04/Resep-Ayam-Goreng-Serundeng-ala-Rumahan-yang-Nggak-Kalah-Enak-dari-Restoran-1200x900.jpg"
-    },
+  late List<Map<String, dynamic>> stackData = [
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('gulai ayam')),
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('rendang')),
+    ...widget.allFood.where((food) =>
+        food['title'] != null &&
+        food['title']!.toLowerCase().contains('ayam goreng')),
   ];
+  final List<Map<String, dynamic>> cardData = [];
 
   final List<Map<String, dynamic>> restaurantItems = [
     {
@@ -114,11 +95,11 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
     _pageControllerStack = PageController(initialPage: 0);
 
-    stackData.addAll(
+    cardData.addAll(
       widget.allFood.where((item) {
         final title = item['title']?.toLowerCase() ?? '';
         return title.contains('rendang') ||
-            title.contains('gulai ayam') ||
+            title.contains('ayam balado') ||
             title.contains('ayam goreng');
       }).toList(),
     );
@@ -224,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen>
       ...cardData,
       cardData.first,
     ];
-    _pageController = PageController(initialPage: 1, viewportFraction: 0.85);
+    _pageController = PageController(initialPage: 3, viewportFraction: 0.85);
     _pageController.addListener(() {
       if (_pageController.page == loopedCardData.length - 1) {
         _pageController.jumpToPage(1);
@@ -309,6 +290,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 item: item,
                                 restaurantAvailable: restaurantItems,
                                 username: widget.username,
+                                allFood: widget.allFood,
                               ),
                               transitionDuration: const Duration(
                                   milliseconds: 300), // Optional for smoothness
@@ -518,6 +500,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     appBarTitle: "Cuisines",
                                     foodItems: widget.allFood,
                                     username: widget.username,
+                                    allFood: widget.allFood,
                                   ),
                                   transitionDuration: const Duration(
                                       milliseconds:
@@ -567,6 +550,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         appBarTitle: "Chicken",
                                         foodItems: filteredChickens,
                                         username: widget.username,
+                                        allFood: widget.allFood,
                                       ),
                                     ),
                                   );
@@ -613,6 +597,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         appBarTitle: "Beef",
                                         foodItems: filteredBeefs,
                                         username: widget.username,
+                                        allFood: widget.allFood,
                                       ),
                                     ),
                                   );
@@ -662,6 +647,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         appBarTitle: "Seafood",
                                         foodItems: filteredSeafoods,
                                         username: widget.username,
+                                        allFood: widget.allFood,
                                       ),
                                     ),
                                   );
@@ -705,6 +691,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         appBarTitle: "Vegetarian",
                                         foodItems: filteredVegetarians,
                                         username: widget.username,
+                                        allFood: widget.allFood,
                                       ),
                                     ),
                                   );
@@ -795,6 +782,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         appBarTitle: "Under 20K",
                                         foodItems: filteredItems,
                                         username: widget.username,
+                                        allFood: widget.allFood,
                                       ),
                                     ),
                                   );
@@ -872,6 +860,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         appBarTitle: "Under 50 K",
                                         foodItems: filteredItems,
                                         username: widget.username,
+                                        allFood: widget.allFood,
                                       ),
                                     ),
                                   );
@@ -949,6 +938,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         appBarTitle: "Under 100K",
                                         foodItems: filteredItems,
                                         username: widget.username,
+                                        allFood: widget.allFood,
                                       ),
                                     ),
                                   );

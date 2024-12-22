@@ -312,6 +312,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                               heroOrNot: true,
                                               item: item,
                                               username: widget.username,
+                                              allFood: [],
                                             ),
                                           ),
                                         );

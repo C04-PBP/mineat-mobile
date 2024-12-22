@@ -48,6 +48,7 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                       item: item,
                       restaurantAvailable: widget.allRestaurant,
                       username: widget.username,
+                      allFood: widget.allFood,
                     ),
                     transitionDuration: const Duration(
                         milliseconds: 300), // Optional for smoothness
