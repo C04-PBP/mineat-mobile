@@ -7,6 +7,7 @@ import 'package:mineat/screens/profile_screen.dart';
 import 'package:mineat/screens/register_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class LoginScreen extends StatelessWidget {
   final String username;
@@ -60,33 +61,71 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 32),
-              TextFormField(
-                controller: username,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: const Offset(-7, -7),
+                      blurRadius: 8,
+                      spreadRadius: -5,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: const Offset(7, 7),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: username,
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      border: InputBorder.none,
+                    ),
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
                 ),
               ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: password,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
+              SizedBox(height: 25),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: const Offset(-7, -7),
+                      blurRadius: 8,
+                      spreadRadius: -5,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: const Offset(7, 7),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
                 ),
-                obscureText: true,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: password,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: InputBorder.none,
+                    ),
+                    obscureText: true,
+                  ),
+                ),
               ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () async {
+              SizedBox(height: 40),
+              GestureDetector(
+                onTap: () async {
                   var loginData = {
                     "username": username.text,
                     "password": password.text,
@@ -104,29 +143,6 @@ class LoginScreen extends StatelessWidget {
                                   username: uname,
                                 )),
                       );
-                      // ScaffoldMessenger.of(context)
-                      //   ..hideCurrentSnackBar()
-                      //   ..showSnackBar(
-                      //     SnackBar(
-                      //         content:
-                      //             Text("$message Selamat datang, $uname.")),
-                      //   );
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => MainScreen(
-                      //             username: uname,
-                      //             isLoggedIn: true,
-                      //             isAdmin: false,
-                      //           )),
-                      // );
-                      // ScaffoldMessenger.of(context)
-                      //   ..hideCurrentSnackBar()
-                      //   ..showSnackBar(
-                      //     SnackBar(
-                      //         content:
-                      //             Text("$message Selamat datang, $uname.")),
-                      //   );
                     }
                   } else {
                     if (context.mounted) {
@@ -148,19 +164,34 @@ class LoginScreen extends StatelessWidget {
                     }
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade500,
+                        offset: const Offset(7, 7),
+                        blurRadius: 8,
+                        spreadRadius: -5,
+                      ),
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(-7, -7),
+                        blurRadius: 8,
+                        spreadRadius: 0,
+                      ),
+                    ],
                   ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: Text(
+                      'Log In',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ),

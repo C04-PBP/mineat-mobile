@@ -5,11 +5,13 @@ import 'package:mineat/screens/home_screen.dart';
 class IngredientAllScreen extends StatefulWidget {
   final List<Map<String, dynamic>> ingredientItems;
   final List<Map<String, dynamic>> foodItems;
+  final String username;
 
   const IngredientAllScreen({
     super.key,
     required this.ingredientItems,
     required this.foodItems,
+    required this.username,
   });
 
   @override
@@ -180,6 +182,8 @@ class _IngredientAllScreenState extends State<IngredientAllScreen> {
                         builder: (context) => FoodAllScreen(
                           appBarTitle: "Food Choices",
                           foodItems: _showFilteredFoodItems(),
+                          username: widget.username,
+                          allFood: widget.foodItems,
                         ),
                       ),
                     );

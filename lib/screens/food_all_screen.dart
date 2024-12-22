@@ -4,10 +4,12 @@ import 'package:mineat/screens/food_details_screen.dart';
 class FoodAllScreen extends StatefulWidget {
   final String appBarTitle;
   final List<Map<String, dynamic>> foodItems;
+  final String username;
+  final List<Map<String, dynamic>> allFood;
 
   // Constructor takes a list of food items with title and imageUrl
   const FoodAllScreen(
-      {super.key, required this.appBarTitle, required this.foodItems});
+      {super.key, required this.appBarTitle, required this.foodItems, required this.username, required this.allFood});
 
   @override
   _FoodAllScreenState createState() => _FoodAllScreenState();
@@ -138,6 +140,8 @@ class _FoodAllScreenState extends State<FoodAllScreen> {
                               heroOrNot: true,
                               item: item,
                               restaurantAvailable: restaurantItems,
+                              username: widget.username,
+                              allFood: widget.allFood,
                             ),
                             transitionDuration: const Duration(
                                 milliseconds: 300), // Optional for smoothness

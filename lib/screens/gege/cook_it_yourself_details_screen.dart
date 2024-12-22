@@ -5,7 +5,14 @@ class CookItYourselfScreen extends StatefulWidget {
   final String title;
   final List<Map<String, dynamic>> ingredientItems;
   final List<Map<String, dynamic>> foodItems;
-  const CookItYourselfScreen({required this.title, required this.ingredientItems, required this.foodItems, super.key});
+  final String username;
+  const CookItYourselfScreen({
+    required this.title,
+    required this.ingredientItems,
+    required this.foodItems,
+    required this.username,
+    super.key,
+  });
 
   @override
   State<CookItYourselfScreen> createState() => _CookItYourselfScreenState();
@@ -46,14 +53,16 @@ class _CookItYourselfScreenState extends State<CookItYourselfScreen>
         pageBuilder: (context, animation, secondaryAnimation) =>
             IngredientAllScreen(
           ingredientItems: widget.ingredientItems,
-          foodItems: widget.foodItems
+          foodItems: widget.foodItems,
+          username: widget.username,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0); // Start from bottom
           const end = Offset.zero;
           const curve = Curves.easeInOut;
 
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
           var offsetAnimation = animation.drive(tween);
 
           return SlideTransition(
