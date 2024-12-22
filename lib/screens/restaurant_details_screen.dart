@@ -45,8 +45,10 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.item['foodsInTheRestaurant']);
+    print(widget.item["title"]);
     final int itemsToShow =
-        _showAll ? widget.item['foodsInTheRestaurant'].length : 1 * 2;
+        _showAll ? widget.item['foodsInTheRestaurant']?.length ?? 0 : 1 * 2;
     return Hero(
       tag: widget.heroOrNot ? widget.item['title'] : "None",
       child: Scaffold(
@@ -288,9 +290,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                   itemCount: itemsToShow
                                       .clamp(
                                         0,
-                                        (widget.item['foodsInTheRestaurant']
-                                                as List)
-                                            .length,
+                                        widget.item['foodsInTheRestaurant']?.length ?? 0
                                       )
                                       .toInt(),
                                   itemBuilder: (context, index) {
@@ -304,7 +304,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                             builder: (context) =>
                                                 FoodDetailsScreen(
                                               foodsInTheRestaurant:
-                                                  widget.foodsInTheRestaurant,
+                                                  widget.item['foodsInTheRestaurant'],
                                               restaurantAvailable:
                                                   widget.restaurantAvailable,
                                               heroOrNot: true,
@@ -361,8 +361,8 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              if ((widget.item['foodsInTheRestaurant'] as List)
-                                      .length >
+                              if (widget.item['foodsInTheRestaurant']
+                                      ?.length ?? 0 >
                                   4) // Only show button if needed
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment

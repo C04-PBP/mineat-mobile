@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mineat/api/device.dart';
 
 class LocationService {
   static List<Map<String, dynamic>>? _locationData;
@@ -7,7 +8,7 @@ class LocationService {
   static Future<void> fetchLocationData() async {
     if (_locationData != null) return;
 
-    final url = 'http://localhost:8000/location/json/';
+    final url = '$device/location/json/';
 
     try {
       final response = await http.get(Uri.parse(url));
