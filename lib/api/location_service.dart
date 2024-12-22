@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mineat/api/restaurant_service.dart';
 import 'package:mineat/api/device.dart';
 
 class LocationService {
@@ -16,11 +17,15 @@ class LocationService {
       if (response.statusCode == 200) {
         // Decode the JSON response
         final List<dynamic> responseData = json.decode(response.body);
-
         _locationData = responseData.map((item) {
+          List<Map<String, dynamic>>? restaurantsInTheDistrict =
+              RestaurantService.parseRestaurantData(
+                  item['restaurantsInTheDistrict']);
           return {
             'title': item['title'],
             'imageUrl': item['imageUrl'],
+            'trivia': item['trivia'],
+            'restaurantsInTheDistrict': restaurantsInTheDistrict,
           };
         }).toList();
       } else {
@@ -39,6 +44,7 @@ class LocationService {
     _locationData = null;
   }
 }
+
 
 // cara make:
 

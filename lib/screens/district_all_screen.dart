@@ -101,10 +101,12 @@ class _DistrictAllScreenState extends State<DistrictAllScreen> {
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
                                     DistrictDetailsScreen(
+                              item: item,
                               restaurantsInTheDistrict:
-                                  widget.restaurantsInTheDistrict,
+                                  item['restaurantsInTheDistrict'],
                               title: item['title']!,
                               imageUrl: item['imageUrl']!,
+                              trivia: item['trivia']!,
                               username: widget.username,
                             ),
                             transitionDuration: const Duration(

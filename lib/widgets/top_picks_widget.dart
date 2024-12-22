@@ -43,7 +43,7 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                   PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) =>
                         FoodDetailsScreen(
-                          foodsInTheRestaurant: widget.allFood.sublist(4),
+                      foodsInTheRestaurant: widget.allFood.sublist(4),
                       heroOrNot: true,
                       item: item,
                       restaurantAvailable: widget.allRestaurant,
@@ -90,9 +90,7 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.error)
-                                  ],
+                                  children: [Icon(Icons.error)],
                                 ),
                               );
                             },
@@ -144,8 +142,8 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                   PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) =>
                         RestaurantDetailsScreen(
-                          restaurantAvailable: widget.allRestaurant,
-                      foodsInTheRestaurant: widget.allFood,
+                      restaurantAvailable: widget.allRestaurant.sublist(0),
+                      foodsInTheRestaurant: [],
                       heroOrNot: true,
                       item: item,
                       username: widget.username,
