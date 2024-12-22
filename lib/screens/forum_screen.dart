@@ -111,6 +111,11 @@ class _ForumScreenState extends State<ForumScreen> {
       } else {
         checkboxFilteredForums =
             allForum.where((forum) => forum.replyCount == 1).toList();
+        
+        if (checkboxFilteredForums.isEmpty) {
+          filteredForums = [];
+          return;
+        }
       }
       _combineFilters();
     });
