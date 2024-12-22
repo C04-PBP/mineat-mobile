@@ -2,6 +2,8 @@
 
 # Discover Minang cuisine within minutes with Mineat!
 
+# Link : [![Build status](https://build.appcenter.ms/v0.1/apps/80dbdebe-88bb-4c86-b391-c4bda9f01a92/branches/main/badge)](https://appcenter.ms)
+
 ## Anggota Kelompok C04
 - [Khansa Khairunisa](https://github.com/khansakhai) (2306152462)
 - [Abdul Zacky](https://github.com/abdul-zacky) (2306214510)

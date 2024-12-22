@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:mineat/api/review_service.dart';
 import 'package:mineat/screens/ratings_and_reviews_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class FoodDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> item;
   final List<Map<String, dynamic>> restaurantAvailable;
   final List<Map<String, dynamic>> foodsInTheRestaurant;
   final bool heroOrNot;
+  final String username;
+  final List<Map<String, dynamic>> allFood;
   const FoodDetailsScreen(
       {required this.item,
       required this.restaurantAvailable,
       required this.heroOrNot,
       required this.foodsInTheRestaurant,
+      required this.username,
+      required this.allFood,
       super.key});
 
   @override
@@ -40,81 +46,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   // Hardcoded data for each page
   bool isLoading = true;
   List<Map<String, dynamic>> reviewsData = [
-    {
-      'title': 'Amazing Food',
-      'rating': 5,
-      'reviewer': 'Zac Gauthier',
-      'timeAgo': '5y ago',
-      'content': 'The best food I’ve ever had. Highly recommend it!',
-      'response': 'We\'re thrilled you enjoyed your experience! Thank you!',
-    },
-    {
-      'title': 'Delicious',
-      'rating': 4,
-      'reviewer': 'Anna Smith',
-      'timeAgo': '2y ago',
-      'content': 'Great food, but the service could be faster.',
-      'response': 'We appreciate your feedback and will improve.',
-    },
-    {
-      'title': 'Good Experience',
-      'rating': 4,
-      'reviewer': 'John Doe',
-      'timeAgo': '1y ago',
-      'content': 'The ambiance was nice, and the food was good.',
-      'response': 'Thank you for your kind words!',
-    },
-    {
-      'title': 'Not bad',
-      'rating': 3,
-      'reviewer': 'Emily Clark',
-      'timeAgo': '6mo ago',
-      'content': 'The food was okay, but the portion sizes are too small.',
-      'response': 'We\'ll work on improving portion sizes. Thank you!',
-    },
-    {
-      'title': 'Disappointing',
-      'rating': 2,
-      'reviewer': 'Jake Williams',
-      'timeAgo': '3mo ago',
-      'content': 'Service was slow, and the food was cold.',
-      'response': 'We’re sorry to hear this. We’re working to improve!',
-    },
-    {
-      'title': 'Could be better',
-      'rating': 3,
-      'reviewer': 'Sarah Johnson',
-      'timeAgo': '1mo ago',
-      'content': 'The desserts were great, but the main course wasn’t.',
-      'response': 'Thank you for the feedback. We’ll improve!',
-    },
-  ];
-
-  final List<Map<String, dynamic>> reviewsDataHelpful = [
-    {
-      'title': 'Amazing Food',
-      'rating': 5,
-      'reviewer': 'Zac Gauthier',
-      'timeAgo': '5y ago',
-      'content': 'The best food I’ve ever had. Highly recommend it!',
-      'response': 'We\'re thrilled you enjoyed your experience! Thank you!',
-    },
-    {
-      'title': 'Delicious',
-      'rating': 4,
-      'reviewer': 'Anna Smith',
-      'timeAgo': '2y ago',
-      'content': 'Great food, but the service could be faster.',
-      'response': 'We appreciate your feedback and will improve.',
-    },
-    {
-      'title': 'Good Experience',
-      'rating': 4,
-      'reviewer': 'John Doe',
-      'timeAgo': '1y ago',
-      'content': 'The ambiance was nice, and the food was good.',
-      'response': 'Thank you for your kind words!',
-    },
   ];
 
   final List<Map<String, dynamic>> foodsYouMightLikeData = [
@@ -208,7 +139,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
   Future<void> fetchData() async {
     print('masuk');
-    await ReviewService.fetchReviewData(widget.item["id"]);  //butuh id makanannya
+    await ReviewService.fetchReviewData(
+        widget.item["id"]); //butuh id makanannya
 
     final reviews = ReviewService.getReviewData();
 
@@ -222,7 +154,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     }
   }
 
-
   void _handleRatingTap(int rating) {
     setState(() {
       _myRating = rating;
@@ -230,6 +161,26 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
       // _isReviewBoxVisible = true; // Show the review box
     });
   }
+
+Future<void> _handleSubmitReviewDjango() async {
+  print('masuk');
+  String reviewContent = _reviewTextController.text.trim();
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
+        },
+        body: jsonEncode(<String, dynamic>{
+          'id': widget.item['id'],
+          'rating': _myRating,
+          'content': reviewContent,
+          'name': widget.username
+        }
+        ), );
+        return;}
+
+
 
   void _handleSubmitReview() {
     String title = _reviewTitleController.text.trim();
@@ -247,6 +198,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
     if ((title.isNotEmpty || reviewContent.isNotEmpty) && _myRating != 0) {
       setState(() {
+        _handleSubmitReviewDjango();
         _isReviewSubmitted = true;
         _countRateError = -1;
         // Determine the response based on the rating
@@ -550,6 +502,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                                 widget.foodsInTheRestaurant,
                                             heroOrNot: true,
                                             item: item,
+                                            username: widget.username,
                                           ),
                                         ),
                                       );
@@ -766,14 +719,14 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                     MediaQuery.of(context).size.height * 0.25,
                                 child: PageView.builder(
                                   controller: _pageController,
-                                  itemCount: reviewsDataHelpful.length,
+                                  itemCount: reviewsData.length,
                                   onPageChanged: (index) {
                                     setState(() {
                                       _currentPageIndex = index;
                                     });
                                   },
                                   itemBuilder: (context, index) {
-                                    final review = reviewsDataHelpful[index];
+                                    final review = reviewsData[index];
                                     return Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 8),
@@ -795,7 +748,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            review['title'],
+                                            "${review['reviewer']}",
                                             style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -818,7 +771,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                "${review['timeAgo']} • ${review['reviewer']}",
+                                                "${review['timeAgo']}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,
@@ -833,21 +786,21 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                               fontSize: 14,
                                             ),
                                           ),
-                                          const SizedBox(height: 12),
-                                          const Text(
-                                            "Chef Response",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            review['response'],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
+                                          // const SizedBox(height: 12),
+                                          // const Text(
+                                          //   "Chef Response",
+                                          //   style: TextStyle(
+                                          //     fontSize: 14,
+                                          //     fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
+                                          // const SizedBox(height: 4),
+                                          // Text(
+                                          //   review['response'],
+                                          //   style: const TextStyle(
+                                          //     fontSize: 14,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     );
@@ -1235,6 +1188,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                                 widget.restaurantAvailable,
                                             heroOrNot: true,
                                             item: item,
+                                            username: widget.username,
+                                            allFood: widget.allFood,
                                           ),
                                         ),
                                       );

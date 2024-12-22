@@ -96,6 +96,7 @@ class _RestaurantAllScreenState extends State<RestaurantAllScreen> {
                                 (context, animation, secondaryAnimation) =>
                                     RestaurantDetailsScreen(
                               restaurantAvailable: widget.restaurantItems,
+                              username: widget.username,
                               foodsInTheRestaurant: [],
                               heroOrNot: true,
                               item: item,
