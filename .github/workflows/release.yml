@@ -3,7 +3,7 @@ name: Release
 
 # Controls when the workflow will run
 on:
- # Triggers the workflow on push events but only for the main branch
+  # Triggers the workflow on push events but only for the main branch
   push:
     branches: [main]
 
@@ -14,24 +14,27 @@ jobs:
     name: Build and Release APK
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
 
       - name: Get version from pubspec.yaml
         id: version
-        run: echo "::set-output name=version::$(grep "version:" pubspec.yaml | cut -c10-)"
+        run: echo "version=$(grep "version:" pubspec.yaml | cut -c10-)" >> $GITHUB_OUTPUT
 
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: "zulu"
-          java-version: "17"
+          distribution: 'zulu'
+          java-version: '17'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
+          channel: 'stable'
 
       - name: Get packages
         run: flutter pub get
@@ -48,7 +51,7 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(TZ='Asia/Jakarta' date +'%A %d-%m-%Y %T WIB')"
+        run: echo "date=$(TZ='Asia/Jakarta' date +'%A %d-%m-%Y %T WIB')" >> $GITHUB_OUTPUT
 
       - name: Release APK
         uses: ncipollo/release-action@v1
@@ -57,5 +60,4 @@ jobs:
           artifacts: "build/app/outputs/flutter-apk/*.apk"
           body: "Published at ${{ steps.date.outputs.date }}"
           name: "v${{ steps.version.outputs.version }}"
-          token: ${{ secrets.GH_TOKEN }}
           tag: ${{ steps.version.outputs.version }}
