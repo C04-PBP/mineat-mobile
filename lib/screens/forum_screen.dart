@@ -548,7 +548,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                                       fontSize: 16,
                                                       color: Colors.grey,
                                                     ),
-                                                    maxLines: 2,
+                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
