@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mineat/api/device.dart';
 import 'package:mineat/api/food_service.dart';
 
 class RestaurantService {
@@ -8,7 +9,7 @@ class RestaurantService {
   static Future<void> fetchRestaurantData() async {
     if (_restaurantData != null) return;
 
-    final url = 'http://localhost:8000/restaurant/json/';
+    final url = '$device/restaurant/json/';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -17,9 +18,12 @@ class RestaurantService {
         // Decode the JSON response
         final List<dynamic> responseData = json.decode(response.body);
 
+        
+
         _restaurantData = responseData.map((item) {
-          List<Map<String, dynamic>>? foodsInTheRestaurant =
+          final foodsInTheRestaurant =
               FoodService.parseFoodData(item['foodsInTheRestaurant']);
+
           return {
             'title': item['title'],
             "address": item['address'],
@@ -28,7 +32,6 @@ class RestaurantService {
             "foodsInTheRestaurant": foodsInTheRestaurant
           };
         }).toList();
-        print(_restaurantData);
       } else {
         throw Exception('Failed to load restaurant data');
       }
