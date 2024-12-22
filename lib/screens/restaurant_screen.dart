@@ -1607,7 +1607,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
 
   List<Map<String, dynamic>> allDistrict = [];
 
-  // List<Map<String, dynamic>> allRestaurant = [];
+  List<Map<String, dynamic>> allRestaurant = [];
 
   late PageController _pageControllerStack;
   late PageController _pageController;
@@ -1655,20 +1655,20 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     });
   }
 
-  // Future<void> fetchRestaurantData() async {
-  //   await RestaurantService.fetchRestaurantData();
+  Future<void> fetchRestaurantData() async {
+    await RestaurantService.fetchRestaurantData();
 
-  //   final restaurants = RestaurantService.getRestaurantData();
+    final restaurants = RestaurantService.getRestaurantData();
 
-  //   if (restaurants!.isNotEmpty) {
-  //     setState(() {
-  //       allRestaurant = restaurants;
-  //       isLoading = false;
-  //     });
-  //   } else {
-  //     print('Error: Restaurant data is null or not found');
-  //   }
-  // }
+    if (restaurants!.isNotEmpty) {
+      setState(() {
+        allRestaurant = restaurants;
+        isLoading = false;
+      });
+    } else {
+      print('Error: Restaurant data is null or not found');
+    }
+  }
 
   Future<void> fetchLocationData() async {
     await LocationService.fetchLocationData();
@@ -1945,6 +1945,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                               (context, animation, secondaryAnimation) =>
                                   RestaurantAllScreen(
                             restaurantItems: allRestaurant,
+                            username: widget.username,
                           ),
                           transitionDuration: const Duration(
                               milliseconds: 300), // Optional for smoothness
@@ -2045,6 +2046,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                         widget.allRestaurant,
                                     title: "All Districts",
                                     imageUrl: "",
+                                    trivia: "",
+                                    username: widget.username,
                                   ),
                                 ),
                               );
@@ -2104,6 +2107,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                 restaurantsInTheDistrict: [],
                                 title: item['title']!,
                                 imageUrl: item['imageUrl']!,
+                                trivia: item['trivia']!,
+                                username: widget.username,
                               ),
                               transitionDuration:
                                   const Duration(milliseconds: 300),
