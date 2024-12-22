@@ -7,7 +7,6 @@ class DistrictAllScreen extends StatefulWidget {
   final String username;
 
   // Constructor takes a list of food items with title and imageUrl
-
   const DistrictAllScreen({
     super.key,
     required this.districtItems,
