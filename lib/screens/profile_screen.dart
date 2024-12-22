@@ -145,7 +145,7 @@ class ProfileScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MainScreen(
-                                  username: "",
+                                  username: "None",
                                   isLoggedIn: false,
                                 )),
                       );
