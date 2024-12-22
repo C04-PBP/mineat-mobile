@@ -46,147 +46,57 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   // Hardcoded data for each page
   bool isLoading = true;
   List<Map<String, dynamic>> reviewsData = [
-    {
-      'title': 'Amazing Food',
-      'rating': 5,
-      'reviewer': 'Zac Gauthier',
-      'timeAgo': '5y ago',
-      'content': 'The best food I’ve ever had. Highly recommend it!',
-      'response': 'We\'re thrilled you enjoyed your experience! Thank you!',
-    },
-    {
-      'title': 'Delicious',
-      'rating': 4,
-      'reviewer': 'Anna Smith',
-      'timeAgo': '2y ago',
-      'content': 'Great food, but the service could be faster.',
-      'response': 'We appreciate your feedback and will improve.',
-    },
-    {
-      'title': 'Good Experience',
-      'rating': 4,
-      'reviewer': 'John Doe',
-      'timeAgo': '1y ago',
-      'content': 'The ambiance was nice, and the food was good.',
-      'response': 'Thank you for your kind words!',
-    },
-    {
-      'title': 'Not bad',
-      'rating': 3,
-      'reviewer': 'Emily Clark',
-      'timeAgo': '6mo ago',
-      'content': 'The food was okay, but the portion sizes are too small.',
-      'response': 'We\'ll work on improving portion sizes. Thank you!',
-    },
-    {
-      'title': 'Disappointing',
-      'rating': 2,
-      'reviewer': 'Jake Williams',
-      'timeAgo': '3mo ago',
-      'content': 'Service was slow, and the food was cold.',
-      'response': 'We’re sorry to hear this. We’re working to improve!',
-    },
-    {
-      'title': 'Could be better',
-      'rating': 3,
-      'reviewer': 'Sarah Johnson',
-      'timeAgo': '1mo ago',
-      'content': 'The desserts were great, but the main course wasn’t.',
-      'response': 'Thank you for the feedback. We’ll improve!',
-    },
   ];
 
-  final List<Map<String, dynamic>> reviewsDataHelpful = [
+  final List<Map<String, dynamic>> foodsYouMightLikeData = [
     {
-      'title': 'Amazing Food',
-      'rating': 5,
-      'reviewer': 'Zac Gauthier',
-      'timeAgo': '5y ago',
-      'content': 'The best food I’ve ever had. Highly recommend it!',
-      'response': 'We\'re thrilled you enjoyed your experience! Thank you!',
+      "title": "Gulai tambusu",
+      "price": 38000,
+      "ingredients":
+          "Cow intestines, eggs, tofu, coconut milk, turmeric, garlic, chilies, lemongrass, kaffir lime leaves,",
+      "description":
+          "gulai of cow intestines usually filled with eggs and tofu",
+      "imageUrl":
+          "https://asset.kompas.com/crops/bcpcDBgw82mDYr495vYWQBLff4A=/0x352:667x797/750x500/data/photo/2022/08/12/62f5e26894a4f.jpg"
     },
     {
-      'title': 'Delicious',
-      'rating': 4,
-      'reviewer': 'Anna Smith',
-      'timeAgo': '2y ago',
-      'content': 'Great food, but the service could be faster.',
-      'response': 'We appreciate your feedback and will improve.',
+      "title": "Kalio Ayam",
+      "price": 35000,
+      "ingredients":
+          "Chicken, Coconut milk, Cooking oil, Garlic (minced), Shallots (sliced), Turmeric, Ginger (sliced), Lemongrass, Red chilies (sliced), Salt, Sugar, Water",
+      "description":
+          "similar to rendang; while rendang is rather dry, kalio is watery and light-colored",
+      "imageUrl":
+          "https://asset.kompas.com/crops/mCb4rnN344JdAyqQs9i1IJWktRU=/0x379:667x823/750x500/data/photo/2021/05/11/609a2c750cdc5.jpg"
     },
     {
-      'title': 'Good Experience',
-      'rating': 4,
-      'reviewer': 'John Doe',
-      'timeAgo': '1y ago',
-      'content': 'The ambiance was nice, and the food was good.',
-      'response': 'Thank you for your kind words!',
+      "title": "Kepiting Saus Padang",
+      "price": 75000,
+      "ingredients":
+          "Crab, chilies, shallots, garlic, lemongrass, turmeric, lime leaves, salt, oil,",
+      "description":
+          "seafood dish of crab served in hot and spicy Padang sauce",
+      "imageUrl":
+          "https://www.tokomesin.com/wp-content/uploads/2015/10/kepiting-saos-padang-tokomesin.jpg"
     },
-  ];
-
-  late List<Map<String, dynamic>> foodsYouMightLikeData = [
-    ...widget.allFood.where((food) =>
-        food['title'] != null &&
-        food['title']!.toLowerCase().contains('gulai tambusu')),
-    ...widget.allFood.where((food) =>
-        food['title'] != null &&
-        food['title']!.toLowerCase().contains('kalio ayam')),
-    ...widget.allFood.where((food) =>
-        food['title'] != null &&
-        food['title']!.toLowerCase().contains('kepiting saus padang')),
-    ...widget.allFood.where((food) =>
-        food['title'] != null &&
-        food['title']!.toLowerCase().contains('dendeng balado')),
-    ...widget.allFood.where((food) =>
-        food['title'] != null &&
-        food['title']!.toLowerCase().contains('ayam lado ijo')),
-    // {
-    //   "title": "",
-    //   "price": 38000,
-    //   "ingredients":
-    //       "Cow intestines, eggs, tofu, coconut milk, turmeric, garlic, chilies, lemongrass, kaffir lime leaves,",
-    //   "description":
-    //       "gulai of cow intestines usually filled with eggs and tofu",
-    //   "imageUrl":
-    //       "https://asset.kompas.com/crops/bcpcDBgw82mDYr495vYWQBLff4A=/0x352:667x797/750x500/data/photo/2022/08/12/62f5e26894a4f.jpg"
-    // },
-    // {
-    //   "title": "",
-    //   "price": 35000,
-    //   "ingredients":
-    //       "Chicken, Coconut milk, Cooking oil, Garlic (minced), Shallots (sliced), Turmeric, Ginger (sliced), Lemongrass, Red chilies (sliced), Salt, Sugar, Water",
-    //   "description":
-    //       "similar to rendang; while rendang is rather dry, kalio is watery and light-colored",
-    //   "imageUrl":
-    //       "https://asset.kompas.com/crops/mCb4rnN344JdAyqQs9i1IJWktRU=/0x379:667x823/750x500/data/photo/2021/05/11/609a2c750cdc5.jpg"
-    // },
-    // {
-    //   "title": "Kepiting Saus Padang",
-    //   "price": 75000,
-    //   "ingredients":
-    //       "Crab, chilies, shallots, garlic, lemongrass, turmeric, lime leaves, salt, oil,",
-    //   "description":
-    //       "seafood dish of crab served in hot and spicy Padang sauce",
-    //   "imageUrl":
-    //       "https://www.tokomesin.com/wp-content/uploads/2015/10/kepiting-saos-padang-tokomesin.jpg"
-    // },
-    // {
-    //   "title": "Dendeng balado",
-    //   "price": 52000,
-    //   "ingredients":
-    //       "Thin beef slices, red chilies, shallots, garlic, tomatoes, lime leaves, salt, oil,",
-    //   "description": "Thin crispy beef with chili",
-    //   "imageUrl":
-    //       "https://www.sasa.co.id/medias/page_medias/resep_dendeng_balado.jpg"
-    // },
-    // {
-    //   "title": "Ayam lado ijo",
-    //   "price": 42000,
-    //   "ingredients":
-    //       "Chicken, green chilies, shallots, garlic, lime leaves, salt, oil,",
-    //   "description": "chicken in green chili",
-    //   "imageUrl":
-    //       "https://static.promediateknologi.id/crop/6x262:1075x1659/750x500/webp/photo/p1/1005/2024/01/28/Screenshot_20240128_195516_Instagram-3462551055.jpg"
-    // },
+    {
+      "title": "Dendeng balado",
+      "price": 52000,
+      "ingredients":
+          "Thin beef slices, red chilies, shallots, garlic, tomatoes, lime leaves, salt, oil,",
+      "description": "Thin crispy beef with chili",
+      "imageUrl":
+          "https://www.sasa.co.id/medias/page_medias/resep_dendeng_balado.jpg"
+    },
+    {
+      "title": "Ayam lado ijo",
+      "price": 42000,
+      "ingredients":
+          "Chicken, green chilies, shallots, garlic, lime leaves, salt, oil,",
+      "description": "chicken in green chili",
+      "imageUrl":
+          "https://static.promediateknologi.id/crop/6x262:1075x1659/750x500/webp/photo/p1/1005/2024/01/28/Screenshot_20240128_195516_Instagram-3462551055.jpg"
+    },
   ];
 
   @override
@@ -252,23 +162,25 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     });
   }
 
-  Future<void> _handleSubmitReviewDjango() async {
-    print('masuk');
-    String reviewContent = _reviewTextController.text.trim();
-    final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
-      },
-      body: jsonEncode(<String, dynamic>{
-        'id': widget.item['id'],
-        'rating': _myRating,
-        'content': reviewContent,
-      }),
-    );
-    return;
-  }
+Future<void> _handleSubmitReviewDjango() async {
+  print('masuk');
+  String reviewContent = _reviewTextController.text.trim();
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
+        },
+        body: jsonEncode(<String, dynamic>{
+          'id': widget.item['id'],
+          'rating': _myRating,
+          'content': reviewContent,
+          'name': widget.username
+        }
+        ), );
+        return;}
+
+
 
   void _handleSubmitReview() {
     String title = _reviewTitleController.text.trim();
@@ -807,14 +719,14 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                     MediaQuery.of(context).size.height * 0.25,
                                 child: PageView.builder(
                                   controller: _pageController,
-                                  itemCount: reviewsDataHelpful.length,
+                                  itemCount: reviewsData.length,
                                   onPageChanged: (index) {
                                     setState(() {
                                       _currentPageIndex = index;
                                     });
                                   },
                                   itemBuilder: (context, index) {
-                                    final review = reviewsDataHelpful[index];
+                                    final review = reviewsData[index];
                                     return Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 8),
@@ -836,7 +748,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            review['title'],
+                                            "${review['reviewer']}",
                                             style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -859,7 +771,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                "${review['timeAgo']} • ${review['reviewer']}",
+                                                "${review['timeAgo']}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,
@@ -874,21 +786,21 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                               fontSize: 14,
                                             ),
                                           ),
-                                          const SizedBox(height: 12),
-                                          const Text(
-                                            "Chef Response",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            review['response'],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
+                                          // const SizedBox(height: 12),
+                                          // const Text(
+                                          //   "Chef Response",
+                                          //   style: TextStyle(
+                                          //     fontSize: 14,
+                                          //     fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
+                                          // const SizedBox(height: 4),
+                                          // Text(
+                                          //   review['response'],
+                                          //   style: const TextStyle(
+                                          //     fontSize: 14,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     );
