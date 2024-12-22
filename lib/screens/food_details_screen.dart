@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class FoodDetailsScreen extends StatefulWidget {
+  
   final Map<String, dynamic> item;
   final List<Map<String, dynamic>> restaurantAvailable;
   final List<Map<String, dynamic>> foodsInTheRestaurant;
@@ -246,7 +247,8 @@ Future<void> _handleSubmitReviewDjango() async {
           'id': widget.item['id'],
           'rating': _myRating,
           'content': reviewContent,
-        }), );
+        }
+        ), );
         return;}
 
 
@@ -299,6 +301,7 @@ Future<void> _handleSubmitReviewDjango() async {
 
   @override
   Widget build(BuildContext context) {
+    
     final int itemsToShow =
         _showAll ? widget.restaurantAvailable.length : 1 * 2;
     double averageRating = reviewsData.isNotEmpty
