@@ -249,6 +249,7 @@ Future<void> _handleSubmitReviewDjango() async {
           'id': widget.item['id'],
           'rating': _myRating,
           'content': reviewContent,
+          'name': widget.username
         }
         ), );
         return;}
