@@ -30,7 +30,8 @@ class _AdminScreenState extends State<AdminScreen> {
     if (foods != null) {
       // Prepare data before updating the state
       final titles = foods.map((food) => food['title'].toString()).toList();
-      final imageUrls = foods.map((food) => food['imageUrl'].toString()).toList();
+      final imageUrls =
+          foods.map((food) => food['imageUrl'].toString()).toList();
 
       // Update state with prepared data
       setState(() {
@@ -46,8 +47,7 @@ class _AdminScreenState extends State<AdminScreen> {
     }
   }
 
-  Set<String> getUniqueIngredients(
-      List<Map<String, dynamic>> foodList) {
+  Set<String> getUniqueIngredients(List<Map<String, dynamic>> foodList) {
     // if (foodList.isEmpty) {
     //   return [];
     // }
@@ -65,8 +65,8 @@ class _AdminScreenState extends State<AdminScreen> {
     }
     // Convert the Set of unique ingredients into a List of Maps
     return uniqueIngredients;
-        // .map((ingredient) => {'ingredient': ingredient})
-        // .toList();
+    // .map((ingredient) => {'ingredient': ingredient})
+    // .toList();
   }
 
   Widget buildRow({
@@ -158,7 +158,8 @@ class _AdminScreenState extends State<AdminScreen> {
                           // Show a message if data is still loading
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Data is still loading, please wait."),
+                              content:
+                                  Text("Data is still loading, please wait."),
                             ),
                           );
                         }
@@ -166,7 +167,11 @@ class _AdminScreenState extends State<AdminScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const FoodEditScreen()),
+                            builder: (context) => FoodEditScreen(
+                              uniqueIngredientsList:
+                                  getUniqueIngredients(allFood),
+                            ),
+                          ),
                         );
                       } else {
                         Navigator.push(
