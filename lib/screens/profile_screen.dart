@@ -59,10 +59,11 @@ class ProfileScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        blurRadius: 4,
-                        color: Theme.of(context).shadowColor,
-                        offset: const Offset(6, 6),
-                      ),
+                          color: Colors.grey.shade500,
+                          offset: const Offset(7, 7),
+                          blurRadius: 8,
+                          spreadRadius: -5,
+                        ),
                     ],
                     image: DecorationImage(
                       image: AssetImage('assets/images/ingredients2.png'),

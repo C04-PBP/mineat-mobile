@@ -175,7 +175,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
         'id': widget.item['id'],
         'rating': _myRating,
         'content': reviewContent,
-        'name': widget.username
+        'name': widget.username,
       }),
     );
     return;
