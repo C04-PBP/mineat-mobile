@@ -29,52 +29,28 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
-  final List<Map<String, dynamic>> stackData = [
-    {
-      "title": "Taman Surya",
-      "address": "Jl. Tamansiswa No. 15",
-      "district": "Padang Utara",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMucy2GYqlxcQZpn6g9OzG8CXFFHCZYpduAxKE2=s1360-w1360-h1020"
-    },
-    {
-      "title": "Kubang Hayuda",
-      "address": "Jl. Prof. M. Yamin SH No. 138B, Padang",
-      "district": "Padang Barat",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipPE1fJpyuCWE2eMPbYKPL5zD-eTKPbvM_MJ6bmD=s680-w680-h510"
-    },
-    {
-      "title": "VII Koto Talago",
-      "address": "Jl. Jhoni Anwar No.Kelurahan No.17, Padang",
-      "district": "Padang Utara",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMfCv5oU_RRNSg_BgK9lA9FLaMSABN1CUDTAO0S=s680-w680-h510"
-    },
+  late List<Map<String, dynamic>> stackData = [
+    ...widget.allRestaurant.where((restaurant) =>
+        restaurant['title'] != null &&
+        restaurant['title']!.toLowerCase().contains('taman surya')),
+    ...widget.allRestaurant.where((restaurant) =>
+        restaurant['title'] != null &&
+        restaurant['title']!.toLowerCase().contains('kubang hayuda')),
+    ...widget.allRestaurant.where((restaurant) =>
+        restaurant['title'] != null &&
+        restaurant['title']!.toLowerCase().contains('vii koto talago')),
   ];
 
-  final List<Map<String, dynamic>> cardData = [
-    {
-      "title": "Kubang Hayuda",
-      "address": "Jl. Prof. M. Yamin SH No. 138B, Padang",
-      "district": "Padang Barat",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipPE1fJpyuCWE2eMPbYKPL5zD-eTKPbvM_MJ6bmD=s680-w680-h510"
-    },
-    {
-      "title": "VII Koto Talago",
-      "address": "Jl. Jhoni Anwar No.Kelurahan No.17, Padang",
-      "district": "Padang Utara",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMfCv5oU_RRNSg_BgK9lA9FLaMSABN1CUDTAO0S=s680-w680-h510"
-    },
-    {
-      "title": "Taman Surya",
-      "address": "Jl. Tamansiswa No. 15",
-      "district": "Padang Utara",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMucy2GYqlxcQZpn6g9OzG8CXFFHCZYpduAxKE2=s1360-w1360-h1020"
-    },
+  late List<Map<String, dynamic>> cardData = [
+    ...widget.allRestaurant.where((restaurant) =>
+        restaurant['title'] != null &&
+        restaurant['title']!.toLowerCase().contains('taman surya')),
+    ...widget.allRestaurant.where((restaurant) =>
+        restaurant['title'] != null &&
+        restaurant['title']!.toLowerCase().contains('kubang hayuda')),
+    ...widget.allRestaurant.where((restaurant) =>
+        restaurant['title'] != null &&
+        restaurant['title']!.toLowerCase().contains('vii koto talago')),
   ];
 
   final List<Map<String, String>> cardDataDistrict = [
@@ -99,7 +75,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
 
   List<Map<String, dynamic>> allDistrict = [];
 
-  List<Map<String, dynamic>> allRestaurant = [];
+  // List<Map<String, dynamic>> allRestaurant = [];
 
   late PageController _pageControllerStack;
   late PageController _pageController;
@@ -114,7 +90,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   void initState() {
     super.initState();
 
-    fetchRestaurantData();
     fetchLocationData();
     _pageControllerStack = PageController();
 
@@ -148,20 +123,20 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     });
   }
 
-  Future<void> fetchRestaurantData() async {
-    await RestaurantService.fetchRestaurantData();
+  // Future<void> fetchRestaurantData() async {
+  //   await RestaurantService.fetchRestaurantData();
 
-    final restaurants = RestaurantService.getRestaurantData();
+  //   final restaurants = RestaurantService.getRestaurantData();
 
-    if (restaurants!.isNotEmpty) {
-      setState(() {
-        allRestaurant = restaurants;
-        isLoading = false;
-      });
-    } else {
-      print('Error: Restaurant data is null or not found');
-    }
-  }
+  //   if (restaurants!.isNotEmpty) {
+  //     setState(() {
+  //       allRestaurant = restaurants;
+  //       isLoading = false;
+  //     });
+  //   } else {
+  //     print('Error: Restaurant data is null or not found');
+  //   }
+  // }
 
   Future<void> fetchLocationData() async {
     await LocationService.fetchLocationData();
@@ -228,8 +203,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   RestaurantDetailsScreen(
-                            restaurantAvailable:
-                                widget.allRestaurant.sublist(0),
+                            restaurantAvailable: widget.allRestaurant,
                             foodsInTheRestaurant: widget.allFood
                                 .sublist(widget.allFood.length - 10),
                             item: item,
@@ -416,7 +390,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 ),
               ),
               TopPicksWidget(
-                allRestaurant: allRestaurant,
+                allRestaurant: widget.allRestaurant,
                 allFood: widget.allFood.sublist(widget.allFood.length - 5),
                 pageController: _pageController,
                 loopedCardData: loopedCardData,
@@ -435,7 +409,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   RestaurantAllScreen(
-                            restaurantItems: allRestaurant,
+                            restaurantItems: widget.allRestaurant,
                           ),
                           transitionDuration: const Duration(
                               milliseconds: 300), // Optional for smoothness
@@ -591,6 +565,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                 restaurantsInTheDistrict: widget.allRestaurant,
                                 title: item['title']!,
                                 imageUrl: item['imageUrl']!,
+                                // foodsInTheRestaurant : item["foodsInTheRestaurant"]!
                               ),
                               transitionDuration:
                                   const Duration(milliseconds: 300),
