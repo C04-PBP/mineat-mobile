@@ -45,81 +45,6 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   // Hardcoded data for each page
   bool isLoading = true;
   List<Map<String, dynamic>> reviewsData = [
-    {
-      'title': 'Amazing Food',
-      'rating': 5,
-      'reviewer': 'Zac Gauthier',
-      'timeAgo': '5y ago',
-      'content': 'The best food I’ve ever had. Highly recommend it!',
-      'response': 'We\'re thrilled you enjoyed your experience! Thank you!',
-    },
-    {
-      'title': 'Delicious',
-      'rating': 4,
-      'reviewer': 'Anna Smith',
-      'timeAgo': '2y ago',
-      'content': 'Great food, but the service could be faster.',
-      'response': 'We appreciate your feedback and will improve.',
-    },
-    {
-      'title': 'Good Experience',
-      'rating': 4,
-      'reviewer': 'John Doe',
-      'timeAgo': '1y ago',
-      'content': 'The ambiance was nice, and the food was good.',
-      'response': 'Thank you for your kind words!',
-    },
-    {
-      'title': 'Not bad',
-      'rating': 3,
-      'reviewer': 'Emily Clark',
-      'timeAgo': '6mo ago',
-      'content': 'The food was okay, but the portion sizes are too small.',
-      'response': 'We\'ll work on improving portion sizes. Thank you!',
-    },
-    {
-      'title': 'Disappointing',
-      'rating': 2,
-      'reviewer': 'Jake Williams',
-      'timeAgo': '3mo ago',
-      'content': 'Service was slow, and the food was cold.',
-      'response': 'We’re sorry to hear this. We’re working to improve!',
-    },
-    {
-      'title': 'Could be better',
-      'rating': 3,
-      'reviewer': 'Sarah Johnson',
-      'timeAgo': '1mo ago',
-      'content': 'The desserts were great, but the main course wasn’t.',
-      'response': 'Thank you for the feedback. We’ll improve!',
-    },
-  ];
-
-  final List<Map<String, dynamic>> reviewsDataHelpful = [
-    {
-      'title': 'Amazing Food',
-      'rating': 5,
-      'reviewer': 'Zac Gauthier',
-      'timeAgo': '5y ago',
-      'content': 'The best food I’ve ever had. Highly recommend it!',
-      'response': 'We\'re thrilled you enjoyed your experience! Thank you!',
-    },
-    {
-      'title': 'Delicious',
-      'rating': 4,
-      'reviewer': 'Anna Smith',
-      'timeAgo': '2y ago',
-      'content': 'Great food, but the service could be faster.',
-      'response': 'We appreciate your feedback and will improve.',
-    },
-    {
-      'title': 'Good Experience',
-      'rating': 4,
-      'reviewer': 'John Doe',
-      'timeAgo': '1y ago',
-      'content': 'The ambiance was nice, and the food was good.',
-      'response': 'Thank you for your kind words!',
-    },
   ];
 
   final List<Map<String, dynamic>> foodsYouMightLikeData = [
@@ -794,14 +719,14 @@ Future<void> _handleSubmitReviewDjango() async {
                                     MediaQuery.of(context).size.height * 0.25,
                                 child: PageView.builder(
                                   controller: _pageController,
-                                  itemCount: reviewsDataHelpful.length,
+                                  itemCount: reviewsData.length,
                                   onPageChanged: (index) {
                                     setState(() {
                                       _currentPageIndex = index;
                                     });
                                   },
                                   itemBuilder: (context, index) {
-                                    final review = reviewsDataHelpful[index];
+                                    final review = reviewsData[index];
                                     return Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 8),
@@ -823,7 +748,7 @@ Future<void> _handleSubmitReviewDjango() async {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            review['title'],
+                                            "${review['reviewer']}",
                                             style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -846,7 +771,7 @@ Future<void> _handleSubmitReviewDjango() async {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                "${review['timeAgo']} • ${review['reviewer']}",
+                                                "${review['timeAgo']}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,
@@ -861,21 +786,21 @@ Future<void> _handleSubmitReviewDjango() async {
                                               fontSize: 14,
                                             ),
                                           ),
-                                          const SizedBox(height: 12),
-                                          const Text(
-                                            "Chef Response",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            review['response'],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
+                                          // const SizedBox(height: 12),
+                                          // const Text(
+                                          //   "Chef Response",
+                                          //   style: TextStyle(
+                                          //     fontSize: 14,
+                                          //     fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
+                                          // const SizedBox(height: 4),
+                                          // Text(
+                                          //   review['response'],
+                                          //   style: const TextStyle(
+                                          //     fontSize: 14,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     );
