@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mineat/api/device.dart';
 
-
 class FoodDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> item;
   final List<Map<String, dynamic>> restaurantAvailable;
@@ -141,7 +140,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
   Future<void> fetchData() async {
     print(widget.item["id"]);
-    await ReviewService.fetchReviewData(widget.item["id"]); //butuh id makanannya
+    await ReviewService.fetchReviewData(
+        widget.item["id"]); //butuh id makanannya
 
     final reviews = ReviewService.getReviewData();
 
@@ -641,35 +641,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                   ),
                                 ],
                               ),
-                            if (widget.username == "None")
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen(
-                                            username: "", isLoggedIn: false)),
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      child: Text(
-                                        "login to rate",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            // fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+
                             if (reviewsData.length != 0)
                               Padding(
                                 padding:
@@ -1265,6 +1237,35 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                     ),
                                   ),
                                 ],
+                              ),
+                            if (widget.username == "None")
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen(
+                                            username: "", isLoggedIn: false)),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      child: Text(
+                                        "login to rate",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            // fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             const SizedBox(height: 30),
                             const Padding(
