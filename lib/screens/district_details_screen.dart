@@ -3,13 +3,17 @@ import 'package:mineat/screens/restaurant_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
 
 class DistrictDetailsScreen extends StatefulWidget {
+  final Map<String, dynamic> item;
   final String title;
   final String imageUrl;
+  final String trivia;
   final List<Map<String, dynamic>> restaurantsInTheDistrict;
   final String username;
   const DistrictDetailsScreen(
-      {required this.title,
+      {required this.item,
+      required this.title,
       required this.imageUrl,
+      required this.trivia,
       required this.restaurantsInTheDistrict,
       required this.username,
       super.key});
@@ -45,7 +49,7 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final int itemsToShow =
-        _showAll ? widget.restaurantsInTheDistrict.length : 1 * 2;
+        _showAll ? widget.item['restaurantsInTheDistrict'].length : 1 * 2;
     return Hero(
       tag: widget.title,
       child: Scaffold(
@@ -135,14 +139,6 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
                             ),
                             child: Text('Search available restaurant'),
                           ),
-                          SizedBox(height: 10),
-                          const Text(
-                            'Curry dish with main ingredients chicken and unripe jackfruit',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -214,7 +210,7 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
-                                  'Description',
+                                  'Trivia',
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -226,10 +222,7 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
-                                  'This is a detailed description of the dish. '
-                                  'Ayam Balado is a traditional Indonesian dish made with chicken and spicy chili sauce. '
-                                  'It is known for its bold and rich flavors, perfect for those who enjoy spicy foods. '
-                                  'Served with rice, this dish is popular across Indonesia and loved by many.',
+                                  widget.trivia,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey[800],
@@ -263,11 +256,15 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
                                     mainAxisSpacing: 20,
                                     childAspectRatio: 3 / 2,
                                   ),
-                                  itemCount: itemsToShow.clamp(0,
-                                      widget.restaurantsInTheDistrict.length),
+                                  itemCount: itemsToShow.clamp(
+                                      0,
+                                      (widget.item['restaurantsInTheDistrict']
+                                              as List)
+                                          .length),
                                   itemBuilder: (context, index) {
                                     final item =
-                                        widget.restaurantsInTheDistrict[index];
+                                        widget.item['restaurantsInTheDistrict']
+                                            [index];
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -275,8 +272,8 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 RestaurantDetailsScreen(
-                                              restaurantAvailable: widget
-                                                  .restaurantsInTheDistrict,
+                                              restaurantAvailable: widget.item[
+                                                  'restaurantsInTheDistrict'],
                                               foodsInTheRestaurant: [],
                                               heroOrNot: true,
                                               item: item,
@@ -333,7 +330,9 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              if (widget.restaurantsInTheDistrict.length >
+                              if ((widget.item['restaurantsInTheDistrict']
+                                          as List)
+                                      .length >
                                   4) // Only show button if needed
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment

@@ -87,14 +87,14 @@ class FoodService {
 
   static Future<bool> deleteFoodData(String id) async {
     try {
-      final response = await http
-          .delete(Uri.parse("$device/fnb/delete_flutter/$id/"));
+      final response =
+          await http.delete(Uri.parse("$device/fnb/delete_flutter/$id/"));
       return response.statusCode == 200;
     } catch (e) {
       return false;
     }
   }
-   
+
   static List<Map<String, dynamic>> parseFoodData(List<dynamic> food) {
     List<Map<String, dynamic>> restaurantFood = food.map((item) {
       String imageUrl = item['imageUrl'];
@@ -121,7 +121,8 @@ class FoodService {
     required String imageUrl,
     String? ingredients, // Optional field for ingredients
   }) async {
-    final url = Uri.parse('$device/fnb/update_flutter/$id/'); // Update the endpoint as needed
+    final url = Uri.parse(
+        '$device/fnb/update_flutter/$id/'); // Update the endpoint as needed
 
     try {
       final response = await http.put(
@@ -141,7 +142,8 @@ class FoodService {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        print('Failed to update food data. Status code: ${response.statusCode}');
+        print(
+            'Failed to update food data. Status code: ${response.statusCode}');
         return null;
       }
     } catch (e) {

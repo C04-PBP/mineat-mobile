@@ -7,6 +7,7 @@ class DistrictAllScreen extends StatefulWidget {
   final String username;
 
   // Constructor takes a list of food items with title and imageUrl
+
   const DistrictAllScreen({
     super.key,
     required this.districtItems,
@@ -101,10 +102,12 @@ class _DistrictAllScreenState extends State<DistrictAllScreen> {
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
                                     DistrictDetailsScreen(
+                              item: item,
                               restaurantsInTheDistrict:
-                                  widget.restaurantsInTheDistrict,
+                                  item['restaurantsInTheDistrict'],
                               title: item['title']!,
                               imageUrl: item['imageUrl']!,
+                              trivia: item['trivia']!,
                               username: widget.username,
                             ),
                             transitionDuration: const Duration(

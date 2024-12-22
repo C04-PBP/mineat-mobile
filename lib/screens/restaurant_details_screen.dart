@@ -243,26 +243,6 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Description',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'This is a detailed description of the dish. '
-                                'Ayam Balado is a traditional Indonesian dish made with chicken and spicy chili sauce. '
-                                'It is known for its bold and rich flavors, perfect for those who enjoy spicy foods. '
-                                'Served with rice, this dish is popular across Indonesia and loved by many.',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[800],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 0),
                                 child: Text(
@@ -296,8 +276,8 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                       )
                                       .toInt(),
                                   itemBuilder: (context, index) {
-                                    final item =
-                                        widget.item['foodsInTheRestaurant'];
+                                    final item = widget
+                                        .item['foodsInTheRestaurant'][index];
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.push(
