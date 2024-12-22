@@ -10,6 +10,7 @@ class TopPicksWidget extends StatefulWidget {
   final String callerScreen;
   final List<Map<String, dynamic>> allFood;
   final List<Map<String, dynamic>> allRestaurant;
+  final String username;
   TopPicksWidget({
     super.key,
     required this.pageController,
@@ -17,6 +18,7 @@ class TopPicksWidget extends StatefulWidget {
     required this.callerScreen,
     required this.allFood,
     required this.allRestaurant,
+    required this.username,
   });
 
   @override
@@ -41,10 +43,12 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                   PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) =>
                         FoodDetailsScreen(
-                          foodsInTheRestaurant: widget.allFood.sublist(4),
+                      foodsInTheRestaurant: widget.allFood.sublist(4),
                       heroOrNot: true,
                       item: item,
                       restaurantAvailable: widget.allRestaurant,
+                      username: widget.username,
+                      allFood: widget.allFood,
                     ),
                     transitionDuration: const Duration(
                         milliseconds: 300), // Optional for smoothness
@@ -86,9 +90,7 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.error)
-                                  ],
+                                  children: [Icon(Icons.error)],
                                 ),
                               );
                             },
@@ -140,10 +142,11 @@ class _TopPicksWidgetState extends State<TopPicksWidget> {
                   PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) =>
                         RestaurantDetailsScreen(
-                          restaurantAvailable: widget.allRestaurant,
-                      foodsInTheRestaurant: widget.allFood,
+                      restaurantAvailable: widget.allRestaurant.sublist(0),
+                      foodsInTheRestaurant: [],
                       heroOrNot: true,
                       item: item,
+                      username: widget.username,
                     ),
                     transitionDuration: const Duration(
                         milliseconds: 300), // Optional for smoothness

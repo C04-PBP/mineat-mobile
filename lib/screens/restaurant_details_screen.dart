@@ -6,11 +6,13 @@ class RestaurantDetailsScreen extends StatefulWidget {
   final List<Map<String, dynamic>> foodsInTheRestaurant;
   final List<Map<String, dynamic>> restaurantAvailable;
   final bool heroOrNot;
+  final String username;
   const RestaurantDetailsScreen({
     required this.item,
     required this.heroOrNot,
     required this.foodsInTheRestaurant,
     required this.restaurantAvailable,
+    required this.username,
     super.key,
   });
 
@@ -46,7 +48,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final int itemsToShow =
-        _showAll ? widget.item['foodsInTheRestaurant'].length : 1 * 2;
+        _showAll ? widget.item['foodsInTheRestaurant'].length ?? 0 : 1 * 2;
     return Hero(
       tag: widget.heroOrNot ? widget.item['title'] : "None",
       child: Scaffold(
@@ -239,26 +241,6 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Description',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'This is a detailed description of the dish. '
-                                'Ayam Balado is a traditional Indonesian dish made with chicken and spicy chili sauce. '
-                                'It is known for its bold and rich flavors, perfect for those who enjoy spicy foods. '
-                                'Served with rice, this dish is popular across Indonesia and loved by many.',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[800],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 0),
                                 child: Text(
@@ -294,8 +276,8 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                       )
                                       .toInt(),
                                   itemBuilder: (context, index) {
-                                    final item =
-                                        widget.item['foodsInTheRestaurant'];
+                                    final item = widget
+                                        .item['foodsInTheRestaurant'][index];
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -309,6 +291,8 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                                                   widget.restaurantAvailable,
                                               heroOrNot: true,
                                               item: item,
+                                              username: widget.username,
+                                              allFood: [],
                                             ),
                                           ),
                                         );

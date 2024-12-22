@@ -28,7 +28,6 @@ class RestaurantService {
             "foodsInTheRestaurant": foodsInTheRestaurant
           };
         }).toList();
-        print(_restaurantData);
       } else {
         throw Exception('Failed to load restaurant data');
       }
@@ -43,6 +42,23 @@ class RestaurantService {
 
   static void clearRestaurantData() {
     _restaurantData = null;
+  }
+
+  static List<Map<String, dynamic>> parseRestaurantData(
+      List<dynamic> restaurant) {
+    List<Map<String, dynamic>> restaurantsInTheDistrict =
+        restaurant.map((item) {
+      List<Map<String, dynamic>>? foodsInTheRestaurant =
+          FoodService.parseFoodData(item['foodsInTheRestaurant']);
+      return {
+        'title': item['title'],
+        "address": item['address'],
+        "district": item['district'],
+        "imageUrl": item['imageUrl'],
+        "foodsInTheRestaurant": foodsInTheRestaurant
+      };
+    }).toList();
+    return restaurantsInTheDistrict;
   }
 }
 
