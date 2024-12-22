@@ -4,9 +4,15 @@ import 'package:mineat/screens/district_details_screen.dart';
 class DistrictAllScreen extends StatefulWidget {
   final List<Map<String, dynamic>> districtItems;
   final List<Map<String, dynamic>> restaurantsInTheDistrict;
+  final String username;
 
   // Constructor takes a list of food items with title and imageUrl
-  const DistrictAllScreen({super.key, required this.districtItems, required this.restaurantsInTheDistrict});
+  const DistrictAllScreen({
+    super.key,
+    required this.districtItems,
+    required this.restaurantsInTheDistrict,
+    required this.username,
+  });
 
   @override
   _DistrictAllScreenState createState() => _DistrictAllScreenState();
@@ -95,9 +101,11 @@ class _DistrictAllScreenState extends State<DistrictAllScreen> {
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
                                     DistrictDetailsScreen(
-                              restaurantsInTheDistrict: widget.restaurantsInTheDistrict,
+                              restaurantsInTheDistrict:
+                                  widget.restaurantsInTheDistrict,
                               title: item['title']!,
                               imageUrl: item['imageUrl']!,
+                              username: widget.username,
                             ),
                             transitionDuration: const Duration(
                                 milliseconds: 300), // Optional for smoothness

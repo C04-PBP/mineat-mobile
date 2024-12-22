@@ -7,6 +7,7 @@ import 'package:mineat/screens/profile_screen.dart';
 import 'package:mineat/screens/register_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class LoginScreen extends StatelessWidget {
   final String username;

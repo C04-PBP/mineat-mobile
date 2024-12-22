@@ -234,6 +234,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                 .sublist(widget.allFood.length - 10),
                             item: item,
                             heroOrNot: false,
+                            username: widget.username,
                           ),
                           transitionDuration: const Duration(
                               milliseconds: 300), // Optional for smoothness
@@ -421,6 +422,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 pageController: _pageController,
                 loopedCardData: loopedCardData,
                 callerScreen: "restaurant",
+                username: widget.username,
               ),
               const SizedBox(height: 45),
               Align(
@@ -436,6 +438,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                               (context, animation, secondaryAnimation) =>
                                   RestaurantAllScreen(
                             restaurantItems: allRestaurant,
+                            username: widget.username,
                           ),
                           transitionDuration: const Duration(
                               milliseconds: 300), // Optional for smoothness
@@ -482,6 +485,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                   DistrictAllScreen(
                             restaurantsInTheDistrict: widget.allRestaurant,
                             districtItems: allDistrict,
+                            username: widget.username,
                           ),
                           transitionDuration: const Duration(
                               milliseconds: 300), // Optional for smoothness
@@ -534,6 +538,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                         widget.allRestaurant,
                                     title: "All Districts",
                                     imageUrl: "",
+                                    username: widget.username,
                                   ),
                                 ),
                               );
@@ -551,6 +556,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                         restaurantsInTheDistrict:
                                             widget.allRestaurant,
                                         districtItems: allDistrict,
+                                        username: widget.username,
                                       ),
                                       transitionDuration: const Duration(
                                           milliseconds:
@@ -591,6 +597,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                 restaurantsInTheDistrict: widget.allRestaurant,
                                 title: item['title']!,
                                 imageUrl: item['imageUrl']!,
+                                        username: widget.username,
                               ),
                               transitionDuration:
                                   const Duration(milliseconds: 300),

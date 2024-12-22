@@ -328,6 +328,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 heroOrNot: false,
                                 item: item,
                                 restaurantAvailable: restaurantItems,
+                                username: widget.username,
                               ),
                               transitionDuration: const Duration(
                                   milliseconds: 300), // Optional for smoothness
@@ -517,6 +518,7 @@ class _HomeScreenState extends State<HomeScreen>
                         pageController: _pageController,
                         loopedCardData: loopedCardData,
                         callerScreen: "home",
+                        username: widget.username,
                       ),
                       const SizedBox(
                         height: 35,
@@ -535,6 +537,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       FoodAllScreen(
                                     appBarTitle: "Cuisines",
                                     foodItems: widget.allFood,
+                                    username: widget.username,
                                   ),
                                   transitionDuration: const Duration(
                                       milliseconds:
@@ -581,8 +584,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => FoodAllScreen(
-                                          appBarTitle: "Chicken",
-                                          foodItems: filteredChickens),
+                                        appBarTitle: "Chicken",
+                                        foodItems: filteredChickens,
+                                        username: widget.username,
+                                      ),
                                     ),
                                   );
                                 },
@@ -625,8 +630,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => FoodAllScreen(
-                                          appBarTitle: "Beef",
-                                          foodItems: filteredBeefs),
+                                        appBarTitle: "Beef",
+                                        foodItems: filteredBeefs,
+                                        username: widget.username,
+                                      ),
                                     ),
                                   );
                                 },
@@ -672,8 +679,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => FoodAllScreen(
-                                          appBarTitle: "Seafood",
-                                          foodItems: filteredSeafoods),
+                                        appBarTitle: "Seafood",
+                                        foodItems: filteredSeafoods,
+                                        username: widget.username,
+                                      ),
                                     ),
                                   );
                                 },
@@ -713,8 +722,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => FoodAllScreen(
-                                          appBarTitle: "Vegetarian",
-                                          foodItems: filteredVegetarians),
+                                        appBarTitle: "Vegetarian",
+                                        foodItems: filteredVegetarians,
+                                        username: widget.username,
+                                      ),
                                     ),
                                   );
                                 },
@@ -801,8 +812,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => FoodAllScreen(
-                                          appBarTitle: "Under 20K",
-                                          foodItems: filteredItems),
+                                        appBarTitle: "Under 20K",
+                                        foodItems: filteredItems,
+                                        username: widget.username,
+                                      ),
                                     ),
                                   );
                                 },
@@ -876,8 +889,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => FoodAllScreen(
-                                          appBarTitle: "Under 50 K",
-                                          foodItems: filteredItems),
+                                        appBarTitle: "Under 50 K",
+                                        foodItems: filteredItems,
+                                        username: widget.username,
+                                      ),
                                     ),
                                   );
                                 },
@@ -951,8 +966,10 @@ class _HomeScreenState extends State<HomeScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => FoodAllScreen(
-                                          appBarTitle: "Under 100K",
-                                          foodItems: filteredItems),
+                                        appBarTitle: "Under 100K",
+                                        foodItems: filteredItems,
+                                        username: widget.username,
+                                      ),
                                     ),
                                   );
                                 },
@@ -1031,6 +1048,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       IngredientAllScreen(
                                     ingredientItems: uniqueIngredientsList,
                                     foodItems: widget.allFood,
+                                    username: widget.username,
                                   ),
                                   transitionDuration: const Duration(
                                       milliseconds:
@@ -1077,6 +1095,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 title: "you're \nCOOKing?",
                                 ingredientItems: uniqueIngredientsList,
                                 foodItems: widget.allFood,
+                                username: widget.username,
                               ),
                               transitionDuration: const Duration(
                                   milliseconds: 300), // Optional for smoothness

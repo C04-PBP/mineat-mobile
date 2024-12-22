@@ -6,10 +6,12 @@ class DistrictDetailsScreen extends StatefulWidget {
   final String title;
   final String imageUrl;
   final List<Map<String, dynamic>> restaurantsInTheDistrict;
+  final String username;
   const DistrictDetailsScreen(
       {required this.title,
       required this.imageUrl,
       required this.restaurantsInTheDistrict,
+      required this.username,
       super.key});
 
   @override
@@ -278,6 +280,7 @@ class _DistrictDetailsScreenState extends State<DistrictDetailsScreen> {
                                               foodsInTheRestaurant: [],
                                               heroOrNot: true,
                                               item: item,
+                                              username: widget.username,
                                             ),
                                           ),
                                         );

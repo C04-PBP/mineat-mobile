@@ -8,11 +8,13 @@ class FoodDetailsScreen extends StatefulWidget {
   final List<Map<String, dynamic>> restaurantAvailable;
   final List<Map<String, dynamic>> foodsInTheRestaurant;
   final bool heroOrNot;
+  final String username;
   const FoodDetailsScreen(
       {required this.item,
       required this.restaurantAvailable,
       required this.heroOrNot,
       required this.foodsInTheRestaurant,
+      required this.username,
       super.key});
 
   @override
@@ -550,6 +552,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                                 widget.foodsInTheRestaurant,
                                             heroOrNot: true,
                                             item: item,
+                                            username: widget.username,
                                           ),
                                         ),
                                       );
@@ -1235,6 +1238,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                                 widget.restaurantAvailable,
                                             heroOrNot: true,
                                             item: item,
+                                            username: widget.username,
                                           ),
                                         ),
                                       );
