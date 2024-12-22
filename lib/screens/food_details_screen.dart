@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mineat/api/review_service.dart';
+import 'package:mineat/screens/login_screen.dart';
 import 'package:mineat/screens/ratings_and_reviews_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
 import 'package:http/http.dart' as http;
@@ -45,8 +46,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
 
   // Hardcoded data for each page
   bool isLoading = true;
-  List<Map<String, dynamic>> reviewsData = [
-  ];
+  List<Map<String, dynamic>> reviewsData = [];
 
   final List<Map<String, dynamic>> foodsYouMightLikeData = [
     {
@@ -162,25 +162,24 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     });
   }
 
-Future<void> _handleSubmitReviewDjango() async {
-  print('masuk');
-  String reviewContent = _reviewTextController.text.trim();
-      final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
-        },
-        body: jsonEncode(<String, dynamic>{
-          'id': widget.item['id'],
-          'rating': _myRating,
-          'content': reviewContent,
-          'name': widget.username
-        }
-        ), );
-        return;}
-
-
+  Future<void> _handleSubmitReviewDjango() async {
+    print(widget.username.runtimeType);
+    String reviewContent = _reviewTextController.text.trim();
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id': widget.item['id'],
+        'rating': _myRating,
+        'content': reviewContent,
+        'name': widget.username
+      }),
+    );
+    return;
+  }
 
   void _handleSubmitReview() {
     String title = _reviewTitleController.text.trim();
@@ -320,11 +319,22 @@ Future<void> _handleSubmitReviewDjango() async {
                               alignment: Alignment.center,
                               child: Text(
                                 widget.item['title'].endsWith("stack")
-                                    ? widget.item['title'].substring(
-                                        0,
-                                        widget.item['title'].length -
-                                            "stack".length)
-                                    : widget.item['title'],
+                                    ? widget.item['title']
+                                        .substring(
+                                            0,
+                                            widget.item['title'].length -
+                                                "stack".length)
+                                        .split(' ')
+                                        .map((word) =>
+                                            word[0].toUpperCase() +
+                                            word.substring(1).toLowerCase())
+                                        .join(' ')
+                                    : widget.item['title']
+                                        .split(' ')
+                                        .map((word) =>
+                                            word[0].toUpperCase() +
+                                            word.substring(1).toLowerCase())
+                                        .join(' '),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 48,
@@ -608,545 +618,653 @@ Future<void> _handleSubmitReviewDjango() async {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    averageRating.toStringAsFixed(
-                                        1), // Display the average rating
-                                    style: const TextStyle(
-                                      fontSize: 48,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Column(
-                                    children: [
-                                      SizedBox(height: 20),
-                                      Row(
-                                        children: List.generate(5, (index) {
-                                          if (index < averageRating.floor()) {
-                                            // Fully filled stars
-                                            return Icon(
-                                              Icons.star,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              size: 30,
-                                            );
-                                          } else if (index ==
-                                              averageRating.floor()) {
-                                            // Partially filled star
-                                            double fractionalPart =
-                                                averageRating -
-                                                    averageRating.floor();
-                                            return Stack(
-                                              children: [
-                                                Icon(
-                                                  Icons.star_border,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  size: 30,
-                                                ),
-                                                ClipRect(
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    widthFactor: fractionalPart,
-                                                    child: Icon(
-                                                      Icons.star,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      size: 30,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          } else {
-                                            // Empty stars
-                                            return Icon(
-                                              Icons.star_border,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              size: 30,
-                                            );
-                                          }
-                                        }),
-                                      ),
-                                      Row(
-                                        children: [
-                                          const SizedBox(width: 20),
-                                          Text(
-                                            "${reviewsData.length} Ratings",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 19,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                            if (reviewsData.length == 0)
+                              SizedBox(
+                                height: 20,
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: const Text(
-                                "Most Helpful Reviews",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            // Review Card
-                            Padding(
-                              padding: EdgeInsets.zero,
-                              child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                                child: PageView.builder(
-                                  controller: _pageController,
-                                  itemCount: reviewsData.length,
-                                  onPageChanged: (index) {
-                                    setState(() {
-                                      _currentPageIndex = index;
-                                    });
-                                  },
-                                  itemBuilder: (context, index) {
-                                    final review = reviewsData[index];
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 8),
-                                      padding: const EdgeInsets.all(16.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(25),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 4,
-                                            color:
-                                                Colors.black.withOpacity(0.25),
-                                            offset: const Offset(4, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${review['reviewer']}",
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Row(
-                                            children: [
-                                              Row(
-                                                children: List.generate(
-                                                  review['rating'],
-                                                  (index) => Icon(
-                                                    Icons.star,
-                                                    size: 16,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .primary,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                "${review['timeAgo']}",
-                                                style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            review['content'],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          // const SizedBox(height: 12),
-                                          // const Text(
-                                          //   "Chef Response",
-                                          //   style: TextStyle(
-                                          //     fontSize: 14,
-                                          //     fontWeight: FontWeight.bold,
-                                          //   ),
-                                          // ),
-                                          // const SizedBox(height: 4),
-                                          // Text(
-                                          //   review['response'],
-                                          //   style: const TextStyle(
-                                          //     fontSize: 14,
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 30),
-                            // Tap to Rate Section
-                            if (_isTapToRateVisible && _countRateError == 0)
-                              const Row(
+
+                            if (reviewsData.length == 0)
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 20),
                                     child: Text(
-                                      "Tap to Rate",
+                                      "no reviews yet",
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade400),
                                     ),
                                   ),
                                 ],
                               ),
-                            if (!_isTapToRateVisible && _isReviewSubmitted)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: const Text(
-                                      "Thanks for Rating!",
-                                      style: TextStyle(
-                                        fontSize: 18,
+                            if (widget.username == "None")
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen(
+                                            username: "", isLoggedIn: false)),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      child: Text(
+                                        "login to rate",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            // fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            if (reviewsData.length != 0)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      averageRating.toStringAsFixed(
+                                          1), // Display the average rating
+                                      style: const TextStyle(
+                                        fontSize: 48,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            if (!_isTapToRateVisible && !_isReviewSubmitted)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: const Text(
-                                      "Submit your Review",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    Column(
+                                      children: [
+                                        SizedBox(height: 20),
+                                        Row(
+                                          children: List.generate(5, (index) {
+                                            if (index < averageRating.floor()) {
+                                              // Fully filled stars
+                                              return Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                size: 30,
+                                              );
+                                            } else if (index ==
+                                                averageRating.floor()) {
+                                              // Partially filled star
+                                              double fractionalPart =
+                                                  averageRating -
+                                                      averageRating.floor();
+                                              return Stack(
+                                                children: [
+                                                  Icon(
+                                                    Icons.star_border,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                    size: 30,
+                                                  ),
+                                                  ClipRect(
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      widthFactor:
+                                                          fractionalPart,
+                                                      child: Icon(
+                                                        Icons.star,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                        size: 30,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            } else {
+                                              // Empty stars
+                                              return Icon(
+                                                Icons.star_border,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                size: 30,
+                                              );
+                                            }
+                                          }),
+                                        ),
+                                        Row(
+                                          children: [
+                                            const SizedBox(width: 20),
+                                            Text(
+                                              "${reviewsData.length} Ratings",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 19,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            if (_isTapToRateVisible && _countRateError > 0)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: const Text(
-                                      "Choose your rating first!",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                5,
-                                (index) => GestureDetector(
-                                  onTap: () => _handleRatingTap(index + 1),
-                                  child: Icon(
-                                    index < _myRating
-                                        ? Icons.star
-                                        : Icons.star_border,
-                                    color: index < _myRating
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context).colorScheme.primary,
-                                    size: 50,
+                            if (reviewsData.length != 0)
+                              const SizedBox(height: 20),
+                            if (reviewsData.length != 0)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: const Text(
+                                  "Most Helpful Reviews",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 40, vertical: 10),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          if (_isReviewSubmitted) {
-                                            _isReviewSubmitted = false;
-
-                                            // Populate the TextFields with the previously submitted review
-                                            _reviewTitleController.text =
-                                                reviewsData.first['title'];
-                                            _reviewTextController.text =
-                                                reviewsData.first['content'];
-                                          }
-                                        });
-                                      },
-                                      child: SizedBox(
-                                        height:
-                                            200, // Fixed height for both conditions
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          decoration: BoxDecoration(
-                                            color: _isReviewSubmitted
-                                                ? Colors.grey.shade100
-                                                : Colors.grey.shade100,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: _isReviewSubmitted
-                                                    ? Colors.white
-                                                    : Colors.grey.shade500,
-                                                offset: const Offset(-7, -7),
-                                                blurRadius: 8,
-                                                spreadRadius:
-                                                    _isReviewSubmitted ? 0 : -5,
+                            if (reviewsData.length != 0)
+                              const SizedBox(height: 10),
+                            // Review Card
+                            if (reviewsData.length != 0)
+                              Padding(
+                                padding: EdgeInsets.zero,
+                                child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.25,
+                                  child: PageView.builder(
+                                    controller: _pageController,
+                                    itemCount: reviewsData.length,
+                                    onPageChanged: (index) {
+                                      setState(() {
+                                        _currentPageIndex = index;
+                                      });
+                                    },
+                                    itemBuilder: (context, index) {
+                                      final review = reviewsData[index];
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.all(16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 4,
+                                              color: Colors.black
+                                                  .withOpacity(0.25),
+                                              offset: const Offset(4, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${review['reviewer']}",
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              BoxShadow(
-                                                color: _isReviewSubmitted
-                                                    ? Colors.grey.shade500
-                                                    : Colors.white,
-                                                offset: const Offset(7, 7),
-                                                blurRadius: 8,
-                                                spreadRadius:
-                                                    _isReviewSubmitted ? -5 : 0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: AnimatedSwitcher(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            child: !_isReviewSubmitted
-                                                ? Column(
-                                                    key: const ValueKey('form'),
-                                                    children: [
-                                                      TextField(
-                                                        controller:
-                                                            _reviewTitleController,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              InputBorder.none,
-                                                          hintText:
-                                                              'Review Title',
-                                                          hintStyle: TextStyle(
-                                                              color: Colors.grey
-                                                                  .shade400),
-                                                        ),
-                                                        style: const TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                        maxLines: 1,
-                                                      ),
-                                                      Divider(
-                                                          height: 1,
-                                                          color: Colors
-                                                              .grey.shade300),
-                                                      TextField(
-                                                        controller:
-                                                            _reviewTextController,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              InputBorder.none,
-                                                          hintText:
-                                                              'Write your review here (optional)',
-                                                          hintStyle: TextStyle(
-                                                              color: Colors.grey
-                                                                  .shade400),
-                                                        ),
-                                                        style: const TextStyle(
-                                                            fontSize: 16),
-                                                        maxLines: 3,
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      if (_isButtonVisible) // Show button only when there's text
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            IconButton(
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  // Reset the star rating
-                                                                  _myRating = 0;
-                                                                  // Remove the specific review by matching reviewer and timeAgo
-                                                                  reviewsData.removeWhere(
-                                                                      (review) =>
-                                                                          review[
-                                                                              'reviewer'] ==
-                                                                          'YOU');
-                                                                  // Clear the text fields and reset visibility
-                                                                  _reviewTitleController
-                                                                      .clear();
-                                                                  _reviewTextController
-                                                                      .clear();
-                                                                  _isButtonVisible =
-                                                                      false;
-                                                                  _isTapToRateVisible =
-                                                                      true;
-                                                                  _countRateError =
-                                                                      0;
-                                                                });
-
-                                                                // Unfocus the keyboard
-                                                                FocusScope.of(
-                                                                        context)
-                                                                    .unfocus();
-                                                              },
-                                                              icon: Icon(
-                                                                Icons.close,
-                                                                size: 30,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                              ),
-                                                            ),
-                                                            IconButton(
-                                                              onPressed:
-                                                                  _handleSubmitReview,
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .arrow_forward_ios,
-                                                                size: 24,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                    ],
-                                                  )
-                                                : Column(
-                                                    key: const ValueKey(
-                                                        'submitted'),
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const SizedBox(
-                                                          height: 12),
-                                                      Text(
-                                                        reviewsData
-                                                            .first['title'],
-                                                        style: const TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      Row(
-                                                        children: [
-                                                          Row(
-                                                            children:
-                                                                List.generate(
-                                                              reviewsData.first[
-                                                                  'rating'],
-                                                              (index) => Icon(
-                                                                Icons.star,
-                                                                size: 16,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 8),
-                                                          Text(
-                                                            "${reviewsData.first['timeAgo']} • ${reviewsData.first['reviewer']}",
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize:
-                                                                        12),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(height: 8),
-                                                      Text(
-                                                        reviewsData
-                                                            .first['content'],
-                                                        style: const TextStyle(
-                                                            fontSize: 14),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 12),
-                                                      const Text(
-                                                        "Chef Response",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      Text(
-                                                        reviewsData
-                                                            .first['response'],
-                                                        style: const TextStyle(
-                                                            fontSize: 14),
-                                                      ),
-                                                    ],
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: List.generate(
+                                                    review['rating'],
+                                                    (index) => Icon(
+                                                      Icons.star,
+                                                      size: 16,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    ),
                                                   ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  "${review['timeAgo']}",
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              review['content'],
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            // const SizedBox(height: 12),
+                                            // const Text(
+                                            //   "Chef Response",
+                                            //   style: TextStyle(
+                                            //     fontSize: 14,
+                                            //     fontWeight: FontWeight.bold,
+                                            //   ),
+                                            // ),
+                                            // const SizedBox(height: 4),
+                                            // Text(
+                                            //   review['response'],
+                                            //   style: const TextStyle(
+                                            //     fontSize: 14,
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(height: 30),
+                            // Tap to Rate Section
+                            if (widget.username != "None")
+                              Column(
+                                children: [
+                                  if (_isTapToRateVisible &&
+                                      _countRateError == 0)
+                                    const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: Text(
+                                            "Tap to Rate",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
+                                        ),
+                                      ],
+                                    ),
+                                  if (!_isTapToRateVisible &&
+                                      _isReviewSubmitted)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: const Text(
+                                            "Thanks for Rating!",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  if (!_isTapToRateVisible &&
+                                      !_isReviewSubmitted)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: const Text(
+                                            "Submit your Review",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  if (_isTapToRateVisible &&
+                                      _countRateError > 0)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: const Text(
+                                            "Choose your rating first!",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(
+                                      5,
+                                      (index) => GestureDetector(
+                                        onTap: () =>
+                                            _handleRatingTap(index + 1),
+                                        child: Icon(
+                                          index < _myRating
+                                              ? Icons.star
+                                              : Icons.star_border,
+                                          color: index < _myRating
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                          size: 50,
                                         ),
                                       ),
                                     ),
                                   ),
+                                  const SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 40, vertical: 10),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                if (_isReviewSubmitted) {
+                                                  _isReviewSubmitted = false;
+
+                                                  // Populate the TextFields with the previously submitted review
+                                                  _reviewTitleController.text =
+                                                      reviewsData
+                                                          .first['title'];
+                                                  _reviewTextController.text =
+                                                      reviewsData
+                                                          .first['content'];
+                                                }
+                                              });
+                                            },
+                                            child: SizedBox(
+                                              height:
+                                                  200, // Fixed height for both conditions
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16),
+                                                decoration: BoxDecoration(
+                                                  color: _isReviewSubmitted
+                                                      ? Colors.grey.shade100
+                                                      : Colors.grey.shade100,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: _isReviewSubmitted
+                                                          ? Colors.white
+                                                          : Colors
+                                                              .grey.shade500,
+                                                      offset:
+                                                          const Offset(-7, -7),
+                                                      blurRadius: 8,
+                                                      spreadRadius:
+                                                          _isReviewSubmitted
+                                                              ? 0
+                                                              : -5,
+                                                    ),
+                                                    BoxShadow(
+                                                      color: _isReviewSubmitted
+                                                          ? Colors.grey.shade500
+                                                          : Colors.white,
+                                                      offset:
+                                                          const Offset(7, 7),
+                                                      blurRadius: 8,
+                                                      spreadRadius:
+                                                          _isReviewSubmitted
+                                                              ? -5
+                                                              : 0,
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: AnimatedSwitcher(
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  child: !_isReviewSubmitted
+                                                      ? Column(
+                                                          key: const ValueKey(
+                                                              'form'),
+                                                          children: [
+                                                            TextField(
+                                                              controller:
+                                                                  _reviewTitleController,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                hintText:
+                                                                    'Review Title',
+                                                                hintStyle: TextStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade400),
+                                                              ),
+                                                              style: const TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              maxLines: 1,
+                                                            ),
+                                                            Divider(
+                                                                height: 1,
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade300),
+                                                            TextField(
+                                                              controller:
+                                                                  _reviewTextController,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                hintText:
+                                                                    'Write your review here (optional)',
+                                                                hintStyle: TextStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade400),
+                                                              ),
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                              maxLines: 3,
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 10),
+                                                            if (_isButtonVisible) // Show button only when there's text
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                          () {
+                                                                        // Reset the star rating
+                                                                        _myRating =
+                                                                            0;
+                                                                        // Remove the specific review by matching reviewer and timeAgo
+                                                                        reviewsData.removeWhere((review) =>
+                                                                            review['reviewer'] ==
+                                                                            'YOU');
+                                                                        // Clear the text fields and reset visibility
+                                                                        _reviewTitleController
+                                                                            .clear();
+                                                                        _reviewTextController
+                                                                            .clear();
+                                                                        _isButtonVisible =
+                                                                            false;
+                                                                        _isTapToRateVisible =
+                                                                            true;
+                                                                        _countRateError =
+                                                                            0;
+                                                                      });
+
+                                                                      // Unfocus the keyboard
+                                                                      FocusScope.of(
+                                                                              context)
+                                                                          .unfocus();
+                                                                    },
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      size: 30,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .primary,
+                                                                    ),
+                                                                  ),
+                                                                  IconButton(
+                                                                    onPressed:
+                                                                        _handleSubmitReview,
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .arrow_forward_ios,
+                                                                      size: 24,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .primary,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                          ],
+                                                        )
+                                                      : Column(
+                                                          key: const ValueKey(
+                                                              'submitted'),
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            const SizedBox(
+                                                                height: 12),
+                                                            Text(
+                                                              reviewsData.first[
+                                                                  'title'],
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 4),
+                                                            Row(
+                                                              children: [
+                                                                Row(
+                                                                  children: List
+                                                                      .generate(
+                                                                    reviewsData
+                                                                            .first[
+                                                                        'rating'],
+                                                                    (index) =>
+                                                                        Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      size: 16,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .primary,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 8),
+                                                                Text(
+                                                                  "${reviewsData.first['timeAgo']} • ${reviewsData.first['reviewer']}",
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      fontSize:
+                                                                          12),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 8),
+                                                            Text(
+                                                              reviewsData.first[
+                                                                  'content'],
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          14),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 12),
+                                                            const Text(
+                                                              "Chef Response",
+                                                              style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 4),
+                                                            Text(
+                                                              reviewsData.first[
+                                                                  'response'],
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          14),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
                             const SizedBox(height: 30),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),

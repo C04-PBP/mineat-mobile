@@ -202,16 +202,6 @@ class _AdminScreenState extends State<AdminScreen> {
                       } else {}
                     },
                   ),
-                  buildRow(
-                    context: context,
-                    title: "District",
-                    actions: ["Add", "Edit", "Delete"],
-                    onTap: (action) {
-                      if (action == 'Add') {
-                      } else if (action == 'Edit') {
-                      } else {}
-                    },
-                  ),
                 ],
               ),
             ),
