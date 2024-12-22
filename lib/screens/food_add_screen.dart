@@ -1,15 +1,18 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:mineat/app_view.dart';
-import 'package:mineat/screens/home_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:mineat/api/device.dart';
 import 'package:uuid/uuid.dart';
 
 class FoodAddScreen extends StatefulWidget {
-  const FoodAddScreen({Key? key}) : super(key: key);
+  final Set<String> uniqueIngredientsList;
+
+  const FoodAddScreen({
+    super.key,
+    required this.uniqueIngredientsList,
+  });
 
   @override
   State<FoodAddScreen> createState() => _FoodAddScreenState();
@@ -22,46 +25,56 @@ class _FoodAddScreenState extends State<FoodAddScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
-
-  final List<String> _ingredients = [
-    "Tomato",
-    "Cheese",
-    "Basil",
-    "Chicken",
-    "Beef",
-    "Lettuce",
-  ];
-
   final Map<String, bool> _selectedIngredients = {};
 
   @override
   void initState() {
     super.initState();
-    for (var ingredient in _ingredients) {
+    // Initialize _selectedIngredients with the provided Set<String>
+    for (var ingredient in widget.uniqueIngredientsList) {
       _selectedIngredients[ingredient] = false;
     }
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final selectedIngredients = _selectedIngredients.entries
           .where((entry) => entry.value)
           .map((entry) => entry.key)
           .toList();
 
-      // Perform the add food action here
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              'Food Added: ${_nameController.text}, Ingredients: ${selectedIngredients.join(', ')}'),
-        ),
+      final String generatedId = uuid.v4();
+      final request = context.read<CookieRequest>();
+
+      final response = await request.postJson(
+        "$device/fnb/create_flutter/",
+        jsonEncode(<String, dynamic>{
+          'id': generatedId,
+          'title': _nameController.text,
+          'description': _descriptionController.text,
+          'price': _priceController.text,
+          'imageUrl': _imageUrlController.text,
+          'ingredients': selectedIngredients.join(', '),
+        }),
       );
+
+      if (context.mounted) {
+        if (response['status'] == 'success') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Food successfully added!")),
+          );
+          Navigator.pop(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Error occurred, please try again.")),
+          );
+        }
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add New Food"),
@@ -132,74 +145,77 @@ class _FoodAddScreenState extends State<FoodAddScreen> {
                   labelText: "Image URL",
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.url,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter the url";
+                    return "Please enter the image URL";
                   }
                   return null;
                 },
               ),
-              SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               const Text(
                 "Select Ingredients:",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              ..._ingredients.map((ingredient) {
-                return CheckboxListTile(
-                  title: Text(ingredient),
-                  value: _selectedIngredients[ingredient],
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _selectedIngredients[ingredient] = value ?? false;
-                    });
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 300, // Specify a fixed height for the GridView
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 20,
+                    childAspectRatio: 3 / 1,
+                  ),
+                  itemCount: widget.uniqueIngredientsList.length,
+                  itemBuilder: (context, index) {
+                    final ingredient = widget.uniqueIngredientsList.elementAt(index);
+                    final isSelected = _selectedIngredients[ingredient] ?? false;
+
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedIngredients[ingredient] = !isSelected;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: isSelected
+                              ? const Color.fromARGB(255, 255, 136, 0)
+                              : const Color(0xffffd700),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Colors.black.withOpacity(0.2),
+                              offset: const Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          ingredient,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
                   },
-                );
-              }).toList(),
+                ),
+              ),
               const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      final String generatedId = uuid.v4();
-                      // Kirim ke Django dan tunggu respons
-                      // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                      final response = await request.postJson(
-                        "$device/fnb/create_flutter/",
-                        jsonEncode(<String, String>{
-                          'id': generatedId,
-                          'title': _nameController.text,
-                          'description': _descriptionController.text,
-                          'price': _priceController.text,
-                          'imageUrl': _imageUrlController.text,
-                        }),
-                      );
-                      if (context.mounted) {
-                        if (response['status'] == 'success') {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text("Mood baru berhasil disimpan!"),
-                          ));
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => HomeScreen()),
-                          // );
-                        } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content:
-                                Text("Terdapat kesalahan, silakan coba lagi."),
-                          ));
-                        }
-                      }
-                    }
-                  },
+                  onPressed: _submitForm,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 24),
+                      vertical: 12,
+                      horizontal: 24,
+                    ),
                   ),
                   child: const Text(
                     "Add Food",

@@ -8,7 +8,10 @@ import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String username;
-  const ProfileScreen({super.key, required this.username});
+  const ProfileScreen({
+    super.key,
+    required this.username,
+  });
 
   @override
   Widget build(BuildContext context) {

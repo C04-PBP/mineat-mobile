@@ -58,18 +58,18 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> fetchRestaurantData() async {
-    await RestaurantService.fetchRestaurantData();
+    // await RestaurantService.fetchRestaurantData();
 
-    final restaurants = RestaurantService.getRestaurantData();
+    // final restaurants = RestaurantService.getRestaurantData();
 
-    if (restaurants!.isNotEmpty) {
-      setState(() {
-        allRestaurant = restaurants;
-        isLoading = false;
-      });
-    } else {
-      print('Error: Restaurant data is null or not found');
-    }
+    // if (restaurants!.isNotEmpty) {
+    //   setState(() {
+    //     allRestaurant = restaurants;
+    //     isLoading = false;
+    //   });
+    // } else {
+    //   print('Error: Restaurant data is null or not found');
+    // }
   }
 
   void onItemTapped(int index) {
