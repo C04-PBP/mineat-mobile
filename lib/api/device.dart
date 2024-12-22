@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 String getDevice() {
-  if (kIsWeb) {
+  if (kReleaseMode) {
+    return 'https://ragnall-muhammad-mineat.pbp.cs.ui.ac.id/';
+  } else if (kIsWeb) {
     return 'http://localhost:8000';
   } else if (defaultTargetPlatform == TargetPlatform.iOS) {
     return 'http://127.0.0.1:8000';
@@ -10,4 +12,5 @@ String getDevice() {
   }
 }
 
-final device = getDevice();
+
+final device = 'https://ragnall-muhammad-mineat.pbp.cs.ui.ac.id/';
