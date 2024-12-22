@@ -5,6 +5,7 @@ import 'package:mineat/screens/ratings_and_reviews_all_screen.dart';
 import 'package:mineat/screens/restaurant_details_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mineat/api/device.dart';
 
 class FoodDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> item;
@@ -138,7 +139,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
   }
 
   Future<void> fetchData() async {
-    print('masuk');
+    print(widget.item["id"]);
     await ReviewService.fetchReviewData(
         widget.item["id"]); //butuh id makanannya
 
@@ -166,7 +167,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
     print(widget.username.runtimeType);
     String reviewContent = _reviewTextController.text.trim();
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/review/create-flutter/'),
+      Uri.parse('$device/review/create-flutter/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         // 'Authorization': 'Bearer ${await getAuthToken()}', // If using token auth
@@ -175,7 +176,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
         'id': widget.item['id'],
         'rating': _myRating,
         'content': reviewContent,
-        'name': widget.username
+        'name': widget.username,
       }),
     );
     return;
@@ -640,35 +641,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                   ),
                                 ],
                               ),
-                            if (widget.username == "None")
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen(
-                                            username: "", isLoggedIn: false)),
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      child: Text(
-                                        "login to rate",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            // fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+
                             if (reviewsData.length != 0)
                               Padding(
                                 padding:
@@ -1264,6 +1237,35 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
                                     ),
                                   ),
                                 ],
+                              ),
+                            if (widget.username == "None")
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen(
+                                            username: "", isLoggedIn: false)),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      child: Text(
+                                        "login to rate",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            // fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             const SizedBox(height: 30),
                             const Padding(

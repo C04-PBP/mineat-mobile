@@ -86,7 +86,7 @@ class _ForumScreenState extends State<ForumScreen> {
 
   void _filterSearchResults(String query) {
     setState(() async {
-      await fetchData(); 
+      await fetchData();
       if (query.isEmpty) {
         searchFilteredForums = allForum;
       } else {
@@ -111,6 +111,11 @@ class _ForumScreenState extends State<ForumScreen> {
       } else {
         checkboxFilteredForums =
             allForum.where((forum) => forum.replyCount == 1).toList();
+        
+        if (checkboxFilteredForums.isEmpty) {
+          filteredForums = [];
+          return;
+        }
       }
       _combineFilters();
     });
@@ -170,36 +175,84 @@ class _ForumScreenState extends State<ForumScreen> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.red),
+                                color: Colors.black),
                           ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            controller: _titleController,
-                            decoration: const InputDecoration(
-                              labelText: "Discussion Name",
-                              border: OutlineInputBorder(),
+                          const SizedBox(height: 30),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade500,
+                                  offset: const Offset(-7, -7),
+                                  blurRadius: 8,
+                                  spreadRadius: -5,
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  offset: const Offset(7, 7),
+                                  blurRadius: 8,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter a discussion name";
-                              }
-                              return null;
-                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: TextFormField(
+                                controller: _titleController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Discussion Name',
+                                  border: InputBorder.none,
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a discussion name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            controller: _textController,
-                            decoration: const InputDecoration(
-                              labelText: "Comment",
-                              border: OutlineInputBorder(),
+                          const SizedBox(height: 25),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade500,
+                                  offset: const Offset(-7, -7),
+                                  blurRadius: 8,
+                                  spreadRadius: -5,
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  offset: const Offset(7, 7),
+                                  blurRadius: 8,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                             ),
-                            maxLines: 3,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter a comment";
-                              }
-                              return null;
-                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: TextFormField(
+                                controller: _textController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Comment',
+                                  border: InputBorder.none,
+                                ),
+                                maxLines: 3,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a comment';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(
@@ -225,7 +278,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                     //     context,
                                     //     MaterialPageRoute(builder: (context) => ForumScreen(allFood: [],)),
                                     // );
-                                    fetchData(); 
+                                    fetchData();
                                   } else {
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(const SnackBar(
@@ -500,7 +553,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                                       fontSize: 16,
                                                       color: Colors.grey,
                                                     ),
-                                                    maxLines: 2,
+                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
