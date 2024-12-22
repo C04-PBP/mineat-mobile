@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mineat/api/device.dart';
 import 'package:mineat/api/forum.dart';
-import 'package:mineat/api/forumKhusus_service.dart';
 import 'package:mineat/api/forum_replies.dart';
 import 'package:mineat/screens/login_screen.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
