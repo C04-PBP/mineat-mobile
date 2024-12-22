@@ -4,7 +4,7 @@
 
 # Link : [![Build status](https://build.appcenter.ms/v0.1/apps/80dbdebe-88bb-4c86-b391-c4bda9f01a92/branches/main/badge)](https://appcenter.ms)
 # Link : [apk build](https://install.appcenter.ms/orgs/c05-pbp/apps/mineat/distribution_groups/public)
-# Link : [video demo](https://youtu.be/MYne6ocuLNo)
+# Link : [video demo](https://youtu.be/NyOGVJnc_Dw)
 
 ## Anggota Kelompok C04
 - [Khansa Khairunisa](https://github.com/khansakhai) (2306152462)
