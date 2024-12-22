@@ -31,49 +31,975 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreenState extends State<RestaurantScreen> {
   final List<Map<String, dynamic>> stackData = [
     {
-      "title": "Taman Surya",
+      "title": "Rumah Makan Taman Surya",
       "address": "Jl. Tamansiswa No. 15",
       "district": "Padang Utara",
       "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMucy2GYqlxcQZpn6g9OzG8CXFFHCZYpduAxKE2=s1360-w1360-h1020"
+          "https://lh3.googleusercontent.com/p/AF1QipMucy2GYqlxcQZpn6g9OzG8CXFFHCZYpduAxKE2=s1360-w1360-h1020",
+      "foodsInTheRestaurant": [
+        {
+          "id": "0215db5f-847d-4875-ba7c-6d8136a3c532",
+          "title": "Rajungan goreng",
+          "price": 70000,
+          "description": "crispy fried crab",
+          "ingredients": "salt, oil, Crab, ",
+          "imageUrl":
+              "https://cdn0-production-images-kly.akamaized.net/b4c9FCwttCcvLjdJ7sned_aS06c%3D/1x40%3A1000x603/1200x675/filters%3Aquality(75)%3Astrip_icc()%3Aformat(jpeg)/kly-media-production/medias/3570968/original/013224500_1631594241-shutterstock_1796323171.jpg"
+        },
+        {
+          "id": "02173c34-d3b4-4f91-b762-8436d510bb63",
+          "title": "Gulai paku",
+          "price": 25000,
+          "description": "fern gulai",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Paku, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/1d34ae7f990bd073/680x482cq70/gulai-pakisgulai-paku-foto-resep-utama.jpg"
+        },
+        {
+          "id": "02274a61-8fc1-4e74-9045-4480764c9da7",
+          "title": "Kerupuk jangek",
+          "price": 18000,
+          "description": "cow's skin krupuk",
+          "ingredients": "salt, Cow skin, oil, ",
+          "imageUrl":
+              "https://upload.wikimedia.org/wikipedia/commons/b/be/Karupuak_jangek_2.jpg"
+        },
+        {
+          "id": "2a858213-b635-4253-bc19-ba14f78578cd",
+          "title": "Gulai ati",
+          "price": 35000,
+          "description": "gulai of cow liver",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, chili, garlic, Cow liver, salt, coconut milk, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/093bca8e79bc5ca4/1360x964cq70/gulai-hati-ampela-foto-resep-utama.webp"
+        },
+        {
+          "id": "3afb4d62-29f8-43c3-8dd9-509075e88e2c",
+          "title": "Sate padang",
+          "price": 40000,
+          "description":
+              "Padang-style of satay, skewered barbecued meat with thick yellow sauce",
+          "ingredients":
+              "thick sauce (rice Flour-based), Meat, shallots, Flour, turmeric, garlic, lemongrass, ",
+          "imageUrl": "https://i.ytimg.com/vi/hmWh0thXUbQ/maxresdefault.jpg"
+        },
+        {
+          "id": "45ecc2cc-d220-4049-88c2-5e37109e924f",
+          "title": "Sambal lado tanak",
+          "price": 20000,
+          "description":
+              "sambal with coconut milk, anchovies, green stinky bean and spices",
+          "ingredients":
+              "coconut, shallots, Green chilies, chilies, chili, garlic, anchovies, coconut milk, stinky beans, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/197c93a33e56af43/680x482cq70/sambalado-tanak-khas-minang-foto-resep-utama.jpg"
+        },
+        {
+          "id": "46c93e82-181d-4371-8e49-9839668dd863",
+          "title": "Ikan bilih",
+          "price": 38000,
+          "description":
+              "fried small freshwater fish of the genus Mystacoleucus",
+          "ingredients": "salt, Small freshwater fish, oil, ",
+          "imageUrl":
+              "https://packagepadang.com/wp-content/uploads/2023/05/ikan-bilih.jpg"
+        },
+        {
+          "id": "4d9184ef-97c3-44c9-9e54-ee6859680828",
+          "title": "Gulai sayua",
+          "price": 30000,
+          "description":
+              "curry dish with main ingredients vegetables such as cassava leaves and unripe jackfruit",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, oil, Vegetable, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://akcdn.detik.net.id/community/media/visual/2023/01/01/resep-gulai-aneka-sayuran_43.jpeg%3Fw%3D700%26q%3D90"
+        },
+        {
+          "id": "9dd2d67d-58ec-4122-83ca-efce2e04cc31",
+          "title": "Dadiah",
+          "price": 18000,
+          "description": "fermented buffalo milk akin to yogurt",
+          "ingredients": "Fermented buffalo milk, ",
+          "imageUrl":
+              "https://indonesiakaya.com/wp-content/uploads/2020/10/5__IMG_3410_Citarasanya_yang_unik_membuat_dadiah_tergolong_kuliner_dengan_peminat_yang_spesifik.jpg"
+        },
+        {
+          "id": "a2e5ca53-04a3-49e3-a623-4e6ee5ec46c9",
+          "title": "Satay ayam",
+          "price": 35000,
+          "description":
+              "dish of seasoned, skewered and grilled chicken, served with a sauce",
+          "ingredients":
+              "shallots, garlic, sweet soy sauce, Chicken, skewers, peanut sauce, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/a6ca9f36b02b089b/680x482cq70/sate-ayam-khas-madura-foto-resep-utama.jpg"
+        },
+        {
+          "id": "a6d45a69-80c9-4c29-970d-6576322ab563",
+          "title": "Gulai kepala ikan",
+          "price": 48000,
+          "description": "fish head gulai",
+          "ingredients":
+              "coconut, shallots, turmeric, garlic, salt, coconut milk, lime, kaffir lime leaves, Fish head, lime leaves, Fish, lemongrass, ",
+          "imageUrl":
+              "https://cdn.idntimes.com/content-images/community/2021/10/fromandroid-f2a4fb48c1f2c9948243bd190a3c71c6.jpg"
+        },
+        {
+          "id": "ab01df10-2430-4eaa-80a6-7590b7742a42",
+          "title": "Lele goreng",
+          "price": 30000,
+          "description": "fried catfish",
+          "ingredients": "turmeric, Catfish, garlic, salt, oil, ",
+          "imageUrl":
+              "https://kurio-img.kurioapps.com/22/09/26/ea665aec-bb3e-4232-9fa2-6b29197a5884.jpg"
+        },
+        {
+          "id": "b2146ad8-f45a-426c-9828-16a9ea5ccf1e",
+          "title": "Gulai daging",
+          "price": 40000,
+          "description":
+              "curry dish with main ingredients beef and unripe jackfruit",
+          "ingredients":
+              "coconut, Meat, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://assets.pikiran-rakyat.com/crop/0x0%3A0x0/750x500/photo/2021/11/25/217085998.jpeg"
+        },
+        {
+          "id": "b820cb02-ce8d-4092-a599-f39d6dd9d5cd",
+          "title": "Gulai cancang",
+          "price": 40000,
+          "description": "gulai of meats and cow internal organs",
+          "ingredients":
+              "coconut, Meat, chilies, turmeric, chili, garlic, salt, coconut milk, Meat and internal organs, lemongrass, ",
+          "imageUrl":
+              "https://nnc-media.netralnews.com/IMG-Netral-News-Admin-35-I2FNWD19UL.jpg"
+        },
+        {
+          "id": "c80f5b33-16a8-4ead-8301-298f764a5187",
+          "title": "Gulai babek",
+          "price": 37000,
+          "description":
+              "gulai babat, or gulai paruik kabau, gulai of cow tripes",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, chili, garlic, salt, coconut milk, Cow tripe, lemongrass, ",
+          "imageUrl":
+              "https://cdn.yummy.co.id/content-images/images/20210731/B6mbbnT8my7I95S8VOzmTgJFrDnQM0Ne-31363237373039383835d41d8cd98f00b204e9800998ecf8427e.jpg%3Fx-oss-process%3Dimage/resize%2Cw_388%2Ch_388%2Cm_fixed%2Cx-oss-process%3Dimage/format%2Cwebp"
+        },
+        {
+          "id": "dbcee8e3-0192-4372-9191-a9d6ec4e4e2b",
+          "title": "Ayam Gulai Nangka",
+          "price": 50000,
+          "description":
+              "Chicken simmered in a spicy coconut curry with young jackfruit.",
+          "ingredients":
+              "coconut, chilies, turmeric, bay leaves., bay leaves, jackfruit, chili, coconut milk, Chicken, red chilies, young jackfruit, galangal, lemongrass, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/750x500/webp/photo/p1/1067/2024/05/21/maxresdefault-8-1983884964.jpg"
+        },
+        {
+          "id": "ddbf80f4-772b-45d5-9b18-6ffcd400dd4f",
+          "title": "Es ampiang dadiah",
+          "price": 20000,
+          "description": "Minang yogurt served with shaved ice and palm sugar",
+          "ingredients":
+              "ice, rice Flour, shaved ice, Flour, palm sugar, sugar, Buffalo milk (fermented), ",
+          "imageUrl":
+              "https://cdn.idntimes.com/content-images/community/2021/01/119657646-3525199824196675-1505695841977428848-n-0b2e3fe55c98e8dc089991ca6127b017-593497de0889f8a23280afeda9c8d205_600x400.jpg"
+        },
+        {
+          "id": "ec0d7ab8-4ba5-4c8d-927d-38981e693d96",
+          "title": "Pergedel jaguang",
+          "price": 15000,
+          "description": "corn fritters",
+          "ingredients": "shallots, Flour, garlic, salt, oil, eggs, Corn, ",
+          "imageUrl":
+              "https://asset.kompas.com/crops/qiVD1zYxC5A49SsCaE_2hrUR7g0%3D/65x0%3A907x561/750x500/data/photo/2020/11/02/5f9f812b3e9fa.jpg"
+        },
+        {
+          "id": "efab575f-9ca3-4665-83b3-7c639ddf10cf",
+          "title": "Kue putu",
+          "price": 12000,
+          "description":
+              "traditional cylindrical-shaped and green-colored steamed cake",
+          "ingredients":
+              "coconut, Rice Flour, Flour, palm sugar, sugar, Rice, pandan leaves, ",
+          "imageUrl":
+              "https://cdn.rri.co.id/berita/Bukittinggi/o/1716266719523-1705038382_65a0d22ebe1a1_KraEi35RrXloPGaZ2y2Z/de4ooj24jn7p32r.webp"
+        },
+        {
+          "id": "f5b8aa37-85fa-4594-818a-b76e06413cac",
+          "title": "Petai goreng",
+          "price": 18000,
+          "description": "fried green stinky bean (Parkia speciosa)",
+          "ingredients": "Stinky beans (Parkia speciosa), oil, ",
+          "imageUrl":
+              "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/2/11/098d34be-e600-4635-b73b-13c358ab6879.jpg"
+        }
+      ]
     },
     {
-      "title": "Kubang Hayuda",
+      "title": "Restoran Kubang Hayuda",
       "address": "Jl. Prof. M. Yamin SH No. 138B, Padang",
       "district": "Padang Barat",
       "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipPE1fJpyuCWE2eMPbYKPL5zD-eTKPbvM_MJ6bmD=s680-w680-h510"
+          "https://lh3.googleusercontent.com/p/AF1QipPE1fJpyuCWE2eMPbYKPL5zD-eTKPbvM_MJ6bmD=s680-w680-h510",
+      "foodsInTheRestaurant": [
+        {
+          "id": "02173c34-d3b4-4f91-b762-8436d510bb63",
+          "title": "Gulai paku",
+          "price": 25000,
+          "description": "fern gulai",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Paku, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/1d34ae7f990bd073/680x482cq70/gulai-pakisgulai-paku-foto-resep-utama.jpg"
+        },
+        {
+          "id": "0aa137f9-3f93-44d1-b1bb-4a5d3f0d42a3",
+          "title": "Kalio Ayam",
+          "price": 35000,
+          "description":
+              "similar to rendang; while rendang is rather dry, kalio is watery and light-colored",
+          "ingredients":
+              "Shallots, Turmeric, Coconut milk, chilies, Cooking oil, chili, Ginger (sliced), Garlic, Lemongrass, Sugar, Water, oil, Shallots (sliced), Chicken, Salt, Garlic (minced), Red chilies (sliced), ",
+          "imageUrl":
+              "https://asset.kompas.com/crops/mCb4rnN344JdAyqQs9i1IJWktRU%3D/0x379%3A667x823/750x500/data/photo/2021/05/11/609a2c750cdc5.jpg"
+        },
+        {
+          "id": "48ff3e73-d767-4173-bbe8-44ec2b24aa8c",
+          "title": "Es campur",
+          "price": 20000,
+          "description":
+              "cold and sweet dessert concoction of fruit cocktails, coconut, tapioca pearls, grass jellies, etc, and served in shaved ice, syrup and condensed milk",
+          "ingredients":
+              "ice, shaved ice, jackfruit, condensed milk, Mixed fruits (coconut, syrup, tapioca pearls, jackfruit), ",
+          "imageUrl":
+              "https://cdn0-production-images-kly.akamaized.net/qSxIa6DhH4tSfPQdtDo-0vS-6R8%3D/0x2180%3A3999x4434/1200x675/filters%3Aquality(75)%3Astrip_icc()%3Aformat(jpeg)/kly-media-production/medias/3981507/original/061819300_1648783740-shutterstock_1969134643.jpg"
+        },
+        {
+          "id": "6d0a88e5-8afa-4eb3-b4de-c3cc9b4ce0ab",
+          "title": "Sambalado",
+          "price": 20000,
+          "description":
+              "chili paste similar to sambal with large sliced chili pepper, usually stir fried together with main ingredients",
+          "ingredients":
+              "shallots, tomato, sugar, garlic, tomatoes, salt, oil, Chilies, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/0x0/webp/photo/p2/131/2023/12/12/sambal-bawang-3278993492.jpg"
+        },
+        {
+          "id": "9e949d0b-f83e-4512-8ce0-bf62ba5fee88",
+          "title": "Ayam kurma",
+          "price": 16000,
+          "description":
+              "chicken slowly cooked in a rich and aromatic coconut and kurma (date) sauce.",
+          "ingredients":
+              "onion, turmeric, chili, garlic, ginger, kurma (dates), oil, Chicken, coriander, chili peppers, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/86fd40ff2496de0f/1360x964cq70/gulai-korma-khas-minang-versi-ayam-foto-resep-utama.webp"
+        },
+        {
+          "id": "b2146ad8-f45a-426c-9828-16a9ea5ccf1e",
+          "title": "Gulai daging",
+          "price": 40000,
+          "description":
+              "curry dish with main ingredients beef and unripe jackfruit",
+          "ingredients":
+              "coconut, Meat, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://assets.pikiran-rakyat.com/crop/0x0%3A0x0/750x500/photo/2021/11/25/217085998.jpeg"
+        },
+        {
+          "id": "bd4434a5-4488-4d53-a477-9b542f5aec34",
+          "title": "Gulai kepala ikan kakap merah",
+          "price": 50000,
+          "description": "red snapper's head gulai",
+          "ingredients":
+              "coconut, chilies, turmeric, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Red snapper's head, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/2d402f7844250193/1360x964cq70/gulai-kepala-ikan-kakap-merah-foto-resep-utama.webp"
+        },
+        {
+          "id": "bffc0e18-3d01-4586-b12b-9b3a27e7d347",
+          "title": "Gulai ayam",
+          "price": 39000,
+          "description": "chicken gulai",
+          "ingredients":
+              "coconut, shallots, turmeric, garlic, salt, coconut milk, lime, Chicken, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://asset.kompas.com/crops/4Pge4o-1NYVqjBcfiXvB2nAJcnM%3D/0x0%3A1000x667/750x500/data/photo/2021/05/11/609a26028d3c9.jpg"
+        },
+        {
+          "id": "d1adc396-741d-4feb-b8f4-b4836714f996",
+          "title": "Nasi kapau",
+          "price": 45000,
+          "description":
+              "steamed rice topped with various choices of dishes originated from Bukittinggi, West Sumatra",
+          "ingredients": "various dishes, Rice, ",
+          "imageUrl":
+              "https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/12/Resep-Nasi-Kapau.jpg%3Ffit%3D1080%252C1440%26ssl%3D1"
+        },
+        {
+          "id": "db9ae1f2-b556-4a8f-9fb4-effa914fc1eb",
+          "title": "Ayam bakar",
+          "price": 40000,
+          "description": "grilled spicy chicken",
+          "ingredients":
+              "shallots, turmeric, tamarind, chili, garlic, kecap manis (sweet soy sauce), salt, oil, Chicken, lemongrass, ",
+          "imageUrl":
+              "https://www.sasa.co.id/medias/page_medias/ayam_bakar_lumajang.jpg"
+        },
+        {
+          "id": "f17174b5-c69f-4b28-88f7-f6504f99d4de",
+          "title": "Es tebak",
+          "price": 25000,
+          "description":
+              "mixed of avocado, jack fruit, tebak, shredded and iced with sweet thick milk",
+          "ingredients": "ice, Avocado, jackfruit, tebak, condensed milk, ",
+          "imageUrl":
+              "https://cdn.idntimes.com/content-images/post/20190507/es-campur-bandung-cirebon-483a1ad02721c4a36f42b0cd7f1c21cd_600x400.jpg"
+        }
+      ]
     },
     {
-      "title": "VII Koto Talago",
+      "title": "Rumah Makan VII Koto Talago",
       "address": "Jl. Jhoni Anwar No.Kelurahan No.17, Padang",
       "district": "Padang Utara",
       "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMfCv5oU_RRNSg_BgK9lA9FLaMSABN1CUDTAO0S=s680-w680-h510"
+          "https://lh3.googleusercontent.com/p/AF1QipMfCv5oU_RRNSg_BgK9lA9FLaMSABN1CUDTAO0S=s680-w680-h510",
+      "foodsInTheRestaurant": [
+        {
+          "id": "3a4ba9ed-dd6c-4bbc-bfae-7faf76e5ca88",
+          "title": "Soto",
+          "price": 35000,
+          "description":
+              "traditional soup mainly composed of broth, meat and vegetables",
+          "ingredients":
+              "Meat, broth (spices like turmeric, turmeric, garlic, ginger, ginger), vegetables, broth, ",
+          "imageUrl":
+              "https://giwang.sumselprov.go.id/api/uploads/kuliner/kuliner_168860841064729.jpg"
+        },
+        {
+          "id": "3c0c832e-ac22-4975-967c-95d40e7caf97",
+          "title": "Roti tisu",
+          "price": 16000,
+          "description": "thinner version of the traditional roti canai",
+          "ingredients": "Flour, water, ghee, oil or ghee, oil, ",
+          "imageUrl":
+              "https://cdn.tasteatlas.com/images/dishes/1414b9c07a7d45f293798254e59f2b5b.jpg%3Fw%3D600"
+        },
+        {
+          "id": "3fb1020a-4675-4cb0-9189-b16b24d94407",
+          "title": "Gulai udang",
+          "price": 48000,
+          "description": "shrimp gulai",
+          "ingredients":
+              "coconut, shallots, Shrimp, turmeric, garlic, salt, coconut milk, lime, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://cdn-brilio-net.akamaized.net/news/2021/08/18/211860/1544238-1000xauto-resep-gulai-udang.jpg"
+        },
+        {
+          "id": "4450880a-a28a-4949-8b2c-77781029c613",
+          "title": "Dendeng",
+          "price": 50000,
+          "description": "thinly sliced dried meat",
+          "ingredients": "tamarind, garlic, salt, Beef, oil, coriander, ",
+          "imageUrl":
+              "https://encrypted-tbn0.gstatic.com/images%3Fq%3Dtbn%3AANd9GcSiBNMWYvpmCt1h1cajjZXjk-o_lv3e2NwtoA%26s"
+        },
+        {
+          "id": "6d0a88e5-8afa-4eb3-b4de-c3cc9b4ce0ab",
+          "title": "Sambalado",
+          "price": 20000,
+          "description":
+              "chili paste similar to sambal with large sliced chili pepper, usually stir fried together with main ingredients",
+          "ingredients":
+              "shallots, tomato, sugar, garlic, tomatoes, salt, oil, Chilies, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/0x0/webp/photo/p2/131/2023/12/12/sambal-bawang-3278993492.jpg"
+        },
+        {
+          "id": "7272e012-c3f3-4fb6-a22e-922ef7a57aa4",
+          "title": "Sarikayo",
+          "price": 12000,
+          "description": "jam made from a base of coconut milk, eggs and sugar",
+          "ingredients": "palm sugar, sugar, eggs, pandan leaves, ",
+          "imageUrl":
+              "https://ik.imagekit.io/goodid/gnfi/uploads/articles/large-img-20231106-093401-522787279d1f999ca516090844961d37.jpg"
+        },
+        {
+          "id": "95c2fa2a-8f8f-4c72-ad10-d56c0c9d7bb7",
+          "title": "Palai",
+          "price": 28000,
+          "description": "Minangkabau variants of pepes",
+          "ingredients":
+              "coconut, shallots, turmeric, garlic, grated coconut, banana leaves, Fish, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/f548101c11ec0f35/680x482cq70/resep-palai-bada-khas-minang-foto-resep-utama.jpg"
+        },
+        {
+          "id": "a61eb40c-7f9a-473d-9455-4725393142dc",
+          "title": "Ayam bumbu",
+          "price": 41000,
+          "description": "chicken with spices",
+          "ingredients":
+              "cumin, coconut, shallots, turmeric, garlic, ginger, salt, coconut milk, oil, Chicken, coriander, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/0x0/webp/photo/p2/74/2024/05/01/3c47eeba484ca5b1b586d8b374aba571-906762525.jpg"
+        },
+        {
+          "id": "b820cb02-ce8d-4092-a599-f39d6dd9d5cd",
+          "title": "Gulai cancang",
+          "price": 40000,
+          "description": "gulai of meats and cow internal organs",
+          "ingredients":
+              "coconut, Meat, chilies, turmeric, chili, garlic, salt, coconut milk, Meat and internal organs, lemongrass, ",
+          "imageUrl":
+              "https://nnc-media.netralnews.com/IMG-Netral-News-Admin-35-I2FNWD19UL.jpg"
+        },
+        {
+          "id": "bd4434a5-4488-4d53-a477-9b542f5aec34",
+          "title": "Gulai kepala ikan kakap merah",
+          "price": 50000,
+          "description": "red snapper's head gulai",
+          "ingredients":
+              "coconut, chilies, turmeric, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Red snapper's head, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/2d402f7844250193/1360x964cq70/gulai-kepala-ikan-kakap-merah-foto-resep-utama.webp"
+        },
+        {
+          "id": "c1d8ebb6-dcaf-4931-943f-37def1697625",
+          "title": "Serabi",
+          "price": 14000,
+          "description":
+              "traditional pancake that is made from rice flour with coconut milk or shredded coconut",
+          "ingredients":
+              "coconut, Rice Flour, Flour, coconut milk, Rice, pandan leaves, ",
+          "imageUrl": "https://i.ytimg.com/vi/DkgrqXLYgso/sddefault.jpg"
+        },
+        {
+          "id": "db9ae1f2-b556-4a8f-9fb4-effa914fc1eb",
+          "title": "Ayam bakar",
+          "price": 40000,
+          "description": "grilled spicy chicken",
+          "ingredients":
+              "shallots, turmeric, tamarind, chili, garlic, kecap manis (sweet soy sauce), salt, oil, Chicken, lemongrass, ",
+          "imageUrl":
+              "https://www.sasa.co.id/medias/page_medias/ayam_bakar_lumajang.jpg"
+        },
+        {
+          "id": "e74c9cba-68fc-4dea-8059-c85725d52e85",
+          "title": "Cumi Saus Padang",
+          "price": 45000,
+          "description":
+              "squid cooked in a spicy Padang-style sauce of chili, garlic, and spices",
+          "ingredients":
+              "Shallots, Lime juice, chilies, Black pepper, Cooking oil, chili, Garlic, Water, oil, Shallots (sliced), Sweet soy sauce, Salt, Garlic (minced), Squid, Red chilies (sliced), Tomato sauce, ",
+          "imageUrl":
+              "https://www.blibli.com/friends-backend/wp-content/uploads/2023/03/B300019-Cover-resep-cumi-saus-padang-scaled.jpg"
+        },
+        {
+          "id": "fe70d1d1-2fb3-4a06-9bbf-6b80bd343f59",
+          "title": "Roti jala",
+          "price": 18000,
+          "description":
+              "the name is derived from the Malay word roti (bread) and jala (net) A special ladle with a five-hole perforation used to make the bread looks like a fish net, It is usually eaten as an accompaniment to a curried dish, or served as a sweet with serawa, Serawa is made from a mixture of boiled coconut milk, brown sugar and pandan leaves",
+          "ingredients":
+              "coconut, Flour, water, coconut milk, eggs, pandan leaves, ",
+          "imageUrl":
+              "https://www.tokomesin.com/wp-content/uploads/2017/10/roti-jala-kari-ayam.jpg"
+        }
+      ]
     },
   ];
 
   final List<Map<String, dynamic>> cardData = [
     {
-      "title": "Kubang Hayuda",
-      "address": "Jl. Prof. M. Yamin SH No. 138B, Padang",
-      "district": "Padang Barat",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipPE1fJpyuCWE2eMPbYKPL5zD-eTKPbvM_MJ6bmD=s680-w680-h510"
-    },
-    {
-      "title": "VII Koto Talago",
-      "address": "Jl. Jhoni Anwar No.Kelurahan No.17, Padang",
-      "district": "Padang Utara",
-      "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMfCv5oU_RRNSg_BgK9lA9FLaMSABN1CUDTAO0S=s680-w680-h510"
-    },
-    {
-      "title": "Taman Surya",
+      "title": "Rumah Makan Taman Surya",
       "address": "Jl. Tamansiswa No. 15",
       "district": "Padang Utara",
       "imageUrl":
-          "https://lh3.googleusercontent.com/p/AF1QipMucy2GYqlxcQZpn6g9OzG8CXFFHCZYpduAxKE2=s1360-w1360-h1020"
+          "https://lh3.googleusercontent.com/p/AF1QipMucy2GYqlxcQZpn6g9OzG8CXFFHCZYpduAxKE2=s1360-w1360-h1020",
+      "foodsInTheRestaurant": [
+        {
+          "id": "0215db5f-847d-4875-ba7c-6d8136a3c532",
+          "title": "Rajungan goreng",
+          "price": 70000,
+          "description": "crispy fried crab",
+          "ingredients": "salt, oil, Crab, ",
+          "imageUrl":
+              "https://cdn0-production-images-kly.akamaized.net/b4c9FCwttCcvLjdJ7sned_aS06c%3D/1x40%3A1000x603/1200x675/filters%3Aquality(75)%3Astrip_icc()%3Aformat(jpeg)/kly-media-production/medias/3570968/original/013224500_1631594241-shutterstock_1796323171.jpg"
+        },
+        {
+          "id": "02173c34-d3b4-4f91-b762-8436d510bb63",
+          "title": "Gulai paku",
+          "price": 25000,
+          "description": "fern gulai",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Paku, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/1d34ae7f990bd073/680x482cq70/gulai-pakisgulai-paku-foto-resep-utama.jpg"
+        },
+        {
+          "id": "02274a61-8fc1-4e74-9045-4480764c9da7",
+          "title": "Kerupuk jangek",
+          "price": 18000,
+          "description": "cow's skin krupuk",
+          "ingredients": "salt, Cow skin, oil, ",
+          "imageUrl":
+              "https://upload.wikimedia.org/wikipedia/commons/b/be/Karupuak_jangek_2.jpg"
+        },
+        {
+          "id": "2a858213-b635-4253-bc19-ba14f78578cd",
+          "title": "Gulai ati",
+          "price": 35000,
+          "description": "gulai of cow liver",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, chili, garlic, Cow liver, salt, coconut milk, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/093bca8e79bc5ca4/1360x964cq70/gulai-hati-ampela-foto-resep-utama.webp"
+        },
+        {
+          "id": "3afb4d62-29f8-43c3-8dd9-509075e88e2c",
+          "title": "Sate padang",
+          "price": 40000,
+          "description":
+              "Padang-style of satay, skewered barbecued meat with thick yellow sauce",
+          "ingredients":
+              "thick sauce (rice Flour-based), Meat, shallots, Flour, turmeric, garlic, lemongrass, ",
+          "imageUrl": "https://i.ytimg.com/vi/hmWh0thXUbQ/maxresdefault.jpg"
+        },
+        {
+          "id": "45ecc2cc-d220-4049-88c2-5e37109e924f",
+          "title": "Sambal lado tanak",
+          "price": 20000,
+          "description":
+              "sambal with coconut milk, anchovies, green stinky bean and spices",
+          "ingredients":
+              "coconut, shallots, Green chilies, chilies, chili, garlic, anchovies, coconut milk, stinky beans, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/197c93a33e56af43/680x482cq70/sambalado-tanak-khas-minang-foto-resep-utama.jpg"
+        },
+        {
+          "id": "46c93e82-181d-4371-8e49-9839668dd863",
+          "title": "Ikan bilih",
+          "price": 38000,
+          "description":
+              "fried small freshwater fish of the genus Mystacoleucus",
+          "ingredients": "salt, Small freshwater fish, oil, ",
+          "imageUrl":
+              "https://packagepadang.com/wp-content/uploads/2023/05/ikan-bilih.jpg"
+        },
+        {
+          "id": "4d9184ef-97c3-44c9-9e54-ee6859680828",
+          "title": "Gulai sayua",
+          "price": 30000,
+          "description":
+              "curry dish with main ingredients vegetables such as cassava leaves and unripe jackfruit",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, oil, Vegetable, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://akcdn.detik.net.id/community/media/visual/2023/01/01/resep-gulai-aneka-sayuran_43.jpeg%3Fw%3D700%26q%3D90"
+        },
+        {
+          "id": "9dd2d67d-58ec-4122-83ca-efce2e04cc31",
+          "title": "Dadiah",
+          "price": 18000,
+          "description": "fermented buffalo milk akin to yogurt",
+          "ingredients": "Fermented buffalo milk, ",
+          "imageUrl":
+              "https://indonesiakaya.com/wp-content/uploads/2020/10/5__IMG_3410_Citarasanya_yang_unik_membuat_dadiah_tergolong_kuliner_dengan_peminat_yang_spesifik.jpg"
+        },
+        {
+          "id": "a2e5ca53-04a3-49e3-a623-4e6ee5ec46c9",
+          "title": "Satay ayam",
+          "price": 35000,
+          "description":
+              "dish of seasoned, skewered and grilled chicken, served with a sauce",
+          "ingredients":
+              "shallots, garlic, sweet soy sauce, Chicken, skewers, peanut sauce, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/a6ca9f36b02b089b/680x482cq70/sate-ayam-khas-madura-foto-resep-utama.jpg"
+        },
+        {
+          "id": "a6d45a69-80c9-4c29-970d-6576322ab563",
+          "title": "Gulai kepala ikan",
+          "price": 48000,
+          "description": "fish head gulai",
+          "ingredients":
+              "coconut, shallots, turmeric, garlic, salt, coconut milk, lime, kaffir lime leaves, Fish head, lime leaves, Fish, lemongrass, ",
+          "imageUrl":
+              "https://cdn.idntimes.com/content-images/community/2021/10/fromandroid-f2a4fb48c1f2c9948243bd190a3c71c6.jpg"
+        },
+        {
+          "id": "ab01df10-2430-4eaa-80a6-7590b7742a42",
+          "title": "Lele goreng",
+          "price": 30000,
+          "description": "fried catfish",
+          "ingredients": "turmeric, Catfish, garlic, salt, oil, ",
+          "imageUrl":
+              "https://kurio-img.kurioapps.com/22/09/26/ea665aec-bb3e-4232-9fa2-6b29197a5884.jpg"
+        },
+        {
+          "id": "b2146ad8-f45a-426c-9828-16a9ea5ccf1e",
+          "title": "Gulai daging",
+          "price": 40000,
+          "description":
+              "curry dish with main ingredients beef and unripe jackfruit",
+          "ingredients":
+              "coconut, Meat, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://assets.pikiran-rakyat.com/crop/0x0%3A0x0/750x500/photo/2021/11/25/217085998.jpeg"
+        },
+        {
+          "id": "b820cb02-ce8d-4092-a599-f39d6dd9d5cd",
+          "title": "Gulai cancang",
+          "price": 40000,
+          "description": "gulai of meats and cow internal organs",
+          "ingredients":
+              "coconut, Meat, chilies, turmeric, chili, garlic, salt, coconut milk, Meat and internal organs, lemongrass, ",
+          "imageUrl":
+              "https://nnc-media.netralnews.com/IMG-Netral-News-Admin-35-I2FNWD19UL.jpg"
+        },
+        {
+          "id": "c80f5b33-16a8-4ead-8301-298f764a5187",
+          "title": "Gulai babek",
+          "price": 37000,
+          "description":
+              "gulai babat, or gulai paruik kabau, gulai of cow tripes",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, chili, garlic, salt, coconut milk, Cow tripe, lemongrass, ",
+          "imageUrl":
+              "https://cdn.yummy.co.id/content-images/images/20210731/B6mbbnT8my7I95S8VOzmTgJFrDnQM0Ne-31363237373039383835d41d8cd98f00b204e9800998ecf8427e.jpg%3Fx-oss-process%3Dimage/resize%2Cw_388%2Ch_388%2Cm_fixed%2Cx-oss-process%3Dimage/format%2Cwebp"
+        },
+        {
+          "id": "dbcee8e3-0192-4372-9191-a9d6ec4e4e2b",
+          "title": "Ayam Gulai Nangka",
+          "price": 50000,
+          "description":
+              "Chicken simmered in a spicy coconut curry with young jackfruit.",
+          "ingredients":
+              "coconut, chilies, turmeric, bay leaves., bay leaves, jackfruit, chili, coconut milk, Chicken, red chilies, young jackfruit, galangal, lemongrass, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/750x500/webp/photo/p1/1067/2024/05/21/maxresdefault-8-1983884964.jpg"
+        },
+        {
+          "id": "ddbf80f4-772b-45d5-9b18-6ffcd400dd4f",
+          "title": "Es ampiang dadiah",
+          "price": 20000,
+          "description": "Minang yogurt served with shaved ice and palm sugar",
+          "ingredients":
+              "ice, rice Flour, shaved ice, Flour, palm sugar, sugar, Buffalo milk (fermented), ",
+          "imageUrl":
+              "https://cdn.idntimes.com/content-images/community/2021/01/119657646-3525199824196675-1505695841977428848-n-0b2e3fe55c98e8dc089991ca6127b017-593497de0889f8a23280afeda9c8d205_600x400.jpg"
+        },
+        {
+          "id": "ec0d7ab8-4ba5-4c8d-927d-38981e693d96",
+          "title": "Pergedel jaguang",
+          "price": 15000,
+          "description": "corn fritters",
+          "ingredients": "shallots, Flour, garlic, salt, oil, eggs, Corn, ",
+          "imageUrl":
+              "https://asset.kompas.com/crops/qiVD1zYxC5A49SsCaE_2hrUR7g0%3D/65x0%3A907x561/750x500/data/photo/2020/11/02/5f9f812b3e9fa.jpg"
+        },
+        {
+          "id": "efab575f-9ca3-4665-83b3-7c639ddf10cf",
+          "title": "Kue putu",
+          "price": 12000,
+          "description":
+              "traditional cylindrical-shaped and green-colored steamed cake",
+          "ingredients":
+              "coconut, Rice Flour, Flour, palm sugar, sugar, Rice, pandan leaves, ",
+          "imageUrl":
+              "https://cdn.rri.co.id/berita/Bukittinggi/o/1716266719523-1705038382_65a0d22ebe1a1_KraEi35RrXloPGaZ2y2Z/de4ooj24jn7p32r.webp"
+        },
+        {
+          "id": "f5b8aa37-85fa-4594-818a-b76e06413cac",
+          "title": "Petai goreng",
+          "price": 18000,
+          "description": "fried green stinky bean (Parkia speciosa)",
+          "ingredients": "Stinky beans (Parkia speciosa), oil, ",
+          "imageUrl":
+              "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/2/11/098d34be-e600-4635-b73b-13c358ab6879.jpg"
+        }
+      ]
+    },
+    {
+      "title": "Restoran Kubang Hayuda",
+      "address": "Jl. Prof. M. Yamin SH No. 138B, Padang",
+      "district": "Padang Barat",
+      "imageUrl":
+          "https://lh3.googleusercontent.com/p/AF1QipPE1fJpyuCWE2eMPbYKPL5zD-eTKPbvM_MJ6bmD=s680-w680-h510",
+      "foodsInTheRestaurant": [
+        {
+          "id": "02173c34-d3b4-4f91-b762-8436d510bb63",
+          "title": "Gulai paku",
+          "price": 25000,
+          "description": "fern gulai",
+          "ingredients":
+              "coconut, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Paku, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/1d34ae7f990bd073/680x482cq70/gulai-pakisgulai-paku-foto-resep-utama.jpg"
+        },
+        {
+          "id": "0aa137f9-3f93-44d1-b1bb-4a5d3f0d42a3",
+          "title": "Kalio Ayam",
+          "price": 35000,
+          "description":
+              "similar to rendang; while rendang is rather dry, kalio is watery and light-colored",
+          "ingredients":
+              "Shallots, Turmeric, Coconut milk, chilies, Cooking oil, chili, Ginger (sliced), Garlic, Lemongrass, Sugar, Water, oil, Shallots (sliced), Chicken, Salt, Garlic (minced), Red chilies (sliced), ",
+          "imageUrl":
+              "https://asset.kompas.com/crops/mCb4rnN344JdAyqQs9i1IJWktRU%3D/0x379%3A667x823/750x500/data/photo/2021/05/11/609a2c750cdc5.jpg"
+        },
+        {
+          "id": "48ff3e73-d767-4173-bbe8-44ec2b24aa8c",
+          "title": "Es campur",
+          "price": 20000,
+          "description":
+              "cold and sweet dessert concoction of fruit cocktails, coconut, tapioca pearls, grass jellies, etc, and served in shaved ice, syrup and condensed milk",
+          "ingredients":
+              "ice, shaved ice, jackfruit, condensed milk, Mixed fruits (coconut, syrup, tapioca pearls, jackfruit), ",
+          "imageUrl":
+              "https://cdn0-production-images-kly.akamaized.net/qSxIa6DhH4tSfPQdtDo-0vS-6R8%3D/0x2180%3A3999x4434/1200x675/filters%3Aquality(75)%3Astrip_icc()%3Aformat(jpeg)/kly-media-production/medias/3981507/original/061819300_1648783740-shutterstock_1969134643.jpg"
+        },
+        {
+          "id": "6d0a88e5-8afa-4eb3-b4de-c3cc9b4ce0ab",
+          "title": "Sambalado",
+          "price": 20000,
+          "description":
+              "chili paste similar to sambal with large sliced chili pepper, usually stir fried together with main ingredients",
+          "ingredients":
+              "shallots, tomato, sugar, garlic, tomatoes, salt, oil, Chilies, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/0x0/webp/photo/p2/131/2023/12/12/sambal-bawang-3278993492.jpg"
+        },
+        {
+          "id": "9e949d0b-f83e-4512-8ce0-bf62ba5fee88",
+          "title": "Ayam kurma",
+          "price": 16000,
+          "description":
+              "chicken slowly cooked in a rich and aromatic coconut and kurma (date) sauce.",
+          "ingredients":
+              "onion, turmeric, chili, garlic, ginger, kurma (dates), oil, Chicken, coriander, chili peppers, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/86fd40ff2496de0f/1360x964cq70/gulai-korma-khas-minang-versi-ayam-foto-resep-utama.webp"
+        },
+        {
+          "id": "b2146ad8-f45a-426c-9828-16a9ea5ccf1e",
+          "title": "Gulai daging",
+          "price": 40000,
+          "description":
+              "curry dish with main ingredients beef and unripe jackfruit",
+          "ingredients":
+              "coconut, Meat, shallots, chilies, turmeric, water, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://assets.pikiran-rakyat.com/crop/0x0%3A0x0/750x500/photo/2021/11/25/217085998.jpeg"
+        },
+        {
+          "id": "bd4434a5-4488-4d53-a477-9b542f5aec34",
+          "title": "Gulai kepala ikan kakap merah",
+          "price": 50000,
+          "description": "red snapper's head gulai",
+          "ingredients":
+              "coconut, chilies, turmeric, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Red snapper's head, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/2d402f7844250193/1360x964cq70/gulai-kepala-ikan-kakap-merah-foto-resep-utama.webp"
+        },
+        {
+          "id": "bffc0e18-3d01-4586-b12b-9b3a27e7d347",
+          "title": "Gulai ayam",
+          "price": 39000,
+          "description": "chicken gulai",
+          "ingredients":
+              "coconut, shallots, turmeric, garlic, salt, coconut milk, lime, Chicken, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://asset.kompas.com/crops/4Pge4o-1NYVqjBcfiXvB2nAJcnM%3D/0x0%3A1000x667/750x500/data/photo/2021/05/11/609a26028d3c9.jpg"
+        },
+        {
+          "id": "d1adc396-741d-4feb-b8f4-b4836714f996",
+          "title": "Nasi kapau",
+          "price": 45000,
+          "description":
+              "steamed rice topped with various choices of dishes originated from Bukittinggi, West Sumatra",
+          "ingredients": "various dishes, Rice, ",
+          "imageUrl":
+              "https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/12/Resep-Nasi-Kapau.jpg%3Ffit%3D1080%252C1440%26ssl%3D1"
+        },
+        {
+          "id": "db9ae1f2-b556-4a8f-9fb4-effa914fc1eb",
+          "title": "Ayam bakar",
+          "price": 40000,
+          "description": "grilled spicy chicken",
+          "ingredients":
+              "shallots, turmeric, tamarind, chili, garlic, kecap manis (sweet soy sauce), salt, oil, Chicken, lemongrass, ",
+          "imageUrl":
+              "https://www.sasa.co.id/medias/page_medias/ayam_bakar_lumajang.jpg"
+        },
+        {
+          "id": "f17174b5-c69f-4b28-88f7-f6504f99d4de",
+          "title": "Es tebak",
+          "price": 25000,
+          "description":
+              "mixed of avocado, jack fruit, tebak, shredded and iced with sweet thick milk",
+          "ingredients": "ice, Avocado, jackfruit, tebak, condensed milk, ",
+          "imageUrl":
+              "https://cdn.idntimes.com/content-images/post/20190507/es-campur-bandung-cirebon-483a1ad02721c4a36f42b0cd7f1c21cd_600x400.jpg"
+        }
+      ]
+    },
+    {
+      "title": "Rumah Makan VII Koto Talago",
+      "address": "Jl. Jhoni Anwar No.Kelurahan No.17, Padang",
+      "district": "Padang Utara",
+      "imageUrl":
+          "https://lh3.googleusercontent.com/p/AF1QipMfCv5oU_RRNSg_BgK9lA9FLaMSABN1CUDTAO0S=s680-w680-h510",
+      "foodsInTheRestaurant": [
+        {
+          "id": "3a4ba9ed-dd6c-4bbc-bfae-7faf76e5ca88",
+          "title": "Soto",
+          "price": 35000,
+          "description":
+              "traditional soup mainly composed of broth, meat and vegetables",
+          "ingredients":
+              "Meat, broth (spices like turmeric, turmeric, garlic, ginger, ginger), vegetables, broth, ",
+          "imageUrl":
+              "https://giwang.sumselprov.go.id/api/uploads/kuliner/kuliner_168860841064729.jpg"
+        },
+        {
+          "id": "3c0c832e-ac22-4975-967c-95d40e7caf97",
+          "title": "Roti tisu",
+          "price": 16000,
+          "description": "thinner version of the traditional roti canai",
+          "ingredients": "Flour, water, ghee, oil or ghee, oil, ",
+          "imageUrl":
+              "https://cdn.tasteatlas.com/images/dishes/1414b9c07a7d45f293798254e59f2b5b.jpg%3Fw%3D600"
+        },
+        {
+          "id": "3fb1020a-4675-4cb0-9189-b16b24d94407",
+          "title": "Gulai udang",
+          "price": 48000,
+          "description": "shrimp gulai",
+          "ingredients":
+              "coconut, shallots, Shrimp, turmeric, garlic, salt, coconut milk, lime, kaffir lime leaves, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://cdn-brilio-net.akamaized.net/news/2021/08/18/211860/1544238-1000xauto-resep-gulai-udang.jpg"
+        },
+        {
+          "id": "4450880a-a28a-4949-8b2c-77781029c613",
+          "title": "Dendeng",
+          "price": 50000,
+          "description": "thinly sliced dried meat",
+          "ingredients": "tamarind, garlic, salt, Beef, oil, coriander, ",
+          "imageUrl":
+              "https://encrypted-tbn0.gstatic.com/images%3Fq%3Dtbn%3AANd9GcSiBNMWYvpmCt1h1cajjZXjk-o_lv3e2NwtoA%26s"
+        },
+        {
+          "id": "6d0a88e5-8afa-4eb3-b4de-c3cc9b4ce0ab",
+          "title": "Sambalado",
+          "price": 20000,
+          "description":
+              "chili paste similar to sambal with large sliced chili pepper, usually stir fried together with main ingredients",
+          "ingredients":
+              "shallots, tomato, sugar, garlic, tomatoes, salt, oil, Chilies, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/0x0/webp/photo/p2/131/2023/12/12/sambal-bawang-3278993492.jpg"
+        },
+        {
+          "id": "7272e012-c3f3-4fb6-a22e-922ef7a57aa4",
+          "title": "Sarikayo",
+          "price": 12000,
+          "description": "jam made from a base of coconut milk, eggs and sugar",
+          "ingredients": "palm sugar, sugar, eggs, pandan leaves, ",
+          "imageUrl":
+              "https://ik.imagekit.io/goodid/gnfi/uploads/articles/large-img-20231106-093401-522787279d1f999ca516090844961d37.jpg"
+        },
+        {
+          "id": "95c2fa2a-8f8f-4c72-ad10-d56c0c9d7bb7",
+          "title": "Palai",
+          "price": 28000,
+          "description": "Minangkabau variants of pepes",
+          "ingredients":
+              "coconut, shallots, turmeric, garlic, grated coconut, banana leaves, Fish, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/f548101c11ec0f35/680x482cq70/resep-palai-bada-khas-minang-foto-resep-utama.jpg"
+        },
+        {
+          "id": "a61eb40c-7f9a-473d-9455-4725393142dc",
+          "title": "Ayam bumbu",
+          "price": 41000,
+          "description": "chicken with spices",
+          "ingredients":
+              "cumin, coconut, shallots, turmeric, garlic, ginger, salt, coconut milk, oil, Chicken, coriander, ",
+          "imageUrl":
+              "https://static.promediateknologi.id/crop/0x0%3A0x0/0x0/webp/photo/p2/74/2024/05/01/3c47eeba484ca5b1b586d8b374aba571-906762525.jpg"
+        },
+        {
+          "id": "b820cb02-ce8d-4092-a599-f39d6dd9d5cd",
+          "title": "Gulai cancang",
+          "price": 40000,
+          "description": "gulai of meats and cow internal organs",
+          "ingredients":
+              "coconut, Meat, chilies, turmeric, chili, garlic, salt, coconut milk, Meat and internal organs, lemongrass, ",
+          "imageUrl":
+              "https://nnc-media.netralnews.com/IMG-Netral-News-Admin-35-I2FNWD19UL.jpg"
+        },
+        {
+          "id": "bd4434a5-4488-4d53-a477-9b542f5aec34",
+          "title": "Gulai kepala ikan kakap merah",
+          "price": 50000,
+          "description": "red snapper's head gulai",
+          "ingredients":
+              "coconut, chilies, turmeric, chili, garlic, salt, coconut milk, lime, kaffir lime leaves, Red snapper's head, lime leaves, lemongrass, ",
+          "imageUrl":
+              "https://img-global.cpcdn.com/recipes/2d402f7844250193/1360x964cq70/gulai-kepala-ikan-kakap-merah-foto-resep-utama.webp"
+        },
+        {
+          "id": "c1d8ebb6-dcaf-4931-943f-37def1697625",
+          "title": "Serabi",
+          "price": 14000,
+          "description":
+              "traditional pancake that is made from rice flour with coconut milk or shredded coconut",
+          "ingredients":
+              "coconut, Rice Flour, Flour, coconut milk, Rice, pandan leaves, ",
+          "imageUrl": "https://i.ytimg.com/vi/DkgrqXLYgso/sddefault.jpg"
+        },
+        {
+          "id": "db9ae1f2-b556-4a8f-9fb4-effa914fc1eb",
+          "title": "Ayam bakar",
+          "price": 40000,
+          "description": "grilled spicy chicken",
+          "ingredients":
+              "shallots, turmeric, tamarind, chili, garlic, kecap manis (sweet soy sauce), salt, oil, Chicken, lemongrass, ",
+          "imageUrl":
+              "https://www.sasa.co.id/medias/page_medias/ayam_bakar_lumajang.jpg"
+        },
+        {
+          "id": "e74c9cba-68fc-4dea-8059-c85725d52e85",
+          "title": "Cumi Saus Padang",
+          "price": 45000,
+          "description":
+              "squid cooked in a spicy Padang-style sauce of chili, garlic, and spices",
+          "ingredients":
+              "Shallots, Lime juice, chilies, Black pepper, Cooking oil, chili, Garlic, Water, oil, Shallots (sliced), Sweet soy sauce, Salt, Garlic (minced), Squid, Red chilies (sliced), Tomato sauce, ",
+          "imageUrl":
+              "https://www.blibli.com/friends-backend/wp-content/uploads/2023/03/B300019-Cover-resep-cumi-saus-padang-scaled.jpg"
+        },
+        {
+          "id": "fe70d1d1-2fb3-4a06-9bbf-6b80bd343f59",
+          "title": "Roti jala",
+          "price": 18000,
+          "description":
+              "the name is derived from the Malay word roti (bread) and jala (net) A special ladle with a five-hole perforation used to make the bread looks like a fish net, It is usually eaten as an accompaniment to a curried dish, or served as a sweet with serawa, Serawa is made from a mixture of boiled coconut milk, brown sugar and pandan leaves",
+          "ingredients":
+              "coconut, Flour, water, coconut milk, eggs, pandan leaves, ",
+          "imageUrl":
+              "https://www.tokomesin.com/wp-content/uploads/2017/10/roti-jala-kari-ayam.jpg"
+        }
+      ]
     },
   ];
 
@@ -1622,6 +2548,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   void initState() {
     super.initState();
 
+    fetchRestaurantData();
     fetchLocationData();
     _pageControllerStack = PageController();
 
@@ -1737,8 +2664,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                   RestaurantDetailsScreen(
                             restaurantAvailable:
                                 widget.allRestaurant.sublist(0),
-                            foodsInTheRestaurant: widget.allFood
-                                .sublist(widget.allFood.length - 10),
+                            foodsInTheRestaurant: [],
                             item: item,
                             heroOrNot: false,
                             username: widget.username,
@@ -1924,7 +2850,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 ),
               ),
               TopPicksWidget(
-                allRestaurant: widget.allRestaurant,
+                allRestaurant: allRestaurant,
                 allFood: widget.allFood.sublist(widget.allFood.length - 5),
                 pageController: _pageController,
                 loopedCardData: loopedCardData,
