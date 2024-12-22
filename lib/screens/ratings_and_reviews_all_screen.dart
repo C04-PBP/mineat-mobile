@@ -71,114 +71,135 @@ class _RatingsAndReviewsAllScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Overall Rating Section
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        averageRating.toStringAsFixed(1),
-                        style: const TextStyle(
-                          fontSize: 80,
-                          fontWeight: FontWeight.bold,
-                        ),
+              if (widget.reviewsData.length == 0) SizedBox(height: 200),
+              if (widget.reviewsData.length == 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        "no reviews yet",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade400),
                       ),
-                      const Text(
-                        "out of 5",
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 40),
-                  Expanded(
-                    child: 
+                    ),
+                  ],
+                ),
+              if (widget.reviewsData.length != 0)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                     Column(
-                      children: List.generate(5, (index) {
-                        return Row(
-                          children: [
-                            Text(
-                              "${5 - index}",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: LinearProgressIndicator(
-                                value: calculateStarPercentage(
-                                    sortedReviews, 5 - index),
-                                color: Theme.of(context).colorScheme.primary,
-                                backgroundColor: Colors.grey.shade300,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                          ],
-                        );
-                      }),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              // Sorting Dropdown
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "${sortedReviews.length} Ratings",
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  DropdownButton<String>(
-                    value: _selectedSortOption,
-                    icon: Icon(Icons.arrow_drop_down_rounded,
-                        color: Theme.of(context).colorScheme.primary), // iOS-style dropdown arrow
-                    iconSize: 34,
-                    // underline: Container(
-                    //   height: 1,
-                    //   color: Colors.grey.shade300, // Thin underline
-                    // ),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
-                    dropdownColor:
-                        Colors.white, // iOS-style dropdown background
-                    borderRadius: BorderRadius.circular(10), // Rounded dropdown
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          _selectedSortOption = newValue;
-                          _sortReviews();
-                        });
-                      }
-                    },
-                    items: <String>[
-                      // 'Most Recent',
-                      // 'Least Recent',
-                      'Most Favourable',
-                      'Most Critical'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          averageRating.toStringAsFixed(1),
+                          style: const TextStyle(
+                            fontSize: 80,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+                        const Text(
+                          "out of 5",
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 40),
+                    Expanded(
+                      child: Column(
+                        children: List.generate(5, (index) {
+                          return Row(
+                            children: [
+                              Text(
+                                "${5 - index}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: LinearProgressIndicator(
+                                  value: calculateStarPercentage(
+                                      sortedReviews, 5 - index),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  backgroundColor: Colors.grey.shade300,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                            ],
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
+                ),
+              if (widget.reviewsData.length != 0) const SizedBox(height: 20),
+              // Sorting Dropdown
+              if (widget.reviewsData.length != 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${sortedReviews.length} Ratings",
+                      style: TextStyle(
+                        color: Colors.grey.shade700,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    DropdownButton<String>(
+                      value: _selectedSortOption,
+                      icon: Icon(Icons.arrow_drop_down_rounded,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary), // iOS-style dropdown arrow
+                      iconSize: 34,
+                      // underline: Container(
+                      //   height: 1,
+                      //   color: Colors.grey.shade300, // Thin underline
+                      // ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17,
+                      ),
+                      dropdownColor:
+                          Colors.white, // iOS-style dropdown background
+                      borderRadius:
+                          BorderRadius.circular(10), // Rounded dropdown
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedSortOption = newValue;
+                            _sortReviews();
+                          });
+                        }
+                      },
+                      items: <String>[
+                        // 'Most Recent',
+                        // 'Least Recent',
+                        'Most Favourable',
+                        'Most Critical'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
               // Reviews List
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),

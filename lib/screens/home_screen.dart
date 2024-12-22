@@ -338,16 +338,19 @@ class _HomeScreenState extends State<HomeScreen>
                                 children: [
                                   SizedBox(height: 10),
                                   Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      item['title']!,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 48,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+  alignment: Alignment.center,
+  child: Text(
+    item['title']!
+        .split(' ') // Split the title into words
+        .map((word) => word[0].toUpperCase() + word.substring(1)) // Capitalize first letter of each word
+        .join(' '), // Join the words back into a single string
+    style: const TextStyle(
+      color: Colors.white,
+      fontSize: 48,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
                                   Align(
                                     alignment: Alignment.center,
                                     child: Text(

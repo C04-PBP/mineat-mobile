@@ -118,17 +118,35 @@ class _MainScreenState extends State<MainScreen> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           elevation: 3,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.home),
+              icon: Image.asset(
+                selectedIndex == 0
+                    ? 'assets/images/1.png' // Active state
+                    : 'assets/images/2.png', // Inactive state
+                width: 30,
+                height: 30,
+              ),
               label: "Home",
             ),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.graph_square_fill),
+              icon: Image.asset(
+                selectedIndex == 1
+                    ? 'assets/images/3.png' // Active state
+                    : 'assets/images/4.png', // Inactive state
+                width: 30,
+                height: 30,
+              ),
               label: "Stats",
             ),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.search),
+              icon: Image.asset(
+                selectedIndex == 2
+                    ? 'assets/images/5.png' // Active state
+                    : 'assets/images/6.png', // Inactive state
+                width: 30,
+                height: 30,
+              ),
               label: "Search",
             ),
           ],
