@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mineat/api/device.dart';
 class ReviewService {
   static List<Map<String, dynamic>>? _reviewData;
   static Future<void> fetchReviewData(String id) async {
     // if (_reviewData != null) return;
-    final url = 'http://10.0.2.2:8000/review/$id/json/';
+    final url = '$device/review/$id/json/';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
